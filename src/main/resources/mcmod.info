@@ -1,0 +1,14 @@
+[
+{
+  "modid": "furnaceoverhaul",
+  "name": "Furnace Overhaul",
+  "description": "Better furnaces that can be upgraded (Upgrades still WIP).",
+  "version": "1.0.1",
+  "mcversion": "1.12",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["TheCazadorSniper"],
+  "credits": "TheRealp455w0rd",
+  "logoFile": ""
+}
+]

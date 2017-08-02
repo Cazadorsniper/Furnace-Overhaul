@@ -1,0 +1,33 @@
+{
+		"variants": {
+			"facing=north,type=iron":  { "model": "furnaceoverhaul:lit_ironfurnace"},
+			"facing=east,type=iron":   { "model": "furnaceoverhaul:lit_ironfurnace", "y": 90 },
+			"facing=south,type=iron": { "model": "furnaceoverhaul:lit_ironfurnace", "y": 180 },
+			"facing=west,type=iron":  { "model": "furnaceoverhaul:lit_ironfurnace", "y": 270 },
+			
+			"facing=north,type=gold":  { "model": "furnaceoverhaul:lit_goldfurnace"},
+			"facing=east,type=gold":   { "model": "furnaceoverhaul:lit_goldfurnace", "y": 90 },
+			"facing=south,type=gold": { "model": "furnaceoverhaul:lit_goldfurnace", "y": 180 },
+			"facing=west,type=gold":  { "model": "furnaceoverhaul:lit_goldfurnace", "y": 270 },
+			
+			"facing=north,type=diamond":  { "model": "furnaceoverhaul:lit_diamondfurnace"},
+			"facing=east,type=diamond":   { "model": "furnaceoverhaul:lit_diamondfurnace", "y": 90 },
+			"facing=south,type=diamond": { "model": "furnaceoverhaul:lit_diamondfurnace", "y": 180 },
+			"facing=west,type=diamond":  { "model": "furnaceoverhaul:lit_diamondfurnace", "y": 270 },
+			
+			"facing=north,type=emerald":  { "model": "furnaceoverhaul:lit_emeraldfurnace"},
+			"facing=east,type=emerald":   { "model": "furnaceoverhaul:lit_emeraldfurnace", "y": 90 },
+			"facing=south,type=emerald": { "model": "furnaceoverhaul:lit_emeraldfurnace", "y": 180 },
+			"facing=west,type=emerald":  { "model": "furnaceoverhaul:lit_emeraldfurnace", "y": 270 },
+			
+			"facing=north,type=endest":  { "model": "furnaceoverhaul:lit_endestfurnace"},
+			"facing=east,type=endest":   { "model": "furnaceoverhaul:lit_endestfurnace", "y": 90 },
+			"facing=south,type=endest": { "model": "furnaceoverhaul:lit_endestfurnace", "y": 180 },
+			"facing=west,type=endest":  { "model": "furnaceoverhaul:lit_endestfurnace", "y": 270 },
+			
+			"facing=north,type=zenith":  { "model": "furnaceoverhaul:lit_zenithfurnace"},
+			"facing=east,type=zenith":   { "model": "furnaceoverhaul:lit_zenithfurnace", "y": 90 },
+			"facing=south,type=zenith": { "model": "furnaceoverhaul:lit_zenithfurnace", "y": 180 },
+			"facing=west,type=zenith":  { "model": "furnaceoverhaul:lit_zenithfurnace", "y": 270 }
+			}
+}

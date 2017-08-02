@@ -1,0 +1,36 @@
+tile.furnace6.iron.name=Iron Furnace
+tile.furnace6.gold.name=Gold Furnace
+tile.furnace6.diamond.name=Diamond Furnace
+tile.furnace6.emerald.name=Emerald Furnace
+tile.furnace6.endest.name=Endest Furnace
+tile.furnace6.zenith.name=Zenith Furnace
+
+tile.lit_furnace6.iron.name=Iron Furnace
+tile.lit_furnace6.gold.name=Gold Furnace
+tile.lit_furnace6.diamond.name=Diamond Furnace
+tile.lit_furnace6.emerald.name=Emerald Furnace
+tile.lit_furnace6.endest.name=Endest Furnace
+tile.lit_furnace6.zenith.name=Zenith Furnace
+
+item.upgrade6.oreprocessing.name=Ore Processing Upgrade (WIP)
+item.upgrade6.liquidfuel.name=Liquid Fuel Upgrade (WIP)
+item.upgrade6.efficiency.name=Efficiency Upgrade (WIP)
+item.upgrade6.electricprovider.name=Electric Provider Upgrade (WIP)
+item.upgrade6.electricfuel.name=Electric Fuel Upgrade (WIP)
+item.upgrade6.upgrade.name=Blank Upgrade
+
+item.kit6.iron.name=Iron Kit
+item.kit6.gold.name=Gold Kit
+item.kit6.diamond.name=Diamond Kit
+item.kit6.emerald.name=Emerald Kit
+item.kit6.endest.name=Endest Kit
+item.kit6.zenith.name=Zenith Kit
+
+container.iron_furnace=
+container.gold_furnace=
+container.diamond_furnace=
+container.emerald_furnace=
+container.endest_furnace=
+container.zenith_furnace=
+
+itemGroup.FurnaceOverhaul=Furnace Overhaul
