@@ -9,12 +9,12 @@ public class TileEntityEndestFurnace extends TileEntityIronFurnace {
 		
 	public TileEntityEndestFurnace(){
 	      super(KitTypes.ENDEST);
-	    }
+	}
 	
-    @Override
-    public int getCookTime(@Nullable ItemStack stack){
-    	if(KitTypes.ENDEST != null){
-    		
+	@Override
+    public int getCookTime(ItemStack stack){
+    	if(types == KitTypes.ENDEST){
+    		return this.types.getMeta() + 6;
     	}
         return 10;
     }

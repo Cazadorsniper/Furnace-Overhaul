@@ -14,11 +14,11 @@ public class TileEntityGoldFurnace extends TileEntityIronFurnace {
     }
 
 	@Override
-    public int getCookTime(@Nullable ItemStack stack){
-		if(KitTypes.GOLD != null){
-    		
+    public int getCookTime(ItemStack stack){
+    	if(types == KitTypes.GOLD){
+    		return this.types.getMeta() + 119;
     	}
-        return 120;
+		return 120;
     }
     
     @Override

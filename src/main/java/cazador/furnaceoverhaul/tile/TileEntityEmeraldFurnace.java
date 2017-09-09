@@ -11,10 +11,10 @@ public class TileEntityEmeraldFurnace extends TileEntityIronFurnace {
 	      super(KitTypes.EMERALD);
 	}
 	
-    @Override
-    public int getCookTime(@Nullable ItemStack stack){
-    	if(KitTypes.EMERALD != null){
-    		
+	@Override
+    public int getCookTime(ItemStack stack){
+    	if(types == KitTypes.EMERALD){
+    		return this.types.getMeta() + 47;
     	}
         return 50;
     }

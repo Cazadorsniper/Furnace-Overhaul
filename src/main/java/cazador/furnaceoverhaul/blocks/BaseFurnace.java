@@ -70,21 +70,19 @@ public abstract class BaseFurnace extends BlockContainer implements IMetaBlockNa
 	}
 	
 	public int getMetaFromState(IBlockState state) {
-		return ((KitTypes)state.getValue(TYPE)).getID();
+		return ((KitTypes)state.getValue(TYPE)).getMeta();
 	}	
 	
 	public boolean isOpaqueCube(IBlockState state) {
 		return true;
 	}
 
-    public boolean hasComparatorInputOverride(IBlockState state)
-    {
+    public boolean hasComparatorInputOverride(IBlockState state){
         return true;
     }
 
 	
-    public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos)
-    {
+    public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos){
         return Container.calcRedstone(worldIn.getTileEntity(pos));
     }
     
@@ -121,7 +119,7 @@ public abstract class BaseFurnace extends BlockContainer implements IMetaBlockNa
 			KitTypes newType = KitTypes.values()[stack.getItemDamage() % KitTypes.values().length];
 			KitTypes currentType = (KitTypes) world.getBlockState(pos).getValue(TYPE);
 			IBlockState newState = world.getBlockState(pos).withProperty(TYPE, newType);
-			if(newType.getID() > currentType.getID()) {
+			if(newType.getMeta() > currentType.getMeta()) {
 				world.setBlockState(pos, newState, 2);
 			}
 			ItemStack newStack = stack.copy();

@@ -11,12 +11,12 @@ public class TileEntityZenithFurnace extends TileEntityIronFurnace {
 	
 	public TileEntityZenithFurnace(){
 	      super(KitTypes.ZENITH);
-	    }
+	}
 	
-    @Override
-    public int getCookTime(@Nullable ItemStack stack){
-    	if(KitTypes.ZENITH != null){
-    		
+	@Override
+    public int getCookTime(ItemStack stack){
+    	if(types == KitTypes.ZENITH){
+    		return this.types.getMeta() - 5;
     	}
         return 1;
     }

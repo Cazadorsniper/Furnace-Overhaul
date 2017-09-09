@@ -33,6 +33,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import cazador.furnaceoverhaul.handler.EnumHandler;
 import cazador.furnaceoverhaul.handler.EnumHandler.KitTypes;
 import cazador.furnaceoverhaul.init.MBlocks;
 import cazador.furnaceoverhaul.tile.TileEntityDiamondFurnace;
@@ -51,36 +52,17 @@ public class IronFurnace extends BaseFurnace {
 	public IronFurnace(String unlocalizedname, boolean isBurning) {
 		super(unlocalizedname, isBurning);
 		this.isBurning = isBurning;
-		if(isBurning){
-		this.lightValue = 12;
-		}
 		setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(TYPE, KitTypes.IRON));
 	}
 	
-	/*public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
+	  public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
 	  {
 	    TileEntity te = world.getTileEntity(pos);
 	    if ((te != null) && ((te instanceof TileEntityIronFurnace))) {
-	      return ((TileEntityIronFurnace)te).isBurning() ? 15 : 0;
+	      return ((TileEntityIronFurnace)te).isBurning() ? 12 : 0;
 	    }
 	    return 0;
-	  }*/
-	
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] {FACING, TYPE});
-	}
-	
-	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack){
-        world.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 2);
-        if (stack.hasDisplayName()){
-            TileEntity tileentity = world.getTileEntity(pos);
-            if (tileentity instanceof TileEntityIronFurnace){
-                ((TileEntityIronFurnace)tileentity).setCustomInventoryName(stack.getDisplayName());
-            }
-        }
-    }
+	  }
 	
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
@@ -108,29 +90,44 @@ public class IronFurnace extends BaseFurnace {
     }
 	
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(TYPE, getStateFromMeta(meta * EnumFacing.HORIZONTALS.length).getValue(TYPE));
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] {FACING, TYPE});
 	}
 	
 	@Override
-    public int getMetaFromState(IBlockState state){
-    	KitTypes type = (KitTypes) state.getValue(TYPE);
-    	EnumFacing facing = (EnumFacing) state.getValue(FACING);
-    	int id = type.getID() + EnumFacing.HORIZONTALS.length + facing.getHorizontalIndex();
-		return id;
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack){
+        world.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 2);
+        if (stack.hasDisplayName()){
+            TileEntity tileentity = world.getTileEntity(pos);
+            if (tileentity instanceof TileEntityIronFurnace){
+                ((TileEntityIronFurnace)tileentity).setCustomInventoryName(stack.getDisplayName());
+            }
+        }
     }
 	
 	@Override
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(TYPE, getStateFromMeta(meta).getValue(TYPE));
+	}
+	
+	//Convert the given metadata into a BlockState for this Block
+	@Override
 	public IBlockState getStateFromMeta(int meta){
-		KitTypes type = KitTypes.values()[(int)(meta / EnumFacing.HORIZONTALS.length) % KitTypes.values().length];
-		EnumFacing facing = EnumFacing.HORIZONTALS[meta % EnumFacing.HORIZONTALS.length];
+		KitTypes types = KitTypes.values()[meta]; //Controls what type block is when placed
+		EnumFacing facing = EnumFacing.getHorizontal(meta); //Controls block direction
 		if (facing.getAxis() == EnumFacing.Axis.Y){
             facing = EnumFacing.NORTH;
         }
-        return this.getDefaultState().withProperty(TYPE, type).withProperty(FACING, facing); 
+        return this.getDefaultState().withProperty(TYPE, types).withProperty(FACING, facing);
 	}
 	
+	//Convert the BlockState into the correct metadata value
 	@Override
+    public int getMetaFromState(IBlockState state){
+		return ((KitTypes)state.getValue(TYPE)).ordinal();
+    }
+	
+	/*@Override
 	public IBlockState getActualState(IBlockState state, IBlockAccess blockAccessor, BlockPos pos) {
 		TileEntity te;
 		if (blockAccessor instanceof ChunkCache) {
@@ -142,23 +139,20 @@ public class IronFurnace extends BaseFurnace {
             state = state.withProperty(TYPE, iblockstate.getValue(TYPE));
 			}
 		return state;
-	}
-
+	}*/
 	
-    public static void setState(boolean lit, World world, BlockPos pos){
+    public static void setState(boolean lit, World world, BlockPos pos, int meta){
         IBlockState iblockstate = world.getBlockState(pos);
         TileEntity te = world.getTileEntity(pos);
         keepInventory = true;
         
-        if (lit)
-        {
-            world.setBlockState(pos, MBlocks.lit_ironfurnace.getDefaultState().withProperty(TYPE, iblockstate.getValue(TYPE)).withProperty(FACING, iblockstate.getValue(FACING)), 3);
-            world.setBlockState(pos, MBlocks.lit_ironfurnace.getDefaultState().withProperty(TYPE, iblockstate.getValue(TYPE)).withProperty(FACING, iblockstate.getValue(FACING)), 3);
+        if (lit) {
+            world.setBlockState(pos, MBlocks.lit_ironfurnace.getDefaultState().withProperty(TYPE, KitTypes.byMetadata(meta)).withProperty(FACING, iblockstate.getValue(FACING)), 3);
+            world.setBlockState(pos, MBlocks.lit_ironfurnace.getDefaultState().withProperty(TYPE, KitTypes.byMetadata(meta)).withProperty(FACING, iblockstate.getValue(FACING)), 3);
         }
-        else
-        {
-            world.setBlockState(pos, MBlocks.ironfurnace.getDefaultState().withProperty(TYPE, iblockstate.getValue(TYPE)).withProperty(FACING, iblockstate.getValue(FACING)), 3);
-            world.setBlockState(pos, MBlocks.ironfurnace.getDefaultState().withProperty(TYPE, iblockstate.getValue(TYPE)).withProperty(FACING, iblockstate.getValue(FACING)), 3);
+        else {
+            world.setBlockState(pos, MBlocks.ironfurnace.getDefaultState().withProperty(TYPE, KitTypes.byMetadata(meta)).withProperty(FACING, iblockstate.getValue(FACING)), 3);
+            world.setBlockState(pos, MBlocks.ironfurnace.getDefaultState().withProperty(TYPE, KitTypes.byMetadata(meta)).withProperty(FACING, iblockstate.getValue(FACING)), 3);
         }
 
         keepInventory = true;

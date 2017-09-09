@@ -55,7 +55,7 @@ public class TileEntityIronFurnace extends TileEntityLockable implements ITickab
     public int cookTime;
     public int totalCookTime;
     public String furnaceCustomName;
-    private final KitTypes types;
+    protected final KitTypes types;
 
     public TileEntityIronFurnace(){
     	this(KitTypes.IRON);
@@ -64,13 +64,11 @@ public class TileEntityIronFurnace extends TileEntityLockable implements ITickab
 	public TileEntityIronFurnace(KitTypes types) {
 		this.types = types;
 	}
-	
-	public KitTypes getType()
-	  {
+
+	public KitTypes getType(){
 	    return this.types;
-	  }
-
-
+	}
+	
 	public int getSizeInventory(){
         return this.furnaceItemStacks.size();
     }
@@ -221,7 +219,7 @@ public class TileEntityIronFurnace extends TileEntityLockable implements ITickab
 
             if (flag != this.isBurning()){
                 flag1 = true;
-                IronFurnace.setState(this.isBurning(), this.world, this.pos);
+                IronFurnace.setState(this.isBurning(), this.world, this.pos, this.getBlockMetadata());
             }
         }
 
@@ -263,10 +261,10 @@ public class TileEntityIronFurnace extends TileEntityLockable implements ITickab
 	}
 
     public int getCookTime(ItemStack stack){
-    	if(KitTypes.IRON != null){
-    		
+    	if(types == KitTypes.IRON){
+        return this.types.getMeta() + 160;
     	}
-        return 160;
+		return 0;
     }
 
     public boolean canSmelt() {

@@ -1,4 +1,3 @@
-
 package cazador.furnaceoverhaul.tile;
 
 import javax.annotation.Nullable;
@@ -14,10 +13,10 @@ public class TileEntityDiamondFurnace extends TileEntityIronFurnace {
 	     super(KitTypes.DIAMOND);
 	}
     
-    @Override
-    public int getCookTime(@Nullable ItemStack stack){
-    	if(KitTypes.DIAMOND != null){
-    		
+	@Override
+    public int getCookTime(ItemStack stack){
+    	if(types == KitTypes.DIAMOND){
+    		return this.types.getMeta() + 88;
     	}
         return 90;
     }

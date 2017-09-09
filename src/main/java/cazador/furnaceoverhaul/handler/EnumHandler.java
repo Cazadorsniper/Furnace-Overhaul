@@ -1,9 +1,13 @@
 package cazador.furnaceoverhaul.handler;
 
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import cazador.furnaceoverhaul.blocks.IronFurnace;
 import cazador.furnaceoverhaul.handler.EnumHandler.KitTypes;
 import cazador.furnaceoverhaul.tile.TileEntityDiamondFurnace;
 import cazador.furnaceoverhaul.tile.TileEntityEmeraldFurnace;
@@ -23,13 +27,14 @@ public class EnumHandler {
 		ENDEST("endest", 4, TileEntityEndestFurnace.class),
 		ZENITH("zenith", 5, TileEntityZenithFurnace.class);
 		
-		private int ID;
+		private final int meta;
 		private String name;
 		public final Class<? extends TileEntityIronFurnace> clazz;
+		private static final KitTypes[] META_LOOKUP = new KitTypes[values().length];
 		
-		private KitTypes(String name, int ID, Class<? extends TileEntityIronFurnace> clazz) {
-			this.ID = ID;
+		private KitTypes(String name, int meta, Class<? extends TileEntityIronFurnace> clazz) {
 			this.name = name;
+			this.meta = meta;
 			this.clazz = clazz;
 		}
 		
@@ -37,14 +42,24 @@ public class EnumHandler {
 			return this.name;
 		}
 		
-		public int getID() {
-			return ID;
-		}
-		
 		@Override
 		public String toString() {
 			return getName();
 		}
+		
+		public int getMeta() {
+			return meta;
+		}
+		
+		public static KitTypes byMetadata(int meta)
+        {
+            if (meta < 0 || meta >= META_LOOKUP.length)
+            {
+                meta = 0;
+            }
+
+            return META_LOOKUP[meta];
+        }
 		
 		public final Class<? extends TileEntityIronFurnace> Class(){
 			return clazz;
@@ -52,7 +67,7 @@ public class EnumHandler {
 
 		public static TileEntityIronFurnace makeEntity(int meta) {
 			try{
-		      return (TileEntityIronFurnace)values()[meta].clazz.newInstance();
+		      return (TileEntityIronFurnace)values()[(meta / EnumFacing.HORIZONTALS.length) % KitTypes.values().length].clazz.newInstance();
 		    }
 		    catch (InstantiationException e){
 		      e.printStackTrace();
@@ -62,6 +77,14 @@ public class EnumHandler {
 		    }
 		    return null;
 		}
+		
+        static
+        {
+            for (KitTypes types : values())
+            {
+                META_LOOKUP[types.getMeta()] = types;
+            }
+        }
 		
 		
 	}
