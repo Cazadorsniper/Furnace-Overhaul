@@ -42,7 +42,7 @@ public class MItems {
 	//meta
 	public static void registerRender(Item item, int meta, String fileName) {
 		ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(new ResourceLocation(Reference.MOD_ID, fileName), "inventory"));
-		Utils.getLogger().info("Registered model for " + item.getUnlocalizedName().substring(5));
+		//Utils.getLogger().info("Registered model for " + item.getUnlocalizedName().substring(5));
 	}
 	//normal
 	private static void registerRender(Item item) {

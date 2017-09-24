@@ -1,8 +1,12 @@
 package cazador.furnaceoverhaul.tile;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -25,8 +29,11 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityLockable;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.Mirror;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.util.datafix.FixTypes;
 import net.minecraft.util.datafix.walkers.ItemStackDataLists;
@@ -45,6 +52,8 @@ import cazador.furnaceoverhaul.inventory.ContainerFO;
 
 public class TileEntityIronFurnace extends TileEntityLockable implements ITickable, ISidedInventory {
 
+	public static final PropertyDirection FACING = BlockHorizontal.FACING;
+	
 	public static final int[] SLOTS_TOP = {0};
     public static final int[] SLOTS_BOTTOM = {2, 1};
     public static final int[] SLOTS_SIDES = {1};
@@ -56,18 +65,28 @@ public class TileEntityIronFurnace extends TileEntityLockable implements ITickab
     public int totalCookTime;
     public String furnaceCustomName;
     protected final KitTypes types;
-
+    protected EnumFacing facing = EnumFacing.NORTH;
+    
     public TileEntityIronFurnace(){
     	this(KitTypes.IRON);
     }
-    
+
 	public TileEntityIronFurnace(KitTypes types) {
 		this.types = types;
+		this.facing = EnumFacing.NORTH;
 	}
 
 	public KitTypes getType(){
 	    return this.types;
 	}
+	
+	public EnumFacing getFacing() {
+        return facing;
+    }
+	
+	public void setFacing(EnumFacing facing) {
+        this.facing = facing;
+    }
 	
 	public int getSizeInventory(){
         return this.furnaceItemStacks.size();
@@ -126,7 +145,7 @@ public class TileEntityIronFurnace extends TileEntityLockable implements ITickab
     public static void registerFixesFurnace(DataFixer fixer){
         fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackDataLists(TileEntityIronFurnace.class, new String[] {"Items"}));
     }
-
+    
     public void readFromNBT(NBTTagCompound compound){
         super.readFromNBT(compound);
         this.furnaceItemStacks = NonNullList.<ItemStack>withSize(this.getSizeInventory(), ItemStack.EMPTY);
@@ -134,7 +153,7 @@ public class TileEntityIronFurnace extends TileEntityLockable implements ITickab
         this.furnaceBurnTime = compound.getInteger("BurnTime");
         this.cookTime = compound.getInteger("CookTime");
         this.totalCookTime = compound.getInteger("CookTimeTotal");
-        
+        facing = EnumFacing.values()[compound.getInteger("facing")];
         this.currentItemBurnTime = getItemBurnTime((ItemStack)this.furnaceItemStacks.get(1));
         if (compound.hasKey("CustomName", 8)){
             this.furnaceCustomName = compound.getString("CustomName");
@@ -146,14 +165,51 @@ public class TileEntityIronFurnace extends TileEntityLockable implements ITickab
         compound.setInteger("BurnTime", (short)this.furnaceBurnTime);
         compound.setInteger("CookTime", (short)this.cookTime);
         compound.setInteger("CookTimeTotal", (short)this.totalCookTime);
-        
+        compound.setInteger("Facing", facing.ordinal());
         ItemStackHelper.saveAllItems(compound, this.furnaceItemStacks);
         if (this.hasCustomName()){
             compound.setString("CustomName", this.furnaceCustomName);
         }
-
         return compound;
     }
+    
+    private void setDefaultFacing(World world, BlockPos pos, IBlockState state) {
+		if (!world.isRemote){
+            IBlockState iblockstate = world.getBlockState(pos.north());
+            IBlockState iblockstate1 = world.getBlockState(pos.south());
+            IBlockState iblockstate2 = world.getBlockState(pos.west());
+            IBlockState iblockstate3 = world.getBlockState(pos.east());
+            EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+
+            if (enumfacing == EnumFacing.NORTH && iblockstate.isFullBlock() && !iblockstate1.isFullBlock()){
+                enumfacing = EnumFacing.SOUTH;
+            }
+            else if (enumfacing == EnumFacing.SOUTH && iblockstate1.isFullBlock() && !iblockstate.isFullBlock()){
+                enumfacing = EnumFacing.NORTH;
+            }
+            else if (enumfacing == EnumFacing.WEST && iblockstate2.isFullBlock() && !iblockstate3.isFullBlock()){
+                enumfacing = EnumFacing.EAST;
+            }
+            else if (enumfacing == EnumFacing.EAST && iblockstate3.isFullBlock() && !iblockstate2.isFullBlock()){
+                enumfacing = EnumFacing.WEST;
+            }
+
+            world.setBlockState(pos, state.withProperty(FACING, enumfacing), 2);
+        }
+		
+	}
+	
+	public IBlockState withRotation(IBlockState state, Rotation rot){
+        return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+    }
+
+    public IBlockState withMirror(IBlockState state, Mirror mirror){
+        return state.withRotation(mirror.toRotation((EnumFacing)state.getValue(FACING)));
+    }
+    
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state){
+	    this.setDefaultFacing(world, pos, state);
+	    }	
 
     public int getInventoryStackLimit(){
         return 64;
@@ -231,6 +287,7 @@ public class TileEntityIronFurnace extends TileEntityLockable implements ITickab
     @Override
 	public SPacketUpdateTileEntity getUpdatePacket() {
 		NBTTagCompound nbt = new NBTTagCompound();
+		nbt.setInteger("facing", (byte) this.facing.ordinal());
 		this.writeToNBT(nbt);
 		int metadata = getBlockMetadata();
 		return new SPacketUpdateTileEntity(this.pos, metadata, nbt);
@@ -238,7 +295,8 @@ public class TileEntityIronFurnace extends TileEntityLockable implements ITickab
 
 	@Override
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-		this.readFromNBT(pkt.getNbtCompound());
+		NBTTagCompound nbt = pkt.getNbtCompound();
+		this.facing = EnumFacing.values()[nbt.getInteger("facing")];
 	}
 
 	@Override
@@ -262,7 +320,7 @@ public class TileEntityIronFurnace extends TileEntityLockable implements ITickab
 
     public int getCookTime(ItemStack stack){
     	if(types == KitTypes.IRON){
-        return this.types.getMeta() + 160;
+        return 160;
     	}
 		return 0;
     }
