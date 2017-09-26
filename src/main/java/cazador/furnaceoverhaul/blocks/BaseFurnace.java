@@ -25,8 +25,10 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.Mirror;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -126,6 +128,44 @@ public abstract class BaseFurnace extends BlockContainer implements IMetaBlockNa
 	    }
 	    return state.withProperty(FACING, facing);
 	  }
+	
+	private void setDefaultFacing(World world, BlockPos pos, IBlockState state) {
+		if (!world.isRemote){
+            IBlockState iblockstate = world.getBlockState(pos.north());
+            IBlockState iblockstate1 = world.getBlockState(pos.south());
+            IBlockState iblockstate2 = world.getBlockState(pos.west());
+            IBlockState iblockstate3 = world.getBlockState(pos.east());
+            EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+
+            if (enumfacing == EnumFacing.NORTH && iblockstate.isFullBlock() && !iblockstate1.isFullBlock()){
+                enumfacing = EnumFacing.SOUTH;
+            }
+            else if (enumfacing == EnumFacing.SOUTH && iblockstate1.isFullBlock() && !iblockstate.isFullBlock()){
+                enumfacing = EnumFacing.NORTH;
+            }
+            else if (enumfacing == EnumFacing.WEST && iblockstate2.isFullBlock() && !iblockstate3.isFullBlock()){
+                enumfacing = EnumFacing.EAST;
+            }
+            else if (enumfacing == EnumFacing.EAST && iblockstate3.isFullBlock() && !iblockstate2.isFullBlock()){
+                enumfacing = EnumFacing.WEST;
+            }
+
+            world.setBlockState(pos, state.withProperty(FACING, enumfacing), 2);
+        }
+		
+	}
+	
+	public IBlockState withRotation(IBlockState state, Rotation rot){
+        return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+    }
+
+    public IBlockState withMirror(IBlockState state, Mirror mirror){
+        return state.withRotation(mirror.toRotation((EnumFacing)state.getValue(FACING)));
+    }
+    
+    public void onBlockAdded(World world, BlockPos pos, IBlockState state){
+	    this.setDefaultFacing(world, pos, state);
+	    }	
 	
 	public boolean isOpaqueCube(IBlockState state) {
 		return true;
