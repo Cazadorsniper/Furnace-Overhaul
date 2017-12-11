@@ -11,7 +11,7 @@ import cazador.furnaceoverhaul.items.ItemKit;
 import cazador.furnaceoverhaul.items.ItemUpgrade;
 import cazador.furnaceoverhaul.utils.Utils;
 
-public class MItems {
+public class ModItems {
 	
 	public static Item upgrade;
 	public static Item kit;

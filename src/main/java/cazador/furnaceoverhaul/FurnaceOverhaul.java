@@ -11,8 +11,8 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import cazador.furnaceoverhaul.handler.GuiHandler;
-import cazador.furnaceoverhaul.init.MBlocks;
-import cazador.furnaceoverhaul.init.MItems;
+import cazador.furnaceoverhaul.init.ModBlocks;
+import cazador.furnaceoverhaul.init.ModItems;
 import cazador.furnaceoverhaul.proxy.CommonProxy;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, acceptedMinecraftVersions = Reference.ACCEPTED_VERSIONS)
@@ -26,10 +26,10 @@ public class FurnaceOverhaul {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event){
-	MBlocks.init();
-	MItems.init();
-	MBlocks.register();
-	MItems.register();
+	ModBlocks.init();
+	ModItems.init();
+	ModBlocks.register();
+	ModItems.register();
 	
 	proxy.init();
 	
@@ -52,7 +52,7 @@ public class FurnaceOverhaul {
 		
 		@Override
 		public ItemStack getTabIconItem(){
-			return new ItemStack(MBlocks.ironfurnace);
+			return new ItemStack(ModBlocks.ironfurnace);
 		}
 	};
 

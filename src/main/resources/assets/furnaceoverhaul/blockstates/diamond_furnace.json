@@ -1,0 +1,8 @@
+{
+		"variants": {
+			"facing=north":  { "model": "furnaceoverhaul:diamond_furnace"},
+			"facing=east":   { "model": "furnaceoverhaul:diamond_furnace", "y": 90 },
+			"facing=south": { "model": "furnaceoverhaul:diamond_furnace", "y": 180 },
+			"facing=west":  { "model": "furnaceoverhaul:diamond_furnace", "y": 270 }
+			}
+}

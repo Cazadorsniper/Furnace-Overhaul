@@ -5,7 +5,7 @@ import javax.annotation.Nullable;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import cazador.furnaceoverhaul.init.MItems;
+import cazador.furnaceoverhaul.init.ModItems;
 
 public class UpgradeSlot extends Slot{
 
@@ -14,7 +14,7 @@ public class UpgradeSlot extends Slot{
 	}
 	
 	 public boolean isItemValid(@Nullable ItemStack stack) {
-        return super.isItemValid(stack) && stack.getItem() == MItems.upgrade;
+        return super.isItemValid(stack) && stack.getItem() == ModItems.upgrade;
         	
     }
 	 

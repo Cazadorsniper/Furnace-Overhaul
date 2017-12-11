@@ -1,38 +1,29 @@
 package cazador.furnaceoverhaul.handler;
 
-import net.minecraft.block.BlockPlanks;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import cazador.furnaceoverhaul.blocks.DiamondFurnace;
+import cazador.furnaceoverhaul.blocks.EmeraldFurnace;
+import cazador.furnaceoverhaul.blocks.EndFurnace;
+import cazador.furnaceoverhaul.blocks.GoldFurnace;
 import cazador.furnaceoverhaul.blocks.IronFurnace;
-import cazador.furnaceoverhaul.handler.EnumHandler.KitTypes;
-import cazador.furnaceoverhaul.tile.TileEntityDiamondFurnace;
-import cazador.furnaceoverhaul.tile.TileEntityEmeraldFurnace;
-import cazador.furnaceoverhaul.tile.TileEntityEndestFurnace;
-import cazador.furnaceoverhaul.tile.TileEntityGoldFurnace;
-import cazador.furnaceoverhaul.tile.TileEntityIronFurnace;
-import cazador.furnaceoverhaul.tile.TileEntityZenithFurnace;
+import cazador.furnaceoverhaul.blocks.ZenithFurnace;
 
 public class EnumHandler {
 
 	public static enum KitTypes implements IStringSerializable {
 		
-		IRON("iron", 0, TileEntityIronFurnace.class),
-		GOLD("gold", 1, TileEntityGoldFurnace.class),
-		DIAMOND("diamond", 2, TileEntityDiamondFurnace.class),
-		EMERALD("emerald", 3, TileEntityEmeraldFurnace.class),
-		ENDEST("endest", 4, TileEntityEndestFurnace.class),
-		ZENITH("zenith", 5, TileEntityZenithFurnace.class);
+		IRON("iron", 0, IronFurnace.class),
+		GOLD("gold", 1, GoldFurnace.class),
+		DIAMOND("diamond", 2, DiamondFurnace.class),
+		EMERALD("emerald", 3, EmeraldFurnace.class),
+		ENDEST("endest", 4, EndFurnace.class),
+		ZENITH("zenith", 5, ZenithFurnace.class);
 		
 		private final int meta;
 		private String name;
-		public final Class<? extends TileEntityIronFurnace> clazz;
-		private static final KitTypes[] META_LOOKUP = new KitTypes[values().length];
+		public final Class<? extends IronFurnace> clazz;
 		
-		private KitTypes(String name, int meta, Class<? extends TileEntityIronFurnace> clazz) {
+		private KitTypes(String name, int meta, Class<? extends IronFurnace> clazz) {
 			this.name = name;
 			this.meta = meta;
 			this.clazz = clazz;
@@ -51,42 +42,10 @@ public class EnumHandler {
 			return meta;
 		}
 		
-		public static KitTypes byMetadata(int meta)
-        {
-            if (meta < 0 || meta >= META_LOOKUP.length)
-            {
-                meta = 0;
-            }
-
-            return META_LOOKUP[meta];
-        }
-		
-		public final Class<? extends TileEntityIronFurnace> Class(){
+		public final Class<? extends IronFurnace> Class(){
 			return clazz;
 		}
-
-		public static TileEntityIronFurnace makeEntity(int meta) {
-			try{
-		      return (TileEntityIronFurnace)values()[(meta / EnumFacing.HORIZONTALS.length) % KitTypes.values().length].clazz.newInstance();
-		    }
-		    catch (InstantiationException e){
-		      e.printStackTrace();
-		    }
-		    catch (IllegalAccessException e){
-		      e.printStackTrace();
-		    }
-		    return null;
-		}
-		
-        static
-        {
-            for (KitTypes types : values())
-            {
-                META_LOOKUP[types.getMeta()] = types;
-            }
-        }
-		
-		
+			
 	}
 	
 	public static enum UpgradeTypes implements IStringSerializable {

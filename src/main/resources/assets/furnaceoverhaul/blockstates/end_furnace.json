@@ -1,0 +1,8 @@
+{
+		"variants": {
+			"facing=north":  { "model": "furnaceoverhaul:end_furnace"},
+			"facing=east":   { "model": "furnaceoverhaul:end_furnace", "y": 90 },
+			"facing=south": { "model": "furnaceoverhaul:end_furnace", "y": 180 },
+			"facing=west":  { "model": "furnaceoverhaul:end_furnace", "y": 270 }
+			}
+}

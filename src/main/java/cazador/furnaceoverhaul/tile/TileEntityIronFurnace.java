@@ -1,12 +1,7 @@
 package cazador.furnaceoverhaul.tile;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -29,17 +24,12 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityLockable;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.Mirror;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.Rotation;
 import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.util.datafix.FixTypes;
 import net.minecraft.util.datafix.walkers.ItemStackDataLists;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -47,7 +37,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import cazador.furnaceoverhaul.blocks.IronFurnace;
-import cazador.furnaceoverhaul.handler.EnumHandler.KitTypes;
 import cazador.furnaceoverhaul.inventory.ContainerFO;
 
 public class TileEntityIronFurnace extends TileEntityLockable implements ITickable, ISidedInventory {
@@ -62,29 +51,6 @@ public class TileEntityIronFurnace extends TileEntityLockable implements ITickab
     public int cookTime;
     public int totalCookTime;
     public String furnaceCustomName;
-    protected final KitTypes types;
-    protected EnumFacing facing = EnumFacing.NORTH;
-    
-    public TileEntityIronFurnace(){
-    	this(KitTypes.IRON);
-    }
-
-	public TileEntityIronFurnace(KitTypes types) {
-		this.types = types;
-		this.facing = EnumFacing.NORTH;
-	}
-
-	public KitTypes getType(){
-	    return this.types;
-	}
-	
-	public EnumFacing getFacing() {
-        return facing;
-    }
-	
-	public void setFacing(EnumFacing facing) {
-        this.facing = facing;
-    }
 	
 	public int getSizeInventory(){
         return this.furnaceItemStacks.size();
@@ -151,7 +117,6 @@ public class TileEntityIronFurnace extends TileEntityLockable implements ITickab
         this.furnaceBurnTime = compound.getInteger("BurnTime");
         this.cookTime = compound.getInteger("CookTime");
         this.totalCookTime = compound.getInteger("CookTimeTotal");
-        facing = EnumFacing.values()[compound.getInteger("facing")];
         this.currentItemBurnTime = getItemBurnTime((ItemStack)this.furnaceItemStacks.get(1));
         if (compound.hasKey("CustomName", 8)){
             this.furnaceCustomName = compound.getString("CustomName");
@@ -163,7 +128,6 @@ public class TileEntityIronFurnace extends TileEntityLockable implements ITickab
         compound.setInteger("BurnTime", (short)this.furnaceBurnTime);
         compound.setInteger("CookTime", (short)this.cookTime);
         compound.setInteger("CookTimeTotal", (short)this.totalCookTime);
-        compound.setInteger("Facing", facing.ordinal());
         ItemStackHelper.saveAllItems(compound, this.furnaceItemStacks);
         if (this.hasCustomName()){
             compound.setString("CustomName", this.furnaceCustomName);
@@ -235,7 +199,7 @@ public class TileEntityIronFurnace extends TileEntityLockable implements ITickab
 
             if (flag != this.isBurning()){
                 flag1 = true;
-                IronFurnace.setState(this.isBurning(), this.world, this.pos, this.getBlockMetadata());
+                IronFurnace.setState(this.isBurning(), this.world, this.pos);
             }
         }
 
@@ -247,7 +211,6 @@ public class TileEntityIronFurnace extends TileEntityLockable implements ITickab
     @Override
 	public SPacketUpdateTileEntity getUpdatePacket() {
 		NBTTagCompound nbt = new NBTTagCompound();
-		nbt.setInteger("facing", (byte) this.facing.ordinal());
 		this.writeToNBT(nbt);
 		int metadata = getBlockMetadata();
 		return new SPacketUpdateTileEntity(this.pos, metadata, nbt);
@@ -256,7 +219,6 @@ public class TileEntityIronFurnace extends TileEntityLockable implements ITickab
 	@Override
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
 		NBTTagCompound nbt = pkt.getNbtCompound();
-		this.facing = EnumFacing.values()[nbt.getInteger("facing")];
 	}
 
 	@Override
@@ -279,10 +241,7 @@ public class TileEntityIronFurnace extends TileEntityLockable implements ITickab
 	}
 
     public int getCookTime(ItemStack stack){
-    	if(types == KitTypes.IRON){
         return 160;
-    	}
-		return 0;
     }
 
     public boolean canSmelt() {
@@ -300,7 +259,7 @@ public class TileEntityIronFurnace extends TileEntityLockable implements ITickab
                 if (itemstack1.isEmpty()) return true;
                 if (!itemstack1.isItemEqual(itemstack)) return false;
                 int result = itemstack1.getCount() + itemstack.getCount();
-                return result <= getInventoryStackLimit() && result <= itemstack1.getMaxStackSize(); // Forge fix: make furnace respect stack sizes in furnace recipes
+                return result <= getInventoryStackLimit() && result <= itemstack1.getMaxStackSize();
             }
         }
     }
@@ -366,7 +325,12 @@ public class TileEntityIronFurnace extends TileEntityLockable implements ITickab
     }
 
     public int[] getSlotsForFace(EnumFacing side){
-        return side == EnumFacing.DOWN ? SLOTS_BOTTOM : (side == EnumFacing.UP ? SLOTS_TOP : SLOTS_SIDES);
+    	 if (side == EnumFacing.DOWN){
+             return SLOTS_BOTTOM;
+         }
+         else {
+             return side == EnumFacing.UP ? SLOTS_TOP : SLOTS_SIDES;
+         }
     }
 
     public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction){
