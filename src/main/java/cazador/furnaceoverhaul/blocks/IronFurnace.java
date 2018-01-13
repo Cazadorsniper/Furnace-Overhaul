@@ -35,10 +35,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import cazador.furnaceoverhaul.FurnaceOverhaul;
 import cazador.furnaceoverhaul.Reference;
-import cazador.furnaceoverhaul.handler.EnumHandler.KitTypes;
 import cazador.furnaceoverhaul.handler.GuiHandler;
 import cazador.furnaceoverhaul.init.ModBlocks;
-import cazador.furnaceoverhaul.init.ModItems;
 import cazador.furnaceoverhaul.tile.TileEntityIronFurnace;
 
 public class IronFurnace extends BlockContainer {
@@ -54,6 +52,7 @@ public class IronFurnace extends BlockContainer {
 		setCreativeTab(FurnaceOverhaul.FurnaceOverhaulTab);
 		this.setHardness(2.0F);
 		this.setResistance(9.0F);
+		this.setHarvestLevel("pickaxe", 1);
 		setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 		this.isBlockContainer = true;
 		this.isBurning = isBurning;
@@ -150,7 +149,7 @@ public class IronFurnace extends BlockContainer {
 	    }	
 	
 	public boolean isOpaqueCube(IBlockState state) {
-		return true;
+		return false;
 	}
 
     public boolean hasComparatorInputOverride(IBlockState state){
@@ -229,21 +228,5 @@ public class IronFurnace extends BlockContainer {
             }
         }
     }
-
-	public void updateFurnaceTier(World world, EntityPlayer player, EnumHand hand, BlockPos pos, ItemStack stack) {
-	if(stack.getItem() == ModItems.kit) {
-		KitTypes newType = KitTypes.values()[stack.getItemDamage() % KitTypes.values().length];
-		KitTypes currentType = (KitTypes) world.getBlockState(pos).getValue(TYPE);
-		IBlockState newState = world.getBlockState(pos).withProperty(TYPE, newType);
-		if(newType.getMeta() > currentType.getMeta()) {
-			world.setBlockState(pos, newState, 2);
-		}
-		ItemStack newStack = stack.copy();
-		newStack.shrink(1);
-		player.setHeldItem(hand, newStack);
-		if(player.getHeldItem(hand).getCount() <= 0)
-			player.setHeldItem(hand, ItemStack.EMPTY);
-		}
-	}
 	
 }

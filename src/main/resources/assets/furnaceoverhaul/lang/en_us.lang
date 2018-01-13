@@ -12,19 +12,20 @@ tile.lit_emerald_furnace.name=Emerald Furnace
 tile.lit_end_furnace.name=Endest Furnace
 tile.lit_zenith_furnace.name=Zenith Furnace
 
-item.upgrade6.oreprocessing.name=Ore Processing Upgrade (WIP)
-item.upgrade6.liquidfuel.name=Liquid Fuel Upgrade (WIP)
-item.upgrade6.efficiency.name=Efficiency Upgrade (WIP)
-item.upgrade6.electricprovider.name=Electric Provider Upgrade (WIP)
-item.upgrade6.electricfuel.name=Electric Fuel Upgrade (WIP)
-item.upgrade6.upgrade.name=Blank Upgrade
+item.ore_processing.name=Ore Processing Upgrade (WIP)
+item.liquid_fuel.name=Liquid Fuel Upgrade (WIP)
+item.efficiency.name=Efficiency Upgrade (WIP)
+item.electric_provider.name=Electric Provider Upgrade (WIP)
+item.electric_fuel.name=Electric Fuel Upgrade (WIP)
+item.blank_upgrade.name=Blank Upgrade
 
-item.kit6.iron.name=Iron Kit
-item.kit6.gold.name=Gold Kit
-item.kit6.diamond.name=Diamond Kit
-item.kit6.emerald.name=Emerald Kit
-item.kit6.endest.name=Endest Kit
-item.kit6.zenith.name=Zenith Kit
+item.iron_kit.name=Iron Kit
+item.gold_kit.name=Gold Kit
+item.diamond_kit.name=Diamond Kit
+item.emerald_kit.name=Emerald Kit
+item.endest_kit.name=Endest Kit
+item.zenith_kit.name=Zenith Kit
+item.blank_kit.name=Blank Kit
 
 container.iron_furnace=
 container.gold_furnace=

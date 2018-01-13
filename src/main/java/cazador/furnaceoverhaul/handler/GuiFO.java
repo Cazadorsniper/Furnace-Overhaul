@@ -1,4 +1,4 @@
-package cazador.furnaceoverhaul.client.gui;
+package cazador.furnaceoverhaul.handler;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
