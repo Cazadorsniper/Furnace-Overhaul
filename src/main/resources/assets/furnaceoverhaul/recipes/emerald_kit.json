@@ -1,0 +1,22 @@
+{
+   "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "EGE",
+    "GFG",
+	"EGE"
+  ],
+  "key": {
+    "G": {
+		"item": "minecraft:glass"
+    },
+	"E": {
+		"item": "minecraft:emerald"
+	},
+	"F": {
+		"item": "furnaceoverhaul:blank_kit"
+	}
+  },
+  "result": {
+    "item": "furnaceoverhaul:emerald_kit"
+  }
+}

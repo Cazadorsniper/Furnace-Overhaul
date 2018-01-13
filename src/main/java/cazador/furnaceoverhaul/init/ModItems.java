@@ -19,7 +19,6 @@ import cazador.furnaceoverhaul.items.IronKit;
 import cazador.furnaceoverhaul.items.Liquidfuel;
 import cazador.furnaceoverhaul.items.Oreprocessing;
 import cazador.furnaceoverhaul.items.ZenithKit;
-import cazador.furnaceoverhaul.utils.Utils;
 
 public class ModItems {
 	
@@ -94,7 +93,6 @@ public class ModItems {
 		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(new ResourceLocation(Reference.MOD_ID, item.getUnlocalizedName().substring(5)), "inventory"));
 		//Utils.getLogger().info("Registered model for " + item.getUnlocalizedName().substring(5));
 	}
-	
 	
 }
 

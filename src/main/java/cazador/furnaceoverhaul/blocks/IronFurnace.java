@@ -1,5 +1,6 @@
 package cazador.furnaceoverhaul.blocks;
 
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.BlockContainer;
@@ -9,6 +10,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -28,6 +30,8 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -54,8 +58,12 @@ public class IronFurnace extends BlockContainer {
 		this.setResistance(9.0F);
 		this.setHarvestLevel("pickaxe", 1);
 		setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-		this.isBlockContainer = true;
 		this.isBurning = isBurning;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+		tooltip.add(TextFormatting.WHITE + "Cook time 160 ticks");
 	}
 	
 	public static void setState(boolean lit, World world, BlockPos pos){

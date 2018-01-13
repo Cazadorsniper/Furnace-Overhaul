@@ -1,0 +1,19 @@
+{
+   "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GGG",
+    "GFG",
+	"GGG"
+  ],
+  "key": {
+    "G": {
+		"item": "minecraft:gold_ingot"
+    },
+	"F": {
+		"item": "furnaceoverhaul:iron_furnace"
+	}
+  },
+  "result": {
+    "item": "furnaceoverhaul:gold_furnace"
+  }
+}

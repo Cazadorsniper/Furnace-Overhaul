@@ -1,20 +1,17 @@
 package cazador.furnaceoverhaul.inventory;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import cazador.furnaceoverhaul.init.ModItems;
-import cazador.furnaceoverhaul.tile.TileEntityIronFurnace;
 
 public class UpgradeSlot extends Slot{
 
-	public UpgradeSlot(IInventory inventoryIn, int index, int x, int y) {
-		super(inventoryIn, index, x, y);
+	public UpgradeSlot(IInventory inventory, int index, int x, int y) {
+		super(inventory, index, x, y);
 	}
 	
-	 public boolean isItemValid(@Nullable ItemStack stack) {
+	 public boolean isItemValid(ItemStack stack) {
         return super.isItemValid(stack) && 
         		stack.getItem() == ModItems.blankupgrade ||
         		stack.getItem() == ModItems.efficiency ||

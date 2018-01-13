@@ -1,0 +1,19 @@
+{
+   "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "EEE",
+    "EFE",
+	"EEE"
+  ],
+  "key": {
+	"E": {
+		"item": "minecraft:ender_pearl"
+	},
+	"F": {
+		"item": "furnaceoverhaul:blank_kit"
+	}
+  },
+  "result": {
+    "item": "furnaceoverhaul:endest_kit"
+  }
+}

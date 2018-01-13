@@ -22,6 +22,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.tileentity.TileEntityLockable;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -32,17 +33,18 @@ import net.minecraft.util.datafix.walkers.ItemStackDataLists;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
+import net.minecraftforge.oredict.OreDictionary;
+import cazador.furnaceoverhaul.api.IUpgrade;
 import cazador.furnaceoverhaul.blocks.IronFurnace;
 import cazador.furnaceoverhaul.init.ModItems;
 import cazador.furnaceoverhaul.inventory.ContainerFO;
 import cazador.furnaceoverhaul.inventory.UpgradeSlot;
 
-public class TileEntityIronFurnace extends TileEntityLockable implements ITickable, ISidedInventory {
+public class TileEntityIronFurnace extends TileEntityLockable implements ITickable, ISidedInventory, IUpgrade {
 	
 	public static final int[] SLOTS_TOP = {0};
     public static final int[] SLOTS_BOTTOM = {2, 1};
@@ -263,11 +265,14 @@ public class TileEntityIronFurnace extends TileEntityLockable implements ITickab
         }
     }
 
-    public void smeltItem(){
-        if (this.canSmelt()){
+    public int smeltItem(){
+        if (this.canSmelt());
             ItemStack itemstack = (ItemStack)this.furnaceItemStacks.get(0);
             ItemStack itemstack1 = FurnaceRecipes.instance().getSmeltingResult(itemstack);
             ItemStack itemstack2 = (ItemStack)this.furnaceItemStacks.get(2);
+            ItemStack stack0 = (ItemStack)this.furnaceItemStacks.get(3);
+            ItemStack stack1 = (ItemStack)this.furnaceItemStacks.get(4);
+            ItemStack stack2 = (ItemStack)this.furnaceItemStacks.get(5);
 
             if (itemstack2.isEmpty()){
                 this.furnaceItemStacks.set(2, itemstack1.copy());
@@ -279,27 +284,20 @@ public class TileEntityIronFurnace extends TileEntityLockable implements ITickab
             if (itemstack.getItem() == Item.getItemFromBlock(Blocks.SPONGE) && itemstack.getMetadata() == 1 && !((ItemStack)this.furnaceItemStacks.get(1)).isEmpty() && ((ItemStack)this.furnaceItemStacks.get(1)).getItem() == Items.BUCKET){
                 this.furnaceItemStacks.set(1, new ItemStack(Items.WATER_BUCKET));
             }
-
             itemstack.shrink(1);
-        }
+            if (itemstack2.getItem() == itemstack1.getItem() && stack0.getItem() == ModItems.oreprocessing && stack1.getItem() == ModItems.oreprocessing && stack2.getItem() == ModItems.oreprocessing);
+            	return itemstack1.copy().getCount() * 2;
     }
+    
+	public int getItemBurnTime(ItemStack stack) {
+		if(this.furnaceItemStacks.get(3).isEmpty() && this.furnaceItemStacks.get(4).isEmpty() && this.furnaceItemStacks.get(5).isEmpty()){
+			return TileEntityFurnace.getItemBurnTime(stack);
+		} else if (((ItemStack)this.furnaceItemStacks.get(3)).getItem() == ModItems.efficiency && ((ItemStack)this.furnaceItemStacks.get(4)).getItem() == ModItems.efficiency && ((ItemStack)this.furnaceItemStacks.get(5)).getItem() == ModItems.efficiency);	
+			return TileEntityFurnace.getItemBurnTime(stack) * 2;
+	}
 
-    public static int getItemBurnTime(ItemStack stack){
-        if (stack.isEmpty()){
-            return 0;
-        }
-        else{
-            Item item = stack.getItem();
-            if (!item.getRegistryName().getResourceDomain().equals("minecraft")){
-                int burnTime = ForgeEventFactory.getItemBurnTime(stack);
-                if (burnTime != 0) return burnTime;
-            }
-            return item == Item.getItemFromBlock(Blocks.WOODEN_SLAB) ? 150 : (item == Item.getItemFromBlock(Blocks.WOOL) ? 100 : (item == Item.getItemFromBlock(Blocks.CARPET) ? 67 : (item == Item.getItemFromBlock(Blocks.LADDER) ? 300 : (item == Item.getItemFromBlock(Blocks.WOODEN_BUTTON) ? 100 : (Block.getBlockFromItem(item).getDefaultState().getMaterial() == Material.WOOD ? 300 : (item == Item.getItemFromBlock(Blocks.COAL_BLOCK) ? 16000 : (item instanceof ItemTool && "WOOD".equals(((ItemTool)item).getToolMaterialName()) ? 200 : (item instanceof ItemSword && "WOOD".equals(((ItemSword)item).getToolMaterialName()) ? 200 : (item instanceof ItemHoe && "WOOD".equals(((ItemHoe)item).getMaterialName()) ? 200 : (item == Items.STICK ? 100 : (item != Items.BOW && item != Items.FISHING_ROD ? (item == Items.SIGN ? 200 : (item == Items.COAL ? 1600 : (item == Items.LAVA_BUCKET ? 20000 : (item != Item.getItemFromBlock(Blocks.SAPLING) && item != Items.BOWL ? (item == Items.BLAZE_ROD ? 2400 : (item instanceof ItemDoor && item != Items.IRON_DOOR ? 200 : (item instanceof ItemBoat ? 400 : 0))) : 100)))) : 300)))))))))));
-        }
-    }
-
-    public static boolean isItemFuel(ItemStack stack){
-        return getItemBurnTime(stack) > 0;
+	public static boolean isItemFuel(ItemStack stack){
+        return TileEntityFurnace.getItemBurnTime(stack) > 0;
     }
 
     public boolean isUsableByPlayer(EntityPlayer player){

@@ -1,0 +1,22 @@
+{
+   "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "DGD",
+    "GFG",
+	"DGD"
+  ],
+  "key": {
+    "G": {
+		"item": "minecraft:glass"
+    },
+	"D": {
+		"item": "minecraft:diamond"
+	},
+	"F": {
+		"item": "furnaceoverhaul:blank_kit"
+	}
+  },
+  "result": {
+    "item": "furnaceoverhaul:diamond_kit"
+  }
+}

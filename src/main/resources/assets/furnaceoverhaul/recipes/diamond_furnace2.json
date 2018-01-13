@@ -1,0 +1,17 @@
+{
+   "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "KF"
+  ],
+  "key": {
+	"K": {
+		"item": "furnaceoverhaul:diamond_kit"
+	},
+	"F": {
+		"item": "furnaceoverhaul:gold_furnace"
+	}
+  },
+  "result": {
+    "item": "furnaceoverhaul:diamond_furnace"
+  }
+}

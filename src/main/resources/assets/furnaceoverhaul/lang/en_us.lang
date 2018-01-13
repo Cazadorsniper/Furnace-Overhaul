@@ -12,11 +12,11 @@ tile.lit_emerald_furnace.name=Emerald Furnace
 tile.lit_end_furnace.name=Endest Furnace
 tile.lit_zenith_furnace.name=Zenith Furnace
 
-item.ore_processing.name=Ore Processing Upgrade (WIP)
-item.liquid_fuel.name=Liquid Fuel Upgrade (WIP)
-item.efficiency.name=Efficiency Upgrade (WIP)
-item.electric_provider.name=Electric Provider Upgrade (WIP)
-item.electric_fuel.name=Electric Fuel Upgrade (WIP)
+item.ore_processing.name=Ore Processing Upgrade
+item.liquid_fuel.name=Liquid Fuel Upgrade
+item.efficiency.name=Efficiency Upgrade
+item.electric_provider.name=Electric Provider Upgrade
+item.electric_fuel.name=Electric Fuel Upgrade
 item.blank_upgrade.name=Blank Upgrade
 
 item.iron_kit.name=Iron Kit

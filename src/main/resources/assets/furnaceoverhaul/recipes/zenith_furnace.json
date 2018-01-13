@@ -1,0 +1,25 @@
+{
+   "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RNR",
+    "BFB",
+	"RBR"
+  ],
+  "key": {
+	"N": {
+		"item": "minecraft:nether_star"
+	},
+	"B": {
+		"item": "minecraft:nether_brick"
+	},
+	"R": {
+		"item": "minecraft:blaze_rod"
+	},
+	"F": {
+		"item": "furnaceoverhaul:end_furnace"
+	}
+  },
+  "result": {
+    "item": "furnaceoverhaul:zenith_furnace"
+  }
+}

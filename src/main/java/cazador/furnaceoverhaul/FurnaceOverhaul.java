@@ -38,7 +38,6 @@ public class FurnaceOverhaul {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event){
-	proxy.registerModelBakeryVariants();
 	proxy.registerTileEntities();
 	
 	}

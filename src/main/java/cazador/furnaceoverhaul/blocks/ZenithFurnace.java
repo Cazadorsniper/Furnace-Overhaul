@@ -1,9 +1,16 @@
 package cazador.furnaceoverhaul.blocks;
 
+import java.util.List;
+
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import cazador.furnaceoverhaul.init.ModBlocks;
 import cazador.furnaceoverhaul.tile.TileEntityZenithFurnace;
 
@@ -11,6 +18,12 @@ public class ZenithFurnace extends IronFurnace {
 
 	public ZenithFurnace(String unlocalizedname, boolean isBurning) {
 		super(unlocalizedname, isBurning);
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+		tooltip.add(TextFormatting.RED + "Cook time 1 tick");
 	}
 	
 	public static void setState(boolean lit, World world, BlockPos pos){
