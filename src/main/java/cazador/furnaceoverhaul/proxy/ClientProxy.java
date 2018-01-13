@@ -16,4 +16,22 @@ public class ClientProxy extends CommonProxy{
 		
 	}
 	
+	@Override
+	public void registerModelBakeryVariants() {
+		ModelBakery.registerItemVariants(ModItems.kit, 
+				new ResourceLocation(Reference.MOD_ID, "kit_iron"), 
+				new ResourceLocation(Reference.MOD_ID, "kit_gold"), 
+				new ResourceLocation(Reference.MOD_ID, "kit_diamond"), 
+				new ResourceLocation(Reference.MOD_ID, "kit_emerald"), 
+				new ResourceLocation(Reference.MOD_ID, "kit_endest"), 
+				new ResourceLocation(Reference.MOD_ID, "kit_zenith"));
+		ModelBakery.registerItemVariants(ModItems.upgrade, 
+				new ResourceLocation(Reference.MOD_ID, "upgrade_upgrade"), 
+				new ResourceLocation(Reference.MOD_ID, "upgrade_efficiency"), 
+				new ResourceLocation(Reference.MOD_ID, "upgrade_oreprocessing"), 
+				new ResourceLocation(Reference.MOD_ID, "upgrade_liquidfuel"), 
+				new ResourceLocation(Reference.MOD_ID, "upgrade_electricfuel"), 
+				new ResourceLocation(Reference.MOD_ID, "upgrade_electricprovider"));
+	}
+	
 }
