@@ -16,8 +16,8 @@ import cazador.furnaceoverhaul.tile.TileEntityZenithFurnace;
 
 public class ZenithFurnace extends IronFurnace {
 
-	public ZenithFurnace(String unlocalizedname, boolean isBurning) {
-		super(unlocalizedname, isBurning);
+	public ZenithFurnace(String unlocalizedname) {
+		super(unlocalizedname);
 	}
 	
 	@Override
@@ -26,16 +26,16 @@ public class ZenithFurnace extends IronFurnace {
 		tooltip.add(TextFormatting.RED + "Cook time 1 tick");
 	}
 	
-	public static void setState(boolean lit, World world, BlockPos pos){
+	public static void setState(boolean active, World world, BlockPos pos){
         IBlockState iblockstate = world.getBlockState(pos);
         TileEntity te = world.getTileEntity(pos);
         keepInventory = true;
         
-        if (lit) {
-            world.setBlockState(pos, ModBlocks.lit_zenithfurnace.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
+        if (active) {
+            world.setBlockState(pos, ModBlocks.zenithfurnace.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)).withProperty(ACTIVE, true), 3);
         }
         else {
-            world.setBlockState(pos, ModBlocks.zenithfurnace.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
+            world.setBlockState(pos, ModBlocks.zenithfurnace.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)).withProperty(ACTIVE, false), 3);
         }
 
         keepInventory = true;

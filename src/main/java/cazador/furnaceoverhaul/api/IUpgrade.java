@@ -8,5 +8,5 @@ public abstract interface IUpgrade {
 
 	public abstract int getItemBurnTime(ItemStack stack);
 	
-	public abstract int smeltItem();
+	public abstract void smeltItem();
 }

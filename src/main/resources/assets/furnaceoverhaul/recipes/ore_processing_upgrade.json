@@ -1,0 +1,22 @@
+{
+   "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "IGI",
+    "GBG",
+	"IGI"
+  ],
+  "key": {
+    "I": {
+		"item": "minecraft:iron_ingot"
+    },
+	"G": {
+		"item": "minecraft:glowstone_dust"
+    },
+	"B": {
+		"item": "furnaceoverhaul:blank_upgrade"
+	}
+  },
+  "result": {
+    "item": "furnaceoverhaul:ore_processing"
+  }
+}

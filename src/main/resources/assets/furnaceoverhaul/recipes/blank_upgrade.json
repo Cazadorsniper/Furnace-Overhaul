@@ -1,0 +1,19 @@
+{
+   "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "IQI",
+	"III"
+  ],
+  "key": {
+    "I": {
+		"item": "minecraft:iron_ingot"
+    },
+	"Q": {
+		"item": "minecraft:quartz"
+	}
+  },
+  "result": {
+    "item": "furnaceoverhaul:blank_upgrade"
+  }
+}

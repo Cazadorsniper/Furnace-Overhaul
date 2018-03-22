@@ -7,6 +7,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -43,13 +44,13 @@ import cazador.furnaceoverhaul.handler.GuiHandler;
 import cazador.furnaceoverhaul.init.ModBlocks;
 import cazador.furnaceoverhaul.tile.TileEntityIronFurnace;
 
-public class IronFurnace extends BlockContainer {
+public class IronFurnace extends BlockContainer{
 	
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
-	private final boolean isBurning;
+	public static final PropertyBool ACTIVE = PropertyBool.create("active");
 	public static boolean keepInventory;
 	
-	public IronFurnace(String unlocalizedname, boolean isBurning) {
+	public IronFurnace(String unlocalizedname) {
 		super(Material.IRON);
 		this.setUnlocalizedName(unlocalizedname);
         this.setRegistryName(new ResourceLocation(Reference.MOD_ID, unlocalizedname));
@@ -57,8 +58,18 @@ public class IronFurnace extends BlockContainer {
 		this.setHardness(2.0F);
 		this.setResistance(9.0F);
 		this.setHarvestLevel("pickaxe", 1);
-		setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-		this.isBurning = isBurning;
+		setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(ACTIVE, false));
+		
+	}
+	
+	@Override
+	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+		if (state.getValue(ACTIVE) == true){
+			return 8;
+		} else if (state.getValue(ACTIVE) == false){
+			return 0;
+		} else
+		return 0;
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -66,16 +77,16 @@ public class IronFurnace extends BlockContainer {
 		tooltip.add(TextFormatting.WHITE + "Cook time 160 ticks");
 	}
 	
-	public static void setState(boolean lit, World world, BlockPos pos){
+	public static void setState(boolean active, World world, BlockPos pos){
         IBlockState iblockstate = world.getBlockState(pos);
         TileEntity te = world.getTileEntity(pos);
         keepInventory = true;
         
-        if (lit) {
-            world.setBlockState(pos, ModBlocks.lit_ironfurnace.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
+        if (active) {
+            world.setBlockState(pos, ModBlocks.ironfurnace.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)).withProperty(ACTIVE, true), 3);
         }
         else {
-            world.setBlockState(pos, ModBlocks.ironfurnace.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
+            world.setBlockState(pos, ModBlocks.ironfurnace.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)).withProperty(ACTIVE, false), 3);
         }
 
         keepInventory = true;
@@ -99,7 +110,7 @@ public class IronFurnace extends BlockContainer {
 	}
 	
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] {FACING});
+		return new BlockStateContainer(this, new IProperty[] {FACING,ACTIVE});
 	}
 
 	public IBlockState getStateFromMeta(int meta) {
@@ -205,7 +216,7 @@ public class IronFurnace extends BlockContainer {
 	@SideOnly(Side.CLIENT)
     @SuppressWarnings("incomplete-switch")
     public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand){
-        if (this.isBurning){
+        if (state.getValue(ACTIVE) == true){
             EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
             double d0 = (double)pos.getX() + 0.5D;
             double d1 = (double)pos.getY() + rand.nextDouble() * 6.0D / 16.0D;

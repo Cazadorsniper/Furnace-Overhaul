@@ -1,8 +1,13 @@
 {
 		"variants": {
-			"facing=north":  { "model": "furnaceoverhaul:zenith_furnace"},
-			"facing=east":   { "model": "furnaceoverhaul:zenith_furnace", "y": 90 },
-			"facing=south": { "model": "furnaceoverhaul:zenith_furnace", "y": 180 },
-			"facing=west":  { "model": "furnaceoverhaul:zenith_furnace", "y": 270 }
+			"active=false,facing=north":  { "model": "furnaceoverhaul:zenith_furnace"},
+			"active=false,facing=east":   { "model": "furnaceoverhaul:zenith_furnace", "y": 90 },
+			"active=false,facing=south": { "model": "furnaceoverhaul:zenith_furnace", "y": 180 },
+			"active=false,facing=west":  { "model": "furnaceoverhaul:zenith_furnace", "y": 270 },
+			
+			"active=true,facing=north":  { "model": "furnaceoverhaul:lit_zenith_furnace"},
+			"active=true,facing=east":   { "model": "furnaceoverhaul:lit_zenith_furnace", "y": 90 },
+			"active=true,facing=south": { "model": "furnaceoverhaul:lit_zenith_furnace", "y": 180 },
+			"active=true,facing=west":  { "model": "furnaceoverhaul:lit_zenith_furnace", "y": 270 }
 			}
 }

@@ -1,0 +1,22 @@
+{
+   "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "IRI",
+    "RBR",
+	"IRI"
+  ],
+  "key": {
+    "I": {
+		"item": "minecraft:iron_ingot"
+    },
+	"R": {
+		"item": "minecraft:redstone"
+    },
+	"B": {
+		"item": "furnaceoverhaul:blank_upgrade"
+	}
+  },
+  "result": {
+    "item": "furnaceoverhaul:efficiency"
+  }
+}

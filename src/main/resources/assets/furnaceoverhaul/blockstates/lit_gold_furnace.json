@@ -1,8 +1,0 @@
-{
-		"variants": {
-			"facing=north":  { "model": "furnaceoverhaul:lit_gold_furnace"},
-			"facing=east":   { "model": "furnaceoverhaul:lit_gold_furnace", "y": 90 },
-			"facing=south": { "model": "furnaceoverhaul:lit_gold_furnace", "y": 180 },
-			"facing=west":  { "model": "furnaceoverhaul:lit_gold_furnace", "y": 270 }
-			}
-}
