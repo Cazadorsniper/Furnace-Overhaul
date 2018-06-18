@@ -1,5 +1,6 @@
 package cazador.furnaceoverhaul.tile;
 
+import cazador.furnaceoverhaul.utils.OreDoublingRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -253,12 +254,22 @@ public class TileEntityIronFurnace extends TileEntityLockable implements ITickab
             if (output.isEmpty()) {
                 ItemStack returnStack = recipeResult.copy();
                 if (item.getItem() == ModItems.oreprocessing || item1.getItem() == ModItems.oreprocessing || item2.getItem() == ModItems.oreprocessing) {
-                    returnStack.setCount(returnStack.getCount() * 2);
+                    if(OreDoublingRegistry.getSmeltingResult(input).getCount()==1){
+                        returnStack.setCount(returnStack.getCount());
+                    }
+                    else{
+                        returnStack.setCount(returnStack.getCount() * 2);
+                    }
                 }
                 furnaceItemStacks.set(2, returnStack);
             }
             else if (output.getItem() == recipeResult.getItem() && item.getItem() == ModItems.oreprocessing || item1.getItem() == ModItems.oreprocessing || item2.getItem() == ModItems.oreprocessing){
-            	output.grow(recipeResult.getCount()*2);
+                if(OreDoublingRegistry.getSmeltingResult(input).getCount()==1){
+                    output.grow(1);
+                }
+                else{
+                    output.grow(2);
+                }
             }
             else if (output.getItem() == recipeResult.getItem()) {
             	output.grow(recipeResult.getCount());
