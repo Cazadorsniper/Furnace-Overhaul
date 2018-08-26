@@ -16,9 +16,9 @@ public class GuiFO extends GuiContainer {
 
 	private static final ResourceLocation texture = new ResourceLocation(Reference.MOD_ID, "textures/gui/container/guifurnace.png");
     private final InventoryPlayer playerInventory;
-    private final IInventory te;
+    private final TileEntityIronFurnace te;
     
-	public GuiFO(InventoryPlayer player, IInventory te) {
+	public GuiFO(InventoryPlayer player, TileEntityIronFurnace te) {
 		super(new ContainerFO(player, te));
 		this.te = te;
 		this.playerInventory = player;
@@ -43,12 +43,23 @@ public class GuiFO extends GuiContainer {
         	 }
         int l = this.getCookProgressScaled(24);
         this.drawTexturedModalRect(i + 79, j + 34, 176, 14, l + 1, 16);
+        
+        int k = this.getEnergyStoredScaled(75);
+		this.drawTexturedModalRect(this.guiLeft + 151, this.guiTop + 13, 177, 32, 16, 76 - k);
     }
 	
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		String s = this.te.getDisplayName().getUnformattedText();
         this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
         this.fontRenderer.drawString(this.playerInventory.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2, 4210752);
+        this.fontRenderer.drawString(Integer.toString(this.te.getEnergyStored()), 115, 72, 4210752);
+	}
+	
+	private int getEnergyStoredScaled(int pixels)
+	{
+		int i = this.te.getEnergyStored();
+		int j = this.te.getMaxEnergyStored();
+		return i != 0 && j != 0 ? i * pixels / j : 0; 
 	}
 	
 	private int getCookProgressScaled(int pixels){

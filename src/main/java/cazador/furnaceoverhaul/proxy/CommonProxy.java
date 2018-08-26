@@ -1,6 +1,5 @@
 package cazador.furnaceoverhaul.proxy;
 
-import cazador.furnaceoverhaul.utils.OreDoublingRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import cazador.furnaceoverhaul.Reference;
 import cazador.furnaceoverhaul.tile.TileEntityDiamondFurnace;
@@ -9,6 +8,7 @@ import cazador.furnaceoverhaul.tile.TileEntityEndestFurnace;
 import cazador.furnaceoverhaul.tile.TileEntityGoldFurnace;
 import cazador.furnaceoverhaul.tile.TileEntityIronFurnace;
 import cazador.furnaceoverhaul.tile.TileEntityZenithFurnace;
+import cazador.furnaceoverhaul.utils.OreDoublingRegistry;
 
 public class CommonProxy {
 
@@ -27,7 +27,7 @@ public class CommonProxy {
 	public void init() {
 		
 	}
-
+	
 	public void postInit(){
 		OreDoublingRegistry.init();
 	}

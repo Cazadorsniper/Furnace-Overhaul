@@ -18,7 +18,8 @@ public class UpgradeSlot extends Slot{
         		stack.getItem() == ModItems.electricfuel ||
         		stack.getItem() == ModItems.electricprovider ||
         		stack.getItem() == ModItems.liquidfuel ||
-        		stack.getItem() == ModItems.oreprocessing;
+        		stack.getItem() == ModItems.oreprocessing ||
+        		stack.getItem()== ModItems.speed;
         	
     }
 	 

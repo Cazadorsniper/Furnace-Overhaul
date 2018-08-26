@@ -19,6 +19,7 @@ public class BlankUpgrade extends Item {
 		this.setUnlocalizedName(unlocalizedname);
         this.setRegistryName(new ResourceLocation(Reference.MOD_ID, unlocalizedname));
 		this.setMaxDamage(0);
+		this.setMaxStackSize(1);
 		this.setCreativeTab(FurnaceOverhaul.FurnaceOverhaulTab);
 	}
 	

@@ -24,6 +24,7 @@ public class ContainerFO extends Container {
     private int totalCookTime;
     private int furnaceBurnTime;
     private int currentItemBurnTime;
+	private int energy;
 	
     public ContainerFO(InventoryPlayer playerInventory, IInventory te){
         this.te = te;
@@ -74,12 +75,15 @@ public class ContainerFO extends Container {
             if (this.totalCookTime != this.te.getField(3)){
                 icontainerlistener.sendWindowProperty(this, 3, te.getField(3));
             }
+            
+            if(this.energy != this.te.getField(0))  icontainerlistener.sendWindowProperty(this, 0, this.te.getField(4));
         }
 
         this.cookTime = this.te.getField(2);
         this.furnaceBurnTime = this.te.getField(0);
         this.currentItemBurnTime = this.te.getField(1);
         this.totalCookTime = this.te.getField(3);
+        this.energy = this.te.getField(4);
     }
 
     @SideOnly(Side.CLIENT)
@@ -104,13 +108,21 @@ public class ContainerFO extends Container {
 
             if (index == 2)
             {
-                if (!this.mergeItemStack(itemstack1, 3, 39, true))
+                if (!this.mergeItemStack(itemstack1, 3, 36, true))
                 {
                     return ItemStack.EMPTY;
                 }
 
                 slot.onSlotChange(itemstack1, itemstack);
             }
+            else if (index == 3 || index == 4 || index == 5) {
+            	 if (!this.mergeItemStack(itemstack1, 3, 36, true))
+                 {
+                     return ItemStack.EMPTY;
+                 }
+            	 slot.onSlotChange(itemstack1, itemstack);
+            }
+            
             else if (index != 1 && index != 0)
             {
                 if (!FurnaceRecipes.instance().getSmeltingResult(itemstack1).isEmpty())
@@ -129,17 +141,17 @@ public class ContainerFO extends Container {
                 }
                 else if (index >= 3 && index < 30)
                 {
-                    if (!this.mergeItemStack(itemstack1, 30, 39, false))
+                    if (!this.mergeItemStack(itemstack1, 30, 36, false))
                     {
                         return ItemStack.EMPTY;
                     }
                 }
-                else if (index >= 30 && index < 39 && !this.mergeItemStack(itemstack1, 3, 30, false))
+                else if (index >= 30 && index < 36 && !this.mergeItemStack(itemstack1, 3, 30, false))
                 {
                     return ItemStack.EMPTY;
                 }
             }
-            else if (!this.mergeItemStack(itemstack1, 3, 39, false))
+            else if (!this.mergeItemStack(itemstack1, 3, 36, false))
             {
                 return ItemStack.EMPTY;
             }

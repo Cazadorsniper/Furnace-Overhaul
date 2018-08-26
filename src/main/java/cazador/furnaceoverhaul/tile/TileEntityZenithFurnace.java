@@ -3,7 +3,9 @@ package cazador.furnaceoverhaul.tile;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextFormatting;
 import cazador.furnaceoverhaul.blocks.ZenithFurnace;
+import cazador.furnaceoverhaul.init.ModItems;
 
 public class TileEntityZenithFurnace extends TileEntityIronFurnace {
 	

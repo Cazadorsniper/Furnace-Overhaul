@@ -38,25 +38,25 @@ public class OreDoublingRegistry {
             int oreId = OreDictionary.getOreID(oreName);
             ItemStack stack = ItemStack.EMPTY;
 
-            for (ItemStack candidate : ingots) {
-                boolean invalid = false;
+           for (ItemStack candidate : ingots) {
+               boolean invalid = false;
                 for (int id : OreDictionary.getOreIDs(candidate)) {
                     if (id == oreId) {
                         invalid = true;
-                        break;
+                       break;
                     }
                 }
                 if (invalid) {
                     continue;
-                }
+				}
                 stack = candidate;
                 ResourceLocation registryName = candidate.getItem().getRegistryName();
                 if (registryName != null && registryName.getResourceDomain().equals("thermalfoundation")) {
                     break;
                 }
-            }
+           }
 
-            if (!stack.isEmpty()) {
+           if (!stack.isEmpty()) {
                 stack = stack.copy();
                 stack.setCount(2);
                 registerOreResult(oreName, stack);
@@ -83,7 +83,7 @@ public class OreDoublingRegistry {
             stack.setCount(1);
         }
 
-        if (stackToStackRecipes.containsKey(stack)) {
+       if (stackToStackRecipes.containsKey(stack)) {
             return stackToStackRecipes.get(stack);
         }
 
@@ -99,13 +99,12 @@ public class OreDoublingRegistry {
     }
 
     private static void registerDEOverrides() {
-        registerOreResult("sand", new ItemStack(Blocks.GLASS, 2));
-        registerOreResult("cobblestone", new ItemStack(Blocks.STONE, 2));
-        registerOreResult("netherrack", new ItemStack(Items.NETHERBRICK, 2));
-        registerOreResult("cobblestone", new ItemStack(Blocks.STONE, 2));
-
+    	registerOreResult("sand", new ItemStack(Blocks.GLASS, 2));
+    	registerOreResult("cobblestone", new ItemStack(Blocks.STONE, 2));
+    	registerOreResult("netherrack", new ItemStack(Items.NETHERBRICK, 2));
+    	registerOreResult("cobblestone", new ItemStack(Blocks.STONE, 2));
+    	registerOreResult("blockCactus", new ItemStack(Items.DYE, 2, 2));
         registerResult(new ItemStack(Items.CLAY_BALL), new ItemStack(Items.BRICK, 2));
-        registerResult(new ItemStack(Blocks.CACTUS), new ItemStack(Items.DYE, 2, 2));
     }
 
 }

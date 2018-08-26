@@ -8,9 +8,10 @@ tile.zenith_furnace.name=Zenith Furnace
 item.ore_processing.name=Ore Processing Upgrade
 item.liquid_fuel.name=Liquid Fuel Upgrade
 item.efficiency.name=Efficiency Upgrade
-item.electric_provider.name=Electric Provider Upgrade
+item.electric_provider.name=Removed Upgrade
 item.electric_fuel.name=Electric Fuel Upgrade
 item.blank_upgrade.name=Blank Upgrade
+item.speed.name=Speed Upgrade
 
 item.iron_kit.name=Iron Kit
 item.gold_kit.name=Gold Kit

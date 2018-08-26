@@ -18,6 +18,7 @@ import cazador.furnaceoverhaul.items.GoldKit;
 import cazador.furnaceoverhaul.items.IronKit;
 import cazador.furnaceoverhaul.items.Liquidfuel;
 import cazador.furnaceoverhaul.items.Oreprocessing;
+import cazador.furnaceoverhaul.items.Speed;
 import cazador.furnaceoverhaul.items.ZenithKit;
 
 public class ModItems {
@@ -28,6 +29,7 @@ public class ModItems {
 	public static Item liquidfuel;
 	public static Item electricfuel;
 	public static Item electricprovider;
+	public static Item speed;
 	public static Item blankkit;
 	public static Item iron;
 	public static Item gold;
@@ -43,6 +45,7 @@ public class ModItems {
 		liquidfuel = new Liquidfuel("liquid_fuel");
 		electricfuel = new Electricfuel("electric_fuel");
 		electricprovider = new Electricprovider("electric_provider");
+		speed = new Speed("speed");
 		blankkit = new BlankKit("blank_kit");
 		iron = new IronKit("iron_kit");
 		gold = new GoldKit("gold_kit");
@@ -59,6 +62,7 @@ public class ModItems {
 		registerItem(liquidfuel);
 		registerItem(electricfuel);
 		registerItem(electricprovider);
+		registerItem(speed);
 		registerItem(blankkit);
 		registerItem(iron);
 		registerItem(gold);
@@ -80,6 +84,7 @@ public class ModItems {
 		registerRender(liquidfuel);
 		registerRender(electricfuel);
 		registerRender(electricprovider);
+		registerRender(speed);
 		registerRender(blankkit);
 		registerRender(iron);
 		registerRender(gold);

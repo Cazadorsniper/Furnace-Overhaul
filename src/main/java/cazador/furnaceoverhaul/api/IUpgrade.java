@@ -5,7 +5,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 
 
-public abstract interface IUpgrade extends IEnergyStorage{
+public abstract interface IUpgrade {
 
 	public abstract int getItemBurnTime(ItemStack stack);
 	

@@ -4,12 +4,19 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import cazador.furnaceoverhaul.blocks.EmeraldFurnace;
+import cazador.furnaceoverhaul.init.ModItems;
 
 public class TileEntityEmeraldFurnace extends TileEntityIronFurnace {
 	
 	@Override
     public int getCookTime(ItemStack stack){
-        return 50;
+		ItemStack item = this.furnaceItemStacks.get(3);
+        ItemStack item1 = this.furnaceItemStacks.get(4);
+        ItemStack item2 = this.furnaceItemStacks.get(5);
+        if (item.getItem() == ModItems.speed || item1.getItem() == ModItems.speed || item2.getItem() == ModItems.speed) {
+        	return 30;
+        } else
+        return 60;
     }
 
     @Override
