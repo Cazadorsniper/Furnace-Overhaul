@@ -3,6 +3,11 @@ package cazador.furnaceoverhaul.blocks;
 import java.util.List;
 import java.util.Random;
 
+import cazador.furnaceoverhaul.FurnaceOverhaul;
+import cazador.furnaceoverhaul.Reference;
+import cazador.furnaceoverhaul.handler.GuiHandler;
+import cazador.furnaceoverhaul.init.ModBlocks;
+import cazador.furnaceoverhaul.tile.TileEntityIronFurnace;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -38,11 +43,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import cazador.furnaceoverhaul.FurnaceOverhaul;
-import cazador.furnaceoverhaul.Reference;
-import cazador.furnaceoverhaul.handler.GuiHandler;
-import cazador.furnaceoverhaul.init.ModBlocks;
-import cazador.furnaceoverhaul.tile.TileEntityIronFurnace;
 
 public class IronFurnace extends BlockContainer{
 	
@@ -89,7 +89,7 @@ public class IronFurnace extends BlockContainer{
             world.setBlockState(pos, ModBlocks.ironfurnace.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)).withProperty(ACTIVE, false), 3);
         }
 
-        keepInventory = true;
+        keepInventory = false;
 
         if (te != null){
             te.validate();

@@ -10,9 +10,9 @@ public class TileEntityGoldFurnace extends TileEntityIronFurnace {
 
 	@Override
     public int getCookTime(ItemStack stack){
-		ItemStack item = this.furnaceItemStacks.get(3);
-        ItemStack item1 = this.furnaceItemStacks.get(4);
-        ItemStack item2 = this.furnaceItemStacks.get(5);
+		ItemStack item = this.slot.get(3);
+        ItemStack item1 = this.slot.get(4);
+        ItemStack item2 = this.slot.get(5);
         if (item.getItem() == ModItems.speed || item1.getItem() == ModItems.speed || item2.getItem() == ModItems.speed) {
         	return 110;
         } else
@@ -34,9 +34,9 @@ public class TileEntityGoldFurnace extends TileEntityIronFurnace {
         }
 
         if (!this.world.isRemote){
-            ItemStack itemstack = (ItemStack)this.furnaceItemStacks.get(1);
+            ItemStack itemstack = (ItemStack)this.slot.get(1);
 
-            if (this.isBurning() || !itemstack.isEmpty() && !((ItemStack)this.furnaceItemStacks.get(0)).isEmpty()){
+            if (this.isBurning() || !itemstack.isEmpty() && !((ItemStack)this.slot.get(0)).isEmpty()){
                 if (!this.isBurning() && this.canSmelt()){
                     this.furnaceBurnTime = getItemBurnTime(itemstack);
                     this.currentItemBurnTime = this.furnaceBurnTime;
@@ -50,7 +50,7 @@ public class TileEntityGoldFurnace extends TileEntityIronFurnace {
 
                             if (itemstack.isEmpty()){
                                 ItemStack item1 = item.getContainerItem(itemstack);
-                                this.furnaceItemStacks.set(1, item1);
+                                this.slot.set(1, item1);
                             }
                         }
                     }
@@ -61,7 +61,7 @@ public class TileEntityGoldFurnace extends TileEntityIronFurnace {
 
                     if (this.cookTime == this.totalCookTime){
                         this.cookTime = 0;
-                        this.totalCookTime = this.getCookTime((ItemStack)this.furnaceItemStacks.get(0));
+                        this.totalCookTime = this.getCookTime((ItemStack)this.slot.get(0));
                         this.smeltItem();
                         flag1 = true;
                     }

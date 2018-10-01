@@ -1,15 +1,17 @@
 package cazador.furnaceoverhaul.handler;
 
+import cazador.furnaceoverhaul.Reference;
+import cazador.furnaceoverhaul.init.ModItems;
+import cazador.furnaceoverhaul.inventory.ContainerFO;
+import cazador.furnaceoverhaul.tile.TileEntityIronFurnace;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import cazador.furnaceoverhaul.Reference;
-import cazador.furnaceoverhaul.inventory.ContainerFO;
-import cazador.furnaceoverhaul.tile.TileEntityIronFurnace;
 
 @SideOnly(Side.CLIENT)
 public class GuiFO extends GuiContainer {
@@ -46,6 +48,7 @@ public class GuiFO extends GuiContainer {
         
         int k = this.getEnergyStoredScaled(75);
 		this.drawTexturedModalRect(this.guiLeft + 151, this.guiTop + 13, 177, 32, 16, 76 - k);
+        
     }
 	
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {

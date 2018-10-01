@@ -1,7 +1,6 @@
 package cazador.furnaceoverhaul.api;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.energy.IEnergyStorage;
 
 
 

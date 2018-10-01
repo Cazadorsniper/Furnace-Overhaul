@@ -1,11 +1,9 @@
 package cazador.furnaceoverhaul.tile;
 
+import cazador.furnaceoverhaul.blocks.ZenithFurnace;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextFormatting;
-import cazador.furnaceoverhaul.blocks.ZenithFurnace;
-import cazador.furnaceoverhaul.init.ModItems;
 
 public class TileEntityZenithFurnace extends TileEntityIronFurnace {
 	
@@ -29,9 +27,9 @@ public class TileEntityZenithFurnace extends TileEntityIronFurnace {
         }
 
         if (!this.world.isRemote){
-            ItemStack itemstack = (ItemStack)this.furnaceItemStacks.get(1);
+            ItemStack itemstack = (ItemStack)this.slot.get(1);
 
-            if (this.isBurning() || !itemstack.isEmpty() && !((ItemStack)this.furnaceItemStacks.get(0)).isEmpty()){
+            if (this.isBurning() || !itemstack.isEmpty() && !((ItemStack)this.slot.get(0)).isEmpty()){
                 if (!this.isBurning() && this.canSmelt()){
                     this.furnaceBurnTime = getItemBurnTime(itemstack);
                     this.currentItemBurnTime = this.furnaceBurnTime;
@@ -45,7 +43,7 @@ public class TileEntityZenithFurnace extends TileEntityIronFurnace {
 
                             if (itemstack.isEmpty()){
                                 ItemStack item1 = item.getContainerItem(itemstack);
-                                this.furnaceItemStacks.set(1, item1);
+                                this.slot.set(1, item1);
                             }
                         }
                     }
@@ -56,7 +54,7 @@ public class TileEntityZenithFurnace extends TileEntityIronFurnace {
 
                     if (this.cookTime == this.totalCookTime){
                         this.cookTime = 0;
-                        this.totalCookTime = this.getCookTime((ItemStack)this.furnaceItemStacks.get(0));
+                        this.totalCookTime = this.getCookTime((ItemStack)this.slot.get(0));
                         this.smeltItem();
                         flag1 = true;
                     }
