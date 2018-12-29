@@ -10,10 +10,7 @@ public class TileEntityGoldFurnace extends TileEntityIronFurnace {
 
 	@Override
     public int getCookTime(ItemStack stack){
-		ItemStack item = this.slot.get(3);
-        ItemStack item1 = this.slot.get(4);
-        ItemStack item2 = this.slot.get(5);
-        if (item.getItem() == ModItems.speed || item1.getItem() == ModItems.speed || item2.getItem() == ModItems.speed) {
+        if(hasUpgrade(ModItems.speed) == true) {
         	return 110;
         } else
 		return 130;

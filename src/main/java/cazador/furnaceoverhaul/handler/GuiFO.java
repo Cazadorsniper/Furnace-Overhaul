@@ -42,7 +42,7 @@ public class GuiFO extends GuiContainer {
         if(TileEntityIronFurnace.isBurning(this.te)){
         	int k = this.getBurnLeftScaled(13);
             this.drawTexturedModalRect(i + 56, j + 36 + 12 - k, 176, 12 - k, 14, k + 1);
-        	 }
+        }
         int l = this.getCookProgressScaled(24);
         this.drawTexturedModalRect(i + 79, j + 34, 176, 14, l + 1, 16);
         
@@ -55,12 +55,12 @@ public class GuiFO extends GuiContainer {
 		String s = this.te.getDisplayName().getUnformattedText();
         this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
         this.fontRenderer.drawString(this.playerInventory.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2, 4210752);
-        this.fontRenderer.drawString(Integer.toString(this.te.getEnergyStored()), 115, 72, 4210752);
+        this.fontRenderer.drawString(Integer.toString(this.te.getEnergy()), 115, 72, 4210752);
 	}
 	
 	private int getEnergyStoredScaled(int pixels)
 	{
-		int i = this.te.getEnergyStored();
+		int i = this.te.getEnergy();
 		int j = this.te.getMaxEnergyStored();
 		return i != 0 && j != 0 ? i * pixels / j : 0; 
 	}

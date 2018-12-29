@@ -5,7 +5,7 @@ import net.minecraftforge.energy.EnergyStorage;
 
 public class EnergyStorageFurnace extends EnergyStorage {
 
-	 public EnergyStorageFurnace(int capacity)
+	    public EnergyStorageFurnace(int capacity)
 	    {
 	        super(capacity, capacity, capacity, 0);
 	    }
@@ -25,43 +25,15 @@ public class EnergyStorageFurnace extends EnergyStorage {
 	    	super(capacity, maxReceive, maxExtract, energy);
 	    }
 	    
-	    @Override
-	    public int receiveEnergy(int maxReceive, boolean simulate) {
-	    	return super.receiveEnergy(maxReceive, simulate);
+	    public void setEnergy(int energy) {
+	        this.energy = energy;
 	    }
 
-	    @Override
-	    public int getEnergyStored() {
-	    	return super.getEnergyStored();
-	    }
-	    
-	    @Override
-	    public int getMaxEnergyStored() {
-	    	return super.getMaxEnergyStored();
-	    }
-	    
-	    @Override
-	    public boolean canExtract() {
-	    	return super.canExtract();
-	    }
-	    
-	    @Override
-	    public boolean canReceive() {
-	    	return super.canReceive();
-	    }
-	    
-	    public void readFromNBT(NBTTagCompound compound){
-	    	this.energy = compound.getInteger("Energy");
-	    	this.capacity = compound.getInteger("Capacity");
-	    	this.maxReceive = compound.getInteger("maxReceive");
-	    	this.maxExtract = compound.getInteger("maxExtract");
-	    	
-	    }
-	    
-	    public void writeToNBT(NBTTagCompound compound){
-	    	compound.setInteger("Energy", this.energy);
-	    	compound.setInteger("Capacity", this.capacity);
-	    	compound.setInteger("MaxReceive", this.maxReceive);
-	    	compound.setInteger("MaxExtract", this.maxExtract);
+	    public void consumePower(int energy) {
+	        this.energy -= energy;
+	        if (this.energy < 0) {
+	            this.energy = 0;
+	        }
 	    }
 }
+
