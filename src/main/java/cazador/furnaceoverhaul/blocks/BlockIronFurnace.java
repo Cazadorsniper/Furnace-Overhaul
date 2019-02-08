@@ -96,12 +96,12 @@ public class BlockIronFurnace extends Block {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(FACING, EnumFacing.HORIZONTALS[meta & 0b0011]).withProperty(BURNING, (meta & 0b0100) == 0b0100);
+		return getDefaultState().withProperty(FACING, EnumFacing.HORIZONTALS[(meta & 0b1100) >> 2]).withProperty(BURNING, (meta & 1) == 1);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(BURNING) ? 1 : 0 << 2 + state.getValue(FACING).getHorizontalIndex();
+		return (state.getValue(BURNING) ? 1 : 0) | (state.getValue(FACING).getHorizontalIndex() << 2);
 	}
 
 	@Override
