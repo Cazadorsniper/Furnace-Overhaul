@@ -28,4 +28,6 @@ info.furnaceoverhaul.efficiency=Doubles fuel efficiency.
 info.furnaceoverhaul.wip=Work in progress.
 info.furnaceoverhaul.electric=Uses FE instead of solid fuel.
 info.furnaceoverhaul.speed=Increases cook speed.
+info.furnaceoverhaul.ores=Enables the processing of ores.
+info.furnaceoverhaul.processing=Doubles output.
 info.furnaceoverhaul.kit=Upgrades %s into %s

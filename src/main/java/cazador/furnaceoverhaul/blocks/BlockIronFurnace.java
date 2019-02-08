@@ -55,13 +55,14 @@ public class BlockIronFurnace extends Block {
 	 */
 	public BlockIronFurnace(String name, TextFormatting infoColor, int cookTime, Supplier<TileEntity> teFunc) {
 		super(Material.IRON);
-		setTranslationKey(FurnaceOverhaul.MODID + "." + name);
+		this.setTranslationKey(FurnaceOverhaul.MODID + "." + name);
 		this.setRegistryName(FurnaceOverhaul.MODID, name);
-		setCreativeTab(FurnaceOverhaul.FO_TAB);
+		this.setCreativeTab(FurnaceOverhaul.FO_TAB);
 		this.setHardness(2.0F);
 		this.setResistance(9.0F);
 		this.setHarvestLevel("pickaxe", 1);
-		setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(BURNING, false));
+		this.setLightOpacity(0);
+		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(BURNING, false));
 		this.infoColor = infoColor;
 		this.cookTime = cookTime;
 		this.teFunc = teFunc;
@@ -69,11 +70,7 @@ public class BlockIronFurnace extends Block {
 
 	@Override
 	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-		if (state.getValue(BURNING) == true) {
-			return 8;
-		} else if (state.getValue(BURNING) == false) ;
-		return 0;
-
+		return state.getValue(BURNING) ? 14 : 0;
 	}
 
 	@Override

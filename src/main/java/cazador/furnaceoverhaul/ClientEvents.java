@@ -16,7 +16,7 @@ public class ClientEvents {
 	@SubscribeEvent
 	public static void models(ModelRegistryEvent e) {
 		for (Item i : ModObjects.modelList) {
-			if(i instanceof ItemBlock) ModelLoader.setCustomModelResourceLocation(i, 0, new ModelResourceLocation(i.getRegistryName(), "burning=false;facing=north"));
+			if(i instanceof ItemBlock) ModelLoader.setCustomModelResourceLocation(i, 0, new ModelResourceLocation(i.getRegistryName(), "burning=false,facing=north"));
 			else ModelLoader.setCustomModelResourceLocation(i, 0, new ModelResourceLocation(i.getRegistryName(), "inventory"));
 		}
 	}

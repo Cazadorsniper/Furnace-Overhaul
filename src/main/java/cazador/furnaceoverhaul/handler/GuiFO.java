@@ -53,7 +53,7 @@ public class GuiFO extends GuiContainer {
 		String s = this.te.getBlockType().getLocalizedName();
 		this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
 		this.fontRenderer.drawString(this.playerInventory.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2, 4210752);
-		this.fontRenderer.drawString(Integer.toString(this.te.getEnergy()), 115, 72, 4210752);
+		this.fontRenderer.drawString(Integer.toString(this.te.getEnergy()), 142, 74, 4210752);
 	}
 
 	private int getEnergyStoredScaled(int pixels) {
@@ -69,13 +69,13 @@ public class GuiFO extends GuiContainer {
 	}
 
 	private int getBurnLeftScaled(int pixels) {
-		int i = this.te.getBurnTime();
+		int i = this.te.getFuelLength();
 
 		if (i == 0) {
 			i = 200;
 		}
 
-		return this.te.getFuelLength() * pixels / i;
+		return this.te.getBurnTime() * pixels / i;
 	}
 
 	public TileEntityIronFurnace getTE() {

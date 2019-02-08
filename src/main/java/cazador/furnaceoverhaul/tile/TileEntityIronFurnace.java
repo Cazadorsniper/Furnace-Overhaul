@@ -6,6 +6,7 @@ import cazador.furnaceoverhaul.blocks.BlockIronFurnace;
 import cazador.furnaceoverhaul.upgrade.Upgrade;
 import cazador.furnaceoverhaul.upgrade.Upgrades;
 import cazador.furnaceoverhaul.utils.MutableEnergyStorage;
+import cazador.furnaceoverhaul.utils.OreDoublingRegistry;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
@@ -113,7 +114,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 		ItemStack fuel = ItemStack.EMPTY;
 		boolean canSmelt = canSmelt();
 
-		if (!this.isBurning() && !(fuel = inv.getStackInSlot(SLOT_FUEL)).isEmpty()) {
+		if (!this.isBurning() && (hasUpgrade(Upgrades.ELECTRIC_FUEL) || !(fuel = inv.getStackInSlot(SLOT_FUEL)).isEmpty())) {
 			if (canSmelt) burnFuel(fuel, false);
 		}
 
@@ -144,7 +145,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	 */
 	protected void smelt() {
 		currentCookTime++;
-		if (this.currentCookTime == this.getCookTime()) {
+		if (this.currentCookTime >= this.getCookTime()) {
 			this.currentCookTime = 0;
 			this.smeltItem();
 		}
@@ -191,14 +192,28 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 				}
 			}
 			if (!matched) {
-				recipeKey = ItemStack.EMPTY;
-				recipeOutput = ItemStack.EMPTY;
-				failedMatch = input;
-				return false;
+				ItemStack stack = getResult(input);
+				if (stack.isEmpty()) {
+					recipeKey = ItemStack.EMPTY;
+					recipeOutput = ItemStack.EMPTY;
+					failedMatch = input;
+					return false;
+				} else {
+					recipeKey = input;
+					recipeOutput = stack;
+					matched = true;
+					failedMatch = ItemStack.EMPTY;
+				}
 			}
 		}
 
-		return !recipeOutput.isEmpty() && (output.isEmpty() || (ItemHandlerHelper.canItemStacksStack(recipeOutput, output) && (recipeOutput.getCount() + output.getCount() <= output.getMaxStackSize())));
+		ItemStack check = recipeOutput;
+		if (hasUpgrade(Upgrades.PROCESSING)) {
+			check = check.copy();
+			check.grow(check.getCount());
+		}
+
+		return !recipeOutput.isEmpty() && (output.isEmpty() || (ItemHandlerHelper.canItemStacksStack(check, output) && (check.getCount() + output.getCount() <= output.getMaxStackSize())));
 	}
 
 	/**
@@ -206,10 +221,11 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	 */
 	public void smeltItem() {
 		ItemStack input = inv.getStackInSlot(SLOT_INPUT);
-		ItemStack recipeOutput = FurnaceRecipes.instance().getSmeltingList().get(recipeKey);
+		ItemStack recipeOutput = getResult(recipeKey).copy();
+		if (hasUpgrade(Upgrades.PROCESSING)) recipeOutput.grow(recipeOutput.getCount());
 		ItemStack output = inv.getStackInSlot(SLOT_OUTPUT);
 
-		if (output.isEmpty()) inv.setStackInSlot(SLOT_OUTPUT, recipeOutput.copy());
+		if (output.isEmpty()) inv.setStackInSlot(SLOT_OUTPUT, recipeOutput);
 		else if (ItemHandlerHelper.canItemStacksStack(output, recipeOutput)) output.grow(recipeOutput.getCount());
 
 		if (input.isItemEqual(WET_SPONGE) && inv.getStackInSlot(SLOT_FUEL).getItem() == Items.BUCKET) inv.setStackInSlot(SLOT_FUEL, new ItemStack(Items.WATER_BUCKET));
@@ -294,6 +310,13 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 
 	public ItemStackHandler getInventory() {
 		return inv;
+	}
+
+	private ItemStack getResult(ItemStack stack) {
+		if (hasUpgrade(Upgrades.ORE_PROCESSING)) return OreDoublingRegistry.getSmeltingResult(stack);
+		ItemStack s = FurnaceRecipes.instance().getSmeltingList().get(stack);
+		if (s != null) return s;
+		return FurnaceRecipes.instance().getSmeltingResult(stack);
 	}
 
 	/**

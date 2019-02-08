@@ -13,7 +13,7 @@
 		"item": "minecraft:ghast_tear"
     },
 	"B": {
-		"item": "furnaceoverhaul:ore_processing"
+		"item": "furnaceoverhaul:ore_processing_upgrade"
 	}
   },
   "result": {
