@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EmeraldFurnace extends IronFurnace {
+public class EmeraldFurnace extends BlockIronFurnace {
 
 	public EmeraldFurnace(String unlocalizedname) {
 		super(unlocalizedname);

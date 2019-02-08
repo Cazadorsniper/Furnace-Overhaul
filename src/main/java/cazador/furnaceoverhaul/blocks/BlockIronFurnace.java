@@ -34,7 +34,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class IronFurnace extends Block {
+public class BlockIronFurnace extends Block {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	public static final PropertyBool BURNING = PropertyBool.create("burning");
@@ -42,7 +42,7 @@ public class IronFurnace extends Block {
 	protected final TextFormatting infoColor;
 	protected final int cookTime;
 
-	public IronFurnace(String name, TextFormatting infoColor, int cookTime) {
+	public BlockIronFurnace(String name, TextFormatting infoColor, int cookTime) {
 		super(Material.IRON);
 		setTranslationKey(FurnaceOverhaul.MODID + "." + name);
 		this.setRegistryName(FurnaceOverhaul.MODID, name);

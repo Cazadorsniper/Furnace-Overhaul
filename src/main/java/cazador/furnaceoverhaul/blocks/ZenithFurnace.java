@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import cazador.furnaceoverhaul.init.ModBlocks;
 import cazador.furnaceoverhaul.tile.TileEntityZenithFurnace;
 
-public class ZenithFurnace extends IronFurnace {
+public class ZenithFurnace extends BlockIronFurnace {
 
 	public ZenithFurnace(String unlocalizedname) {
 		super(unlocalizedname);

@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import cazador.furnaceoverhaul.init.ModBlocks;
 import cazador.furnaceoverhaul.tile.TileEntityGoldFurnace;
 
-public class GoldFurnace extends IronFurnace {
+public class GoldFurnace extends BlockIronFurnace {
 	
 	public GoldFurnace(String unlocalizedname) {
 		super(unlocalizedname);

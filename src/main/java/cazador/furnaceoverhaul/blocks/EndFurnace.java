@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import cazador.furnaceoverhaul.init.ModBlocks;
 import cazador.furnaceoverhaul.tile.TileEntityEndestFurnace;
 
-public class EndFurnace extends IronFurnace {
+public class EndFurnace extends BlockIronFurnace {
 
 	public EndFurnace(String unlocalizedname) {
 		super(unlocalizedname);

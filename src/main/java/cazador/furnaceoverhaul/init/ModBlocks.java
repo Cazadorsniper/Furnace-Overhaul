@@ -12,7 +12,7 @@ import cazador.furnaceoverhaul.blocks.DiamondFurnace;
 import cazador.furnaceoverhaul.blocks.EmeraldFurnace;
 import cazador.furnaceoverhaul.blocks.EndFurnace;
 import cazador.furnaceoverhaul.blocks.GoldFurnace;
-import cazador.furnaceoverhaul.blocks.IronFurnace;
+import cazador.furnaceoverhaul.blocks.BlockIronFurnace;
 import cazador.furnaceoverhaul.blocks.ZenithFurnace;
 
 public class ModBlocks {
@@ -25,7 +25,7 @@ public class ModBlocks {
 	  public static Block zenithfurnace;
 	    
 	  public static void init(){
-		  ironfurnace = new IronFurnace("iron_furnace");
+		  ironfurnace = new BlockIronFurnace("iron_furnace");
 		  goldfurnace = new GoldFurnace("gold_furnace");
 		  diamondfurnace = new DiamondFurnace("diamond_furnace");
 		  emeraldfurnace = new EmeraldFurnace("emerald_furnace");
