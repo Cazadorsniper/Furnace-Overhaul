@@ -46,6 +46,13 @@ public class BlockIronFurnace extends Block {
 	protected final int cookTime;
 	protected final Supplier<TileEntity> teFunc;
 
+	/**
+	 * Make a new Iron Furnace.
+	 * @param name The registry name.
+	 * @param infoColor The color of the tooltip.
+	 * @param cookTime The default cook time of this furnace.
+	 * @param teFunc A supplier for the TE of this furnace.
+	 */
 	public BlockIronFurnace(String name, TextFormatting infoColor, int cookTime, Supplier<TileEntity> teFunc) {
 		super(Material.IRON);
 		setTranslationKey(FurnaceOverhaul.MODID + "." + name);

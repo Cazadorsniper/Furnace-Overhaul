@@ -13,7 +13,7 @@ public class TileEntityDiamondFurnace extends TileEntityIronFurnace {
 	}
 
 	@Override
-	protected int getEfficientCookTime() {
+	protected int getSpeedyCookTime() {
 		return 70;
 	}
 

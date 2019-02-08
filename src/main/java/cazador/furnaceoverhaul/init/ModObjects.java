@@ -25,6 +25,11 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.registries.IForgeRegistry;
 
+/**
+ * Main object class for Furnace Overhaul.  Handles registration.  Fields are automatically populated by @ObjectHolder
+ * @author Shadows
+ *
+ */
 @EventBusSubscriber(modid = FurnaceOverhaul.MODID)
 @ObjectHolder(FurnaceOverhaul.MODID)
 public class ModObjects {

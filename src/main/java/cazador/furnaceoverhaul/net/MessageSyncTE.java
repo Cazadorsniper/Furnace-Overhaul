@@ -8,6 +8,11 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
+/**
+ * This class handles the sync of furnace fields when the container is open.
+ * @author Shadows
+ *
+ */
 public class MessageSyncTE implements IMessage {
 
 	protected TileEntityIronFurnace te;
