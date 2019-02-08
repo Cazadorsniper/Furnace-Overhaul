@@ -11,11 +11,15 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerFO extends Container {
+
+	public static final int SLOTS_TE = 0;
+	public static final int SLOTS_TE_SIZE = 6;
+	public static final int SLOTS_INVENTORY = SLOTS_TE_SIZE;
+	public static final int SLOTS_HOTBAR = SLOTS_INVENTORY + 3 * 9;
 
 	private final TileEntityIronFurnace te;
 	private final EntityPlayerMP player;
@@ -59,38 +63,27 @@ public class ContainerFO extends Container {
 	@Override
 	@Nullable
 	public ItemStack transferStackInSlot(EntityPlayer player, int index) {
-		ItemStack itemstack = ItemStack.EMPTY;
-		Slot slot = this.inventorySlots.get(index);
+		ItemStack slotStack = ItemStack.EMPTY;
+		Slot slot = inventorySlots.get(index);
 
 		if (slot != null && slot.getHasStack()) {
-			ItemStack itemstack1 = slot.getStack();
-			itemstack = itemstack1.copy();
+			ItemStack stack = slot.getStack();
+			slotStack = stack.copy();
 
-			if (index == 2) {
-				if (!this.mergeItemStack(itemstack1, 3, 42, true)) { return ItemStack.EMPTY; }
+			if (index >= SLOTS_INVENTORY && index <= SLOTS_HOTBAR + 9) {
+				if (TileEntityFurnace.isItemFuel(stack)) {
+					int s = TileEntityIronFurnace.SLOT_FUEL;
+					if (!mergeItemStack(stack, s, s + 1, false)) { return ItemStack.EMPTY; }
+				}
+				if (!mergeItemStack(stack, SLOTS_TE, SLOTS_TE + SLOTS_TE_SIZE, false)) { return ItemStack.EMPTY; }
+			} else if (index >= SLOTS_HOTBAR && index < SLOTS_HOTBAR + 9) {
+				if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_INVENTORY + 3 * 9, false)) { return ItemStack.EMPTY; }
+			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, true)) { return ItemStack.EMPTY; }
 
-				slot.onSlotChange(itemstack1, itemstack);
-			} else if (index != 1 && index != 0) {
-				if (!FurnaceRecipes.instance().getSmeltingResult(itemstack1).isEmpty()) {
-					if (!this.mergeItemStack(itemstack1, 0, 1, false)) { return ItemStack.EMPTY; }
-				} else if (TileEntityFurnace.isItemFuel(itemstack1)) {
-					if (!this.mergeItemStack(itemstack1, 1, 2, false)) { return ItemStack.EMPTY; }
-				} else if (index >= 3 && index < 30) {
-					if (!this.mergeItemStack(itemstack1, 30, 42, false)) { return ItemStack.EMPTY; }
-				} else if (index >= 30 && index < 36 && !this.mergeItemStack(itemstack1, 3, 30, false)) { return ItemStack.EMPTY; }
-			} else if (!this.mergeItemStack(itemstack1, 3, 42, false)) { return ItemStack.EMPTY; }
-
-			if (itemstack1.isEmpty()) {
-				slot.putStack(ItemStack.EMPTY);
-			} else {
-				slot.onSlotChanged();
-			}
-
-			if (itemstack1.getCount() == itemstack.getCount()) { return ItemStack.EMPTY; }
-
-			slot.onTake(player, itemstack1);
+			slot.onSlotChanged();
+			if (stack.getCount() == slotStack.getCount()) { return ItemStack.EMPTY; }
+			slot.onTake(player, stack);
 		}
-
-		return itemstack;
+		return slotStack;
 	}
 }
