@@ -240,7 +240,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	}
 
 	public final int getCookTime() {
-		return hasUpgrade(Upgrades.EFFICIENCY) ? getEfficientCookTime() : getDefaultCookTime();
+		return hasUpgrade(Upgrades.SPEED) ? getEfficientCookTime() : getDefaultCookTime();
 	}
 
 	protected int getDefaultCookTime() {

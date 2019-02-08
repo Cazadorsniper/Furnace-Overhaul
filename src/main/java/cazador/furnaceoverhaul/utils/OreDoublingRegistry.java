@@ -1,21 +1,10 @@
 package cazador.furnaceoverhaul.utils;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.oredict.OreDictionary;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Created by brandon3055 on 9/06/2017.
  */
 public class OreDoublingRegistry {
-
+/*
     public static Map<String, ItemStack> oreRecipes = new HashMap<>();
     public static Map<ItemStack, ItemStack> stackToStackRecipes = new HashMap<>();
 
@@ -105,5 +94,5 @@ public class OreDoublingRegistry {
     	registerOreResult("cobblestone", new ItemStack(Blocks.STONE, 2));
         registerResult(new ItemStack(Items.CLAY_BALL), new ItemStack(Items.BRICK, 2));
     }
-
+*/
 }
