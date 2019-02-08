@@ -1,60 +1,56 @@
 package cazador.furnaceoverhaul;
 
-
+import cazador.furnaceoverhaul.handler.GuiHandler;
+import cazador.furnaceoverhaul.init.ModBlocks;
+import cazador.furnaceoverhaul.init.ModItems;
+import cazador.furnaceoverhaul.proxy.CommonProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import cazador.furnaceoverhaul.handler.GuiHandler;
-import cazador.furnaceoverhaul.init.ModBlocks;
-import cazador.furnaceoverhaul.init.ModItems;
-import cazador.furnaceoverhaul.proxy.CommonProxy;
 
-@Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, acceptedMinecraftVersions = Reference.ACCEPTED_VERSIONS)
+@Mod(modid = FurnaceOverhaul.MODID, name = FurnaceOverhaul.MODNAME, version = FurnaceOverhaul.VERSION)
 public class FurnaceOverhaul {
-	
-	@Mod.Instance
-	public static FurnaceOverhaul instance;
-	@SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.SERVER_PROXY_CLASS)
+
+	public static final String MODID = "furnaceoverhaul";
+	public static final String MODNAME = "Furnace Overhaul";
+	public static final String VERSION = "2.0.0";
+
+	@Instance
+	public static FurnaceOverhaul INSTANCE;
+
+	@SidedProxy(clientSide = "cazador.furnaceoverhaul.proxy.ClientProxy", serverSide = "cazador.furnaceoverhaul.proxy.ServerProxy")
 	public static CommonProxy proxy;
 
-
 	@EventHandler
-	public void preInit(FMLPreInitializationEvent event){
-	ModBlocks.init();
-	ModItems.init();
-	ModBlocks.register();
-	ModItems.register();
-	
-	proxy.init();
-	
-	NetworkRegistry.INSTANCE.registerGuiHandler(FurnaceOverhaul.instance, new GuiHandler());
+	public void preInit(FMLPreInitializationEvent event) {
+		ModBlocks.init();
+		ModItems.init();
+		ModBlocks.register();
+		ModItems.register();
+		NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, new GuiHandler());
 	}
 
 	@EventHandler
-	public void init(FMLInitializationEvent event){
-	proxy.registerTileEntities();
-	
+	public void init(FMLInitializationEvent event) {
 	}
 
 	@EventHandler
-	public void postInit(FMLPostInitializationEvent event){
-	
-		proxy.postInit();
+	public void postInit(FMLPostInitializationEvent event) {
 	}
-	
-	public static CreativeTabs FurnaceOverhaulTab = new CreativeTabs("FurnaceOverhaul"){
-		
+
+	public static final CreativeTabs FO_TAB = new CreativeTabs(MODID) {
+
 		@Override
-		public ItemStack getTabIconItem(){
+		public ItemStack createIcon() {
 			return new ItemStack(ModBlocks.ironfurnace);
 		}
 	};
 
 }
-
