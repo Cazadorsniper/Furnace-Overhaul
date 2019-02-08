@@ -35,18 +35,16 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	public static final int SLOT_OUTPUT = 2;
 	public static final int[] SLOT_UPGRADE = { 3, 4, 5 };
 	public static final int MAX_FE_TRANSFER = 1200;
-	public static final int ENERGY_PER_TICK = 600;
 
 	protected final ItemStackHandler inv = new ItemStackHandler(6);
 	private final RangedWrapper TOP = new RangedWrapper(inv, SLOT_INPUT, SLOT_INPUT + 1);
 	private final RangedWrapper SIDES = new RangedWrapper(inv, SLOT_FUEL, SLOT_FUEL + 1);
 	private final RangedWrapper BOTTOM = new RangedWrapper(inv, SLOT_OUTPUT, SLOT_OUTPUT + 1);
 
-	protected EnergyStorage energy = new EnergyStorage(50000, MAX_FE_TRANSFER, ENERGY_PER_TICK);
+	protected EnergyStorage energy = new EnergyStorage(50000, MAX_FE_TRANSFER, getEnergyUse());
 	protected ItemStack recipeKey = ItemStack.EMPTY;
 	protected ItemStack recipeOutput = ItemStack.EMPTY;
 	protected ItemStack failedMatch = ItemStack.EMPTY;
-	protected int cookTime = 200;
 	protected int burnTime = 0;
 	protected int currentCookTime = 0;
 
@@ -57,9 +55,8 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		inv.deserializeNBT(tag.getCompoundTag("inv"));
-		energy = new EnergyStorage(50000, MAX_FE_TRANSFER, ENERGY_PER_TICK, tag.getInteger("energy"));
+		energy = new EnergyStorage(50000, MAX_FE_TRANSFER, getEnergyUse(), tag.getInteger("energy"));
 		burnTime = tag.getInteger("burn_time");
-		cookTime = tag.getInteger("cook_time");
 		currentCookTime = tag.getInteger("current_cook_time");
 	}
 
@@ -69,13 +66,12 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 		compound.setTag("inv", inv.serializeNBT());
 		compound.setInteger("energy", energy.getEnergyStored());
 		compound.setInteger("burn_time", burnTime);
-		compound.setInteger("cook_time", cookTime);
 		compound.setInteger("current_cook_time", currentCookTime);
 		return compound;
 	}
 
 	@Override
-	public void update() {
+	public final void update() {
 		if (world.isRemote && isBurning()) {
 			burnTime--;
 			return;
@@ -109,7 +105,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 
 	protected void smelt() {
 		currentCookTime++;
-		if (this.currentCookTime == this.cookTime) {
+		if (this.currentCookTime == this.getCookTime()) {
 			this.currentCookTime = 0;
 			this.smeltItem();
 		}
@@ -117,8 +113,8 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 
 	protected void burnFuel(ItemStack fuel, boolean burnedThisTick) {
 		if (isElectric()) {
-			burnTime = energy.getEnergyStored() >= ENERGY_PER_TICK ? 1 : 0;
-			if (this.isBurning()) energy.extractEnergy(ENERGY_PER_TICK, false);
+			burnTime = energy.getEnergyStored() >= getEnergyUse() ? 1 : 0;
+			if (this.isBurning()) energy.extractEnergy(getEnergyUse(), false);
 		} else {
 			burnTime = getItemBurnTime(fuel);
 			if (this.isBurning()) {
@@ -128,6 +124,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 				if (!burnedThisTick) world.setBlockState(pos, getLitState());
 			}
 		}
+		markDirty();
 	}
 
 	protected boolean canSmelt() {
@@ -168,6 +165,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 		if (input.isItemEqual(WET_SPONGE) && inv.getStackInSlot(SLOT_FUEL).getItem() == Items.BUCKET) inv.setStackInSlot(SLOT_FUEL, new ItemStack(Items.WATER_BUCKET));
 
 		input.shrink(1);
+		markDirty();
 	}
 
 	@Override
@@ -216,6 +214,26 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 
 	protected boolean isElectric() {
 		return hasUpgrade(Upgrades.ELECTRIC_FUEL);
+	}
+
+	public ItemStackHandler getInventory() {
+		return inv;
+	}
+
+	public final int getCookTime() {
+		return hasUpgrade(Upgrades.EFFICIENCY) ? getEfficientCookTime() : getDefaultCookTime();
+	}
+
+	protected int getDefaultCookTime() {
+		return 170;
+	}
+
+	protected int getEfficientCookTime() {
+		return 140;
+	}
+
+	protected int getEnergyUse() {
+		return 600;
 	}
 
 }

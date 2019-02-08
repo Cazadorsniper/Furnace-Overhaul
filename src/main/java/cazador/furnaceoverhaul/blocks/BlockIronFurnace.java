@@ -27,12 +27,14 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemStackHandler;
 
 public class BlockIronFurnace extends Block {
 
@@ -118,7 +120,23 @@ public class BlockIronFurnace extends Block {
 
 	@Override
 	public int getComparatorInputOverride(IBlockState state, World world, BlockPos pos) {
-		return 0; //TODO: FIXME
+		TileEntity te = world.getTileEntity(pos);
+		if (te instanceof TileEntityIronFurnace) {
+			ItemStackHandler inv = ((TileEntityIronFurnace) te).getInventory();
+			int i = 0;
+			float f = 0.0F;
+			for (int j = 0; j < 3; ++j) {
+				ItemStack itemstack = inv.getStackInSlot(j);
+
+				if (!itemstack.isEmpty()) {
+					f += (float) itemstack.getCount() / (float) Math.min(64, itemstack.getMaxStackSize());
+					++i;
+				}
+			}
+			f = f / 3;
+			return MathHelper.floor(f * 14.0F) + (i > 0 ? 1 : 0);
+		}
+		return 0;
 	}
 
 	@Override
@@ -132,12 +150,12 @@ public class BlockIronFurnace extends Block {
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity te = world.getTileEntity(pos);
-
 		if (te instanceof TileEntityIronFurnace && world.getBlockState(pos).getBlock() != state.getBlock()) {
-			//TODO: Update for IItemHandler
+			ItemStackHandler inv = ((TileEntityIronFurnace) te).getInventory();
+			for (int i = 0; i < inv.getSlots(); i++)
+				Block.spawnAsEntity(world, pos, inv.getStackInSlot(i));
 			world.updateComparatorOutputLevel(pos, this);
 		}
-
 		super.breakBlock(world, pos, state);
 	}
 
