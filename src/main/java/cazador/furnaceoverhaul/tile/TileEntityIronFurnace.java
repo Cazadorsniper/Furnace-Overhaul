@@ -5,6 +5,8 @@ import java.util.Map.Entry;
 import cazador.furnaceoverhaul.blocks.BlockIronFurnace;
 import cazador.furnaceoverhaul.upgrade.Upgrade;
 import cazador.furnaceoverhaul.upgrade.Upgrades;
+import cazador.furnaceoverhaul.utils.MutableEnergyStorage;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -19,7 +21,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.fml.common.registry.GameRegistry.ItemStackHolder;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -35,18 +36,20 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	public static final int SLOT_OUTPUT = 2;
 	public static final int[] SLOT_UPGRADE = { 3, 4, 5 };
 	public static final int MAX_FE_TRANSFER = 1200;
+	public static final int MAX_ENERGY_STORED = 50000;
 
 	protected final ItemStackHandler inv = new ItemStackHandler(6);
 	private final RangedWrapper TOP = new RangedWrapper(inv, SLOT_INPUT, SLOT_INPUT + 1);
 	private final RangedWrapper SIDES = new RangedWrapper(inv, SLOT_FUEL, SLOT_FUEL + 1);
 	private final RangedWrapper BOTTOM = new RangedWrapper(inv, SLOT_OUTPUT, SLOT_OUTPUT + 1);
 
-	protected EnergyStorage energy = new EnergyStorage(50000, MAX_FE_TRANSFER, getEnergyUse());
+	protected MutableEnergyStorage energy = new MutableEnergyStorage(MAX_ENERGY_STORED, MAX_FE_TRANSFER, getEnergyUse());
 	protected ItemStack recipeKey = ItemStack.EMPTY;
 	protected ItemStack recipeOutput = ItemStack.EMPTY;
 	protected ItemStack failedMatch = ItemStack.EMPTY;
 	protected int burnTime = 0;
 	protected int currentCookTime = 0;
+	protected int fuelLength = 0;
 
 	@ItemStackHolder(value = "minecraft:sponge", meta = 1)
 	public static final ItemStack WET_SPONGE = ItemStack.EMPTY;
@@ -55,8 +58,9 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		inv.deserializeNBT(tag.getCompoundTag("inv"));
-		energy = new EnergyStorage(50000, MAX_FE_TRANSFER, getEnergyUse(), tag.getInteger("energy"));
+		energy.setEnergy(tag.getInteger("energy"));
 		burnTime = tag.getInteger("burn_time");
+		fuelLength = tag.getInteger("fuel_length");
 		currentCookTime = tag.getInteger("current_cook_time");
 	}
 
@@ -66,8 +70,23 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 		compound.setTag("inv", inv.serializeNBT());
 		compound.setInteger("energy", energy.getEnergyStored());
 		compound.setInteger("burn_time", burnTime);
+		compound.setInteger("fuel_length", fuelLength);
 		compound.setInteger("current_cook_time", currentCookTime);
 		return compound;
+	}
+
+	public void readContainerSync(ByteBuf buf) {
+		energy.setEnergy(buf.readInt());
+		burnTime = buf.readInt();
+		fuelLength = buf.readInt();
+		currentCookTime = buf.readInt();
+	}
+
+	public void writeContainerSync(ByteBuf buf) {
+		buf.writeInt(energy.getEnergyStored());
+		buf.writeInt(burnTime);
+		buf.writeInt(fuelLength);
+		buf.writeInt(currentCookTime);
 	}
 
 	@Override
@@ -99,8 +118,8 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 		if (wasBurning && !isBurning()) world.setBlockState(pos, getDimState());
 	}
 
-	protected boolean isBurning() {
-		return burnTime > 0;
+	public boolean isBurning() {
+		return getBurnTime() > 0;
 	}
 
 	protected void smelt() {
@@ -113,10 +132,10 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 
 	protected void burnFuel(ItemStack fuel, boolean burnedThisTick) {
 		if (isElectric()) {
-			burnTime = energy.getEnergyStored() >= getEnergyUse() ? 1 : 0;
+			fuelLength = (burnTime = energy.getEnergyStored() >= getEnergyUse() ? 1 : 0);
 			if (this.isBurning()) energy.extractEnergy(getEnergyUse(), false);
 		} else {
-			burnTime = getItemBurnTime(fuel);
+			fuelLength = (burnTime = getItemBurnTime(fuel));
 			if (this.isBurning()) {
 				Item item = fuel.getItem();
 				fuel.shrink(1);
@@ -234,6 +253,22 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 
 	protected int getEnergyUse() {
 		return 600;
+	}
+
+	public int getEnergy() {
+		return energy.getEnergyStored();
+	}
+
+	public int getCurrentCookTime() {
+		return currentCookTime;
+	}
+
+	public int getBurnTime() {
+		return burnTime;
+	}
+
+	public int getFuelLength() {
+		return fuelLength;
 	}
 
 }
