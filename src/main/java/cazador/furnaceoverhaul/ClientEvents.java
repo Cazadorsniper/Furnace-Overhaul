@@ -3,6 +3,7 @@ package cazador.furnaceoverhaul;
 import cazador.furnaceoverhaul.init.ModObjects;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -15,7 +16,8 @@ public class ClientEvents {
 	@SubscribeEvent
 	public static void models(ModelRegistryEvent e) {
 		for (Item i : ModObjects.modelList) {
-			ModelLoader.setCustomModelResourceLocation(i, 0, new ModelResourceLocation(i.getRegistryName(), "inventory"));
+			if(i instanceof ItemBlock) ModelLoader.setCustomModelResourceLocation(i, 0, new ModelResourceLocation(i.getRegistryName(), "burning=false;facing=north"));
+			else ModelLoader.setCustomModelResourceLocation(i, 0, new ModelResourceLocation(i.getRegistryName(), "inventory"));
 		}
 	}
 }

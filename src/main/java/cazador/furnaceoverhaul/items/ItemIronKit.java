@@ -57,9 +57,10 @@ public final class ItemIronKit extends ItemKit {
 				((TileEntityFurnace) te).clear();
 				boolean burning = state.getBlock() == Blocks.LIT_FURNACE;
 				EnumFacing face = state.getValue(BlockIronFurnace.FACING);
-				world.setBlockState(pos, next.getDefaultState().withProperty(BlockIronFurnace.FACING, face).withProperty(BlockIronFurnace.BURNING, burning));
+				world.setBlockState(pos, ModObjects.IRON_FURNACE.getDefaultState().withProperty(BlockIronFurnace.FACING, face).withProperty(BlockIronFurnace.BURNING, burning));
 				world.getTileEntity(pos).readFromNBT(tag);
 				player.getHeldItem(hand).shrink(1);
+				world.updateComparatorOutputLevel(pos, ModObjects.IRON_FURNACE);
 				return EnumActionResult.SUCCESS;
 			}
 			return EnumActionResult.FAIL;

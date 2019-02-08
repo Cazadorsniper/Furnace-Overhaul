@@ -183,4 +183,9 @@ public class BlockIronFurnace extends Block {
 		}
 	}
 
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
 }

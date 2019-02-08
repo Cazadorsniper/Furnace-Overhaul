@@ -1,13 +1,30 @@
 {
-		"variants": {
-			"active=false,facing=north":  { "model": "furnaceoverhaul:end_furnace"},
-			"active=false,facing=east":   { "model": "furnaceoverhaul:end_furnace", "y": 90 },
-			"active=false,facing=south": { "model": "furnaceoverhaul:end_furnace", "y": 180 },
-			"active=false,facing=west":  { "model": "furnaceoverhaul:end_furnace", "y": 270 },
-			
-			"active=true,facing=north":  { "model": "furnaceoverhaul:lit_end_furnace"},
-			"active=true,facing=east":   { "model": "furnaceoverhaul:lit_end_furnace", "y": 90 },
-			"active=true,facing=south": { "model": "furnaceoverhaul:lit_end_furnace", "y": 180 },
-			"active=true,facing=west":  { "model": "furnaceoverhaul:lit_end_furnace", "y": 270 }
+	"forge_marker": 1,
+	"defaults": {
+		"model": "orientable",
+		"textures": {
+			"top": "furnaceoverhaul:blocks/end_furnace_sides",
+			"side": "#top"
+		}
+	},
+	"variants": {
+		"burning": {
+			"true": {
+				"textures": {
+					"front": "furnaceoverhaul:blocks/lit_end_furnace_front"
+				}
+			},
+			"false": {
+				"textures": {
+					"front": "furnaceoverhaul:blocks/end_furnace_front"
+				}
 			}
+		},
+		"facing": {
+			"north":{},
+			"east":{"y":90},
+			"south":{"y":180},
+			"west":{"y":270}
+		}
+	}
 }

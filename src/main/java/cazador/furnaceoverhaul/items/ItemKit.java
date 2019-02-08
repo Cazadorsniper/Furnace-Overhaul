@@ -4,6 +4,7 @@ import java.util.List;
 
 import cazador.furnaceoverhaul.FurnaceOverhaul;
 import cazador.furnaceoverhaul.blocks.BlockIronFurnace;
+import cazador.furnaceoverhaul.init.ModObjects;
 import cazador.furnaceoverhaul.tile.TileEntityIronFurnace;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
@@ -63,6 +64,7 @@ public class ItemKit extends Item {
 				world.setBlockState(pos, next.getDefaultState().withProperty(BlockIronFurnace.FACING, face).withProperty(BlockIronFurnace.BURNING, burning));
 				world.getTileEntity(pos).readFromNBT(tag);
 				player.getHeldItem(hand).shrink(1);
+				world.updateComparatorOutputLevel(pos, ModObjects.IRON_FURNACE);
 				return EnumActionResult.SUCCESS;
 			}
 			return EnumActionResult.FAIL;
