@@ -45,19 +45,22 @@ public class ContainerFO extends Container {
 		else player = null;
 	}
 
+	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 		if (player != null) FurnaceOverhaul.NETWORK.sendTo(new MessageSyncTE(te), player);
 	}
 
+	@Override
 	public boolean canInteractWith(EntityPlayer player) {
 		return player.getDistanceSq(te.getPos()) < 64;
 	}
 
+	@Override
 	@Nullable
 	public ItemStack transferStackInSlot(EntityPlayer player, int index) {
 		ItemStack itemstack = ItemStack.EMPTY;
-		Slot slot = (Slot) this.inventorySlots.get(index);
+		Slot slot = this.inventorySlots.get(index);
 
 		if (slot != null && slot.getHasStack()) {
 			ItemStack itemstack1 = slot.getStack();

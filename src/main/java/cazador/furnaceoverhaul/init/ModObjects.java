@@ -6,6 +6,7 @@ import java.util.List;
 import cazador.furnaceoverhaul.FurnaceOverhaul;
 import cazador.furnaceoverhaul.blocks.BlockIronFurnace;
 import cazador.furnaceoverhaul.blocks.BlockTranslucentFurnace;
+import cazador.furnaceoverhaul.items.ItemIronKit;
 import cazador.furnaceoverhaul.items.ItemKit;
 import cazador.furnaceoverhaul.items.ItemUpgrade;
 import cazador.furnaceoverhaul.tile.TileEntityDiamondFurnace;
@@ -26,7 +27,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.registries.IForgeRegistry;
 
 /**
- * Main object class for Furnace Overhaul.  Handles registration.  Fields are automatically populated by @ObjectHolder
+ * Main object class for Furnace Overhaul.  Handles registration.
+ * Fields are automatically populated by @ObjectHolder, since their field name is an all-caps version of their registry name.
  * @author Shadows
  *
  */
@@ -34,28 +36,28 @@ import net.minecraftforge.registries.IForgeRegistry;
 @ObjectHolder(FurnaceOverhaul.MODID)
 public class ModObjects {
 
-	public static final Block IRON_FURNACE = null;
-	public static final Block GOLD_FURNACE = null;
-	public static final Block DIAMOND_FURNACE = null;
-	public static final Block EMERALD_FURNACE = null;
-	public static final Block END_FURNACE = null;
-	public static final Block ZENITH_FURNACE = null;
+	public static final BlockIronFurnace IRON_FURNACE = null;
+	public static final BlockIronFurnace GOLD_FURNACE = null;
+	public static final BlockIronFurnace DIAMOND_FURNACE = null;
+	public static final BlockIronFurnace EMERALD_FURNACE = null;
+	public static final BlockIronFurnace END_FURNACE = null;
+	public static final BlockIronFurnace ZENITH_FURNACE = null;
 
-	public static final Item BLANK_UPGRADE = null;
-	public static final Item EFFICIENCY_UPGRADE = null;
-	public static final Item ORE_PROCESSING_UPGRADE = null;
-	public static final Item LIQUID_FUEL_UPGRADE = null;
-	public static final Item ELECTRIC_FUEL_UPGRADE = null;
-	public static final Item SPEED_UPGRADE = null;
-	public static final Item PROCESSING_UPGRADE = null;
+	public static final ItemUpgrade BLANK_UPGRADE = null;
+	public static final ItemUpgrade EFFICIENCY_UPGRADE = null;
+	public static final ItemUpgrade ORE_PROCESSING_UPGRADE = null;
+	public static final ItemUpgrade LIQUID_FUEL_UPGRADE = null;
+	public static final ItemUpgrade ELECTRIC_FUEL_UPGRADE = null;
+	public static final ItemUpgrade SPEED_UPGRADE = null;
+	public static final ItemUpgrade PROCESSING_UPGRADE = null;
 
-	public static final Item BLANK_KIT = null;
-	public static final Item IRON_KIT = null;
-	public static final Item GOLD_KIT = null;
-	public static final Item DIAMOND_KIT = null;
-	public static final Item EMERALD_KIT = null;
-	public static final Item END_KIT = null;
-	public static final Item ZENITH_KIT = null;
+	public static final ItemKit BLANK_KIT = null;
+	public static final ItemKit IRON_KIT = null;
+	public static final ItemKit GOLD_KIT = null;
+	public static final ItemKit DIAMOND_KIT = null;
+	public static final ItemKit EMERALD_KIT = null;
+	public static final ItemKit END_KIT = null;
+	public static final ItemKit ZENITH_KIT = null;
 
 	public static List<Item> modelList = new ArrayList<>();
 
@@ -92,13 +94,13 @@ public class ModObjects {
 				new ItemUpgrade("electric_fuel_upgrade", "info.furnaceoverhaul.electric"),
 				new ItemUpgrade("speed_upgrade", "info.furnaceoverhaul.speed"),
 				new ItemUpgrade("processing_upgrade", "info.furnaceoverhaul.wip"),
-				new ItemKit("blank_kit"),
-				new ItemKit("iron_kit"),
-				new ItemKit("gold_kit"),
-				new ItemKit("diamond_kit"),
-				new ItemKit("emerald_kit"),
-				new ItemKit("end_kit"),
-				new ItemKit("zenith_kit")
+				new ItemKit("blank_kit", null, null),
+				new ItemIronKit(),
+				new ItemKit("gold_kit", IRON_FURNACE, GOLD_FURNACE),
+				new ItemKit("diamond_kit", GOLD_FURNACE, DIAMOND_FURNACE),
+				new ItemKit("emerald_kit", DIAMOND_FURNACE, EMERALD_FURNACE),
+				new ItemKit("end_kit", EMERALD_FURNACE, END_FURNACE),
+				new ItemKit("zenith_kit", END_FURNACE, ZENITH_FURNACE)
 				);
 		//Formatter::on
 	}

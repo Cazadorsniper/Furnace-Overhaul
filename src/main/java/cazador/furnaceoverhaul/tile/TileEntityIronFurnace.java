@@ -274,14 +274,14 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	/**
 	 * @return The unlit state of this TE.
 	 */
-	protected IBlockState getDimState() {
+	public IBlockState getDimState() {
 		return world.getBlockState(pos).withProperty(BlockIronFurnace.BURNING, false);
 	}
 
 	/**
 	 * @return The burning state of this TE.
 	 */
-	protected IBlockState getLitState() {
+	public IBlockState getLitState() {
 		return world.getBlockState(pos).withProperty(BlockIronFurnace.BURNING, true);
 	}
 
@@ -329,6 +329,12 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 
 	public int getFuelLength() {
 		return fuelLength;
+	}
+
+	public void clear() {
+		for (int i = 0; i < 6; i++) {
+			inv.setStackInSlot(i, ItemStack.EMPTY);
+		}
 	}
 
 }

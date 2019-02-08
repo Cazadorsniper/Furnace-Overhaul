@@ -11,11 +11,13 @@ public class UpgradeSlot extends SlotItemHandler {
 		super(inventory, index, x, y);
 	}
 
+	@Override
 	public boolean isItemValid(ItemStack stack) {
 		return super.isItemValid(stack) && stack.getItem() instanceof ItemUpgrade;
 
 	}
 
+	@Override
 	public int getItemStackLimit(ItemStack stack) {
 		return 1;
 	}
