@@ -75,11 +75,11 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 		return compound;
 	}
 
-	public void readContainerSync(ByteBuf buf) {
-		energy.setEnergy(buf.readInt());
-		burnTime = buf.readInt();
-		fuelLength = buf.readInt();
-		currentCookTime = buf.readInt();
+	public void readContainerSync(int[] fromNet) {
+		energy.setEnergy(fromNet[0]);
+		burnTime = fromNet[1];
+		fuelLength = fromNet[2];
+		currentCookTime = fromNet[3];
 	}
 
 	public void writeContainerSync(ByteBuf buf) {

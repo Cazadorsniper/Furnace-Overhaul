@@ -47,7 +47,7 @@ public class GuiFO extends GuiContainer {
 	}
 
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		String s = this.te.getDisplayName().getUnformattedText();
+		String s = this.te.getBlockType().getLocalizedName();
 		this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
 		this.fontRenderer.drawString(this.playerInventory.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2, 4210752);
 		this.fontRenderer.drawString(Integer.toString(this.te.getEnergy()), 115, 72, 4210752);
