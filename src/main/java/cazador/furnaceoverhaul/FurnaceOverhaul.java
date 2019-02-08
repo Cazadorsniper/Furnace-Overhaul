@@ -1,8 +1,7 @@
 package cazador.furnaceoverhaul;
 
 import cazador.furnaceoverhaul.handler.GuiHandler;
-import cazador.furnaceoverhaul.init.ModBlocks;
-import cazador.furnaceoverhaul.init.ModItems;
+import cazador.furnaceoverhaul.init.ModObjects;
 import cazador.furnaceoverhaul.net.MessageSyncTE;
 import mcp.mobius.waila.proxy.IProxy;
 import net.minecraft.creativetab.CreativeTabs;
@@ -35,10 +34,6 @@ public class FurnaceOverhaul {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		ModBlocks.init();
-		ModItems.init();
-		ModBlocks.register();
-		ModItems.register();
 		NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, new GuiHandler());
 		NETWORK.registerMessage(MessageSyncTE.Handler.class, MessageSyncTE.class, 0, Side.CLIENT);
 	}
@@ -55,7 +50,7 @@ public class FurnaceOverhaul {
 
 		@Override
 		public ItemStack createIcon() {
-			return new ItemStack(ModBlocks.ironfurnace);
+			return new ItemStack(ModObjects.IRON_FURNACE);
 		}
 	};
 

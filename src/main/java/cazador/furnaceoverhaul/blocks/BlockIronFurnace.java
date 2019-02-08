@@ -2,6 +2,7 @@ package cazador.furnaceoverhaul.blocks;
 
 import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 
 import cazador.furnaceoverhaul.FurnaceOverhaul;
 import cazador.furnaceoverhaul.handler.GuiHandler;
@@ -43,8 +44,9 @@ public class BlockIronFurnace extends Block {
 
 	protected final TextFormatting infoColor;
 	protected final int cookTime;
+	protected final Supplier<TileEntity> teFunc;
 
-	public BlockIronFurnace(String name, TextFormatting infoColor, int cookTime) {
+	public BlockIronFurnace(String name, TextFormatting infoColor, int cookTime, Supplier<TileEntity> teFunc) {
 		super(Material.IRON);
 		setTranslationKey(FurnaceOverhaul.MODID + "." + name);
 		this.setRegistryName(FurnaceOverhaul.MODID, name);
@@ -55,7 +57,7 @@ public class BlockIronFurnace extends Block {
 		setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(BURNING, false));
 		this.infoColor = infoColor;
 		this.cookTime = cookTime;
-
+		this.teFunc = teFunc;
 	}
 
 	@Override
@@ -80,7 +82,7 @@ public class BlockIronFurnace extends Block {
 
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new TileEntityIronFurnace();
+		return teFunc.get();
 	}
 
 	@Override

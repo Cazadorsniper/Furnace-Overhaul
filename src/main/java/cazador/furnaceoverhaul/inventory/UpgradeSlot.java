@@ -1,6 +1,6 @@
 package cazador.furnaceoverhaul.inventory;
 
-import cazador.furnaceoverhaul.items.BlankUpgrade;
+import cazador.furnaceoverhaul.items.ItemUpgrade;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -12,7 +12,7 @@ public class UpgradeSlot extends SlotItemHandler {
 	}
 
 	public boolean isItemValid(ItemStack stack) {
-		return super.isItemValid(stack) && stack.getItem() instanceof BlankUpgrade;
+		return super.isItemValid(stack) && stack.getItem() instanceof ItemUpgrade;
 
 	}
 
