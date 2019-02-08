@@ -1,0 +1,22 @@
+{
+   "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PGP",
+    "GBG",
+	"PGP"
+  ],
+  "key": {
+    "P": {
+		"item": "minecraft:blaze_powder"
+    },
+	"G": {
+		"item": "minecraft:glowstone_dust"
+    },
+	"B": {
+		"item": "furnaceoverhaul:blank_upgrade"
+	}
+  },
+  "result": {
+    "item": "furnaceoverhaul:speed"
+  }
+}

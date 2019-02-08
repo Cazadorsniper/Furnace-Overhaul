@@ -24,6 +24,7 @@ public class ContainerFO extends Container {
     private int totalCookTime;
     private int furnaceBurnTime;
     private int currentItemBurnTime;
+	private int storage;
 	
     public ContainerFO(InventoryPlayer playerInventory, IInventory te){
         this.te = te;
@@ -34,16 +35,15 @@ public class ContainerFO extends Container {
         this.addSlotToContainer(new UpgradeSlot(te, 4, 12, 34));
         this.addSlotToContainer(new UpgradeSlot(te, 5, 12, 55));
         
-        for (int i = 0; i < 3; ++i)
-        {
-            for (int j = 0; j < 9; ++j)
-            {
-                this.addSlotToContainer(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+        for (int i = 0; i < 3; ++i){
+            for (int j = 0; j < 9; ++j){
+            	int x = 8 + j * 18;
+                int y = i * 18 + 84;
+                this.addSlotToContainer(new Slot(playerInventory, j + i * 9 + 9, x, y));
             }
         }
 
-        for (int k = 0; k < 9; ++k)
-        {
+        for (int k = 0; k < 9; ++k){
             this.addSlotToContainer(new Slot(playerInventory, k, 8 + k * 18, 142));
         }
     }
@@ -74,12 +74,17 @@ public class ContainerFO extends Container {
             if (this.totalCookTime != this.te.getField(3)){
                 icontainerlistener.sendWindowProperty(this, 3, te.getField(3));
             }
+            
+            if (this.storage != this.te.getField(4))  {
+            	icontainerlistener.sendWindowProperty(this, 4, this.te.getField(4));
+            }
         }
 
         this.cookTime = this.te.getField(2);
         this.furnaceBurnTime = this.te.getField(0);
         this.currentItemBurnTime = this.te.getField(1);
         this.totalCookTime = this.te.getField(3);
+        this.storage = this.te.getField(4);
     }
 
     @SideOnly(Side.CLIENT)
@@ -92,7 +97,7 @@ public class ContainerFO extends Container {
     }
 
     @Nullable
-    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index)
+    public ItemStack transferStackInSlot(EntityPlayer player, int index)
     {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = (Slot)this.inventorySlots.get(index);
@@ -104,7 +109,7 @@ public class ContainerFO extends Container {
 
             if (index == 2)
             {
-                if (!this.mergeItemStack(itemstack1, 3, 39, true))
+                if (!this.mergeItemStack(itemstack1, 3, 42, true))
                 {
                     return ItemStack.EMPTY;
                 }
@@ -129,17 +134,17 @@ public class ContainerFO extends Container {
                 }
                 else if (index >= 3 && index < 30)
                 {
-                    if (!this.mergeItemStack(itemstack1, 30, 39, false))
+                    if (!this.mergeItemStack(itemstack1, 30, 42, false))
                     {
                         return ItemStack.EMPTY;
                     }
                 }
-                else if (index >= 30 && index < 39 && !this.mergeItemStack(itemstack1, 3, 30, false))
+                else if (index >= 30 && index < 36 && !this.mergeItemStack(itemstack1, 3, 30, false))
                 {
                     return ItemStack.EMPTY;
                 }
             }
-            else if (!this.mergeItemStack(itemstack1, 3, 39, false))
+            else if (!this.mergeItemStack(itemstack1, 3, 42, false))
             {
                 return ItemStack.EMPTY;
             }
@@ -158,7 +163,7 @@ public class ContainerFO extends Container {
                 return ItemStack.EMPTY;
             }
 
-            slot.onTake(playerIn, itemstack1);
+            slot.onTake(player, itemstack1);
         }
 
         return itemstack;

@@ -9,14 +9,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class Electricprovider extends BlankUpgrade {
+public class Speed extends BlankUpgrade{
 
-	public Electricprovider(String unlocalizedname) {
+	public Speed(String unlocalizedname) {
 		super(unlocalizedname);
 	}
-
+	
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
-		tooltip.add(TextFormatting.RED + "Some Upgrades are WIP");
+		tooltip.add(TextFormatting.BLUE + "Speeds up furnaces");
+		tooltip.add(TextFormatting.RED + "Doesn't work in Zenith Furnace");
 	}
+
 }

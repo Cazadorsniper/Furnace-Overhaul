@@ -3,6 +3,11 @@ package cazador.furnaceoverhaul.blocks;
 import java.util.List;
 import java.util.Random;
 
+import cazador.furnaceoverhaul.FurnaceOverhaul;
+import cazador.furnaceoverhaul.Reference;
+import cazador.furnaceoverhaul.handler.GuiHandler;
+import cazador.furnaceoverhaul.init.ModBlocks;
+import cazador.furnaceoverhaul.tile.TileEntityIronFurnace;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -20,6 +25,7 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -38,11 +44,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import cazador.furnaceoverhaul.FurnaceOverhaul;
-import cazador.furnaceoverhaul.Reference;
-import cazador.furnaceoverhaul.handler.GuiHandler;
-import cazador.furnaceoverhaul.init.ModBlocks;
-import cazador.furnaceoverhaul.tile.TileEntityIronFurnace;
 
 public class IronFurnace extends BlockContainer{
 	
@@ -66,10 +67,9 @@ public class IronFurnace extends BlockContainer{
 	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
 		if (state.getValue(ACTIVE) == true){
 			return 8;
-		} else if (state.getValue(ACTIVE) == false){
+		} else if (state.getValue(ACTIVE) == false);
 			return 0;
-		} else
-		return 0;
+	
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -80,7 +80,7 @@ public class IronFurnace extends BlockContainer{
 	public static void setState(boolean active, World world, BlockPos pos){
         IBlockState iblockstate = world.getBlockState(pos);
         TileEntity te = world.getTileEntity(pos);
-        keepInventory = true;
+        keepInventory = false;
         
         if (active) {
             world.setBlockState(pos, ModBlocks.ironfurnace.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)).withProperty(ACTIVE, true), 3);
@@ -131,25 +131,24 @@ public class IronFurnace extends BlockContainer{
 		
 	private void setDefaultFacing(World world, BlockPos pos, IBlockState state) {
 		if (!world.isRemote){
-            IBlockState iblockstate = world.getBlockState(pos.north());
-            IBlockState iblockstate1 = world.getBlockState(pos.south());
-            IBlockState iblockstate2 = world.getBlockState(pos.west());
-            IBlockState iblockstate3 = world.getBlockState(pos.east());
+            IBlockState state0 = world.getBlockState(pos.north());
+            IBlockState state1 = world.getBlockState(pos.south());
+            IBlockState state2 = world.getBlockState(pos.west());
+            IBlockState state3 = world.getBlockState(pos.east());
             EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
 
-            if (enumfacing == EnumFacing.NORTH && iblockstate.isFullBlock() && !iblockstate1.isFullBlock()){
+            if (enumfacing == EnumFacing.NORTH && state0.isFullBlock() && !state1.isFullBlock()){
                 enumfacing = EnumFacing.SOUTH;
             }
-            else if (enumfacing == EnumFacing.SOUTH && iblockstate1.isFullBlock() && !iblockstate.isFullBlock()){
+            else if (enumfacing == EnumFacing.SOUTH && state1.isFullBlock() && !state0.isFullBlock()){
                 enumfacing = EnumFacing.NORTH;
             }
-            else if (enumfacing == EnumFacing.WEST && iblockstate2.isFullBlock() && !iblockstate3.isFullBlock()){
+            else if (enumfacing == EnumFacing.WEST && state2.isFullBlock() && !state3.isFullBlock()){
                 enumfacing = EnumFacing.EAST;
             }
-            else if (enumfacing == EnumFacing.EAST && iblockstate3.isFullBlock() && !iblockstate2.isFullBlock()){
+            else if (enumfacing == EnumFacing.EAST && state3.isFullBlock() && !state2.isFullBlock()){
                 enumfacing = EnumFacing.WEST;
             }
-
             world.setBlockState(pos, state.withProperty(FACING, enumfacing), 2);
         }
 		
@@ -191,17 +190,16 @@ public class IronFurnace extends BlockContainer{
 	}
 	
 	public void breakBlock(World world, BlockPos pos, IBlockState state){
-    	if (!keepInventory){
-    	TileEntity te = (TileEntityIronFurnace) world.getTileEntity(pos);
-		IItemHandler handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-		for(int slot = 0; slot < handler.getSlots(); slot++){
-			ItemStack stack = handler.getStackInSlot(slot);
-			InventoryHelper.dropInventoryItems(world, pos, (TileEntityIronFurnace)te);
-            world.updateComparatorOutputLevel(pos, this);
-			}
-        }
-        super.breakBlock(world, pos, state);
-    }
+	        if (!keepInventory) {
+	            TileEntity te = world.getTileEntity(pos);
+
+	            if (te instanceof TileEntityIronFurnace) {
+	                InventoryHelper.dropInventoryItems(world, pos, (TileEntityIronFurnace)te);
+	                world.updateComparatorOutputLevel(pos, this);
+	            }
+	        }
+	        super.breakBlock(world, pos, state);
+	    }
 	
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack){
         world.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 2);
@@ -212,11 +210,13 @@ public class IronFurnace extends BlockContainer{
             }
         }
     }
-    
-	@SideOnly(Side.CLIENT)
+	
+    @SideOnly(Side.CLIENT)
     @SuppressWarnings("incomplete-switch")
-    public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand){
-        if (state.getValue(ACTIVE) == true){
+    public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand)
+    {
+        if (state.getValue(ACTIVE))
+        {
             EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
             double d0 = (double)pos.getX() + 0.5D;
             double d1 = (double)pos.getY() + rand.nextDouble() * 6.0D / 16.0D;
@@ -224,26 +224,28 @@ public class IronFurnace extends BlockContainer{
             double d3 = 0.52D;
             double d4 = rand.nextDouble() * 0.6D - 0.3D;
 
-            if (rand.nextDouble() < 0.1D) {
+            if (rand.nextDouble() < 0.1D)
+            {
                 world.playSound((double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
             }
 
-            switch (enumfacing){
+            switch (enumfacing)
+            {
                 case WEST:
-                    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 - 0.52D, d1, d2 + d4, 0.0D, 0.0D, 0.0D, new int[0]);
-                    world.spawnParticle(EnumParticleTypes.FLAME, d0 - 0.52D, d1, d2 + d4, 0.0D, 0.0D, 0.0D, new int[0]);
+                    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 - 0.52D, d1, d2 + d4, 0.0D, 0.0D, 0.0D);
+                    world.spawnParticle(EnumParticleTypes.FLAME, d0 - 0.52D, d1, d2 + d4, 0.0D, 0.0D, 0.0D);
                     break;
                 case EAST:
-                    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + 0.52D, d1, d2 + d4, 0.0D, 0.0D, 0.0D, new int[0]);
-                    world.spawnParticle(EnumParticleTypes.FLAME, d0 + 0.52D, d1, d2 + d4, 0.0D, 0.0D, 0.0D, new int[0]);
+                    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + 0.52D, d1, d2 + d4, 0.0D, 0.0D, 0.0D);
+                    world.spawnParticle(EnumParticleTypes.FLAME, d0 + 0.52D, d1, d2 + d4, 0.0D, 0.0D, 0.0D);
                     break;
                 case NORTH:
-                    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4, d1, d2 - 0.52D, 0.0D, 0.0D, 0.0D, new int[0]);
-                    world.spawnParticle(EnumParticleTypes.FLAME, d0 + d4, d1, d2 - 0.52D, 0.0D, 0.0D, 0.0D, new int[0]);
+                    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4, d1, d2 - 0.52D, 0.0D, 0.0D, 0.0D);
+                    world.spawnParticle(EnumParticleTypes.FLAME, d0 + d4, d1, d2 - 0.52D, 0.0D, 0.0D, 0.0D);
                     break;
                 case SOUTH:
-                    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4, d1, d2 + 0.52D, 0.0D, 0.0D, 0.0D, new int[0]);
-                    world.spawnParticle(EnumParticleTypes.FLAME, d0 + d4, d1, d2 + 0.52D, 0.0D, 0.0D, 0.0D, new int[0]);
+                    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4, d1, d2 + 0.52D, 0.0D, 0.0D, 0.0D);
+                    world.spawnParticle(EnumParticleTypes.FLAME, d0 + d4, d1, d2 + 0.52D, 0.0D, 0.0D, 0.0D);
             }
         }
     }

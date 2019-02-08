@@ -1,0 +1,22 @@
+{
+   "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "IGI",
+    "GBG",
+	"IGI"
+  ],
+  "key": {
+    "I": {
+		"item": "minecraft:nether_star"
+    },
+	"G": {
+		"item": "minecraft:ghast_tear"
+    },
+	"B": {
+		"item": "furnaceoverhaul:ore_processing"
+	}
+  },
+  "result": {
+    "item": "furnaceoverhaul:processing"
+  }
+}

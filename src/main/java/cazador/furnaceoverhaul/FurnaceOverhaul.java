@@ -45,6 +45,7 @@ public class FurnaceOverhaul {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event){
 	
+		proxy.postInit();
 	}
 	
 	public static CreativeTabs FurnaceOverhaulTab = new CreativeTabs("FurnaceOverhaul"){

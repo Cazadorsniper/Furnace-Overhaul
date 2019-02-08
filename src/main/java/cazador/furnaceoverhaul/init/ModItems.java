@@ -1,10 +1,5 @@
 package cazador.furnaceoverhaul.init;
 
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import cazador.furnaceoverhaul.Reference;
 import cazador.furnaceoverhaul.items.BlankKit;
 import cazador.furnaceoverhaul.items.BlankUpgrade;
@@ -18,7 +13,14 @@ import cazador.furnaceoverhaul.items.GoldKit;
 import cazador.furnaceoverhaul.items.IronKit;
 import cazador.furnaceoverhaul.items.Liquidfuel;
 import cazador.furnaceoverhaul.items.Oreprocessing;
+import cazador.furnaceoverhaul.items.Processing;
+import cazador.furnaceoverhaul.items.Speed;
 import cazador.furnaceoverhaul.items.ZenithKit;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class ModItems {
 	
@@ -28,6 +30,8 @@ public class ModItems {
 	public static Item liquidfuel;
 	public static Item electricfuel;
 	public static Item electricprovider;
+	public static Item speed;
+	public static Item processing;
 	public static Item blankkit;
 	public static Item iron;
 	public static Item gold;
@@ -43,6 +47,8 @@ public class ModItems {
 		liquidfuel = new Liquidfuel("liquid_fuel");
 		electricfuel = new Electricfuel("electric_fuel");
 		electricprovider = new Electricprovider("electric_provider");
+		speed = new Speed("speed");
+		processing = new Processing("processing");
 		blankkit = new BlankKit("blank_kit");
 		iron = new IronKit("iron_kit");
 		gold = new GoldKit("gold_kit");
@@ -59,6 +65,8 @@ public class ModItems {
 		registerItem(liquidfuel);
 		registerItem(electricfuel);
 		registerItem(electricprovider);
+		registerItem(speed);
+		registerItem(processing);
 		registerItem(blankkit);
 		registerItem(iron);
 		registerItem(gold);
@@ -80,6 +88,8 @@ public class ModItems {
 		registerRender(liquidfuel);
 		registerRender(electricfuel);
 		registerRender(electricprovider);
+		registerRender(speed);
+		registerRender(processing);
 		registerRender(blankkit);
 		registerRender(iron);
 		registerRender(gold);
