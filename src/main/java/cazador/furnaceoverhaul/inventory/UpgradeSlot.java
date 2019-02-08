@@ -1,31 +1,25 @@
 package cazador.furnaceoverhaul.inventory;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import cazador.furnaceoverhaul.items.ItemUpgrade;
 import net.minecraft.item.ItemStack;
-import cazador.furnaceoverhaul.init.ModItems;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
-public class UpgradeSlot extends Slot{
+public class UpgradeSlot extends SlotItemHandler {
 
-	public UpgradeSlot(IInventory inventory, int index, int x, int y) {
+	public UpgradeSlot(IItemHandler inventory, int index, int x, int y) {
 		super(inventory, index, x, y);
 	}
-	
-	 public boolean isItemValid(ItemStack stack) {
-        return super.isItemValid(stack) && 
-        		stack.getItem() == ModItems.blankupgrade ||
-        		stack.getItem() == ModItems.efficiency ||
-        		stack.getItem() == ModItems.electricfuel ||
-        		stack.getItem() == ModItems.electricprovider ||
-        		stack.getItem() == ModItems.liquidfuel ||
-        		stack.getItem() == ModItems.oreprocessing ||
-        		stack.getItem() == ModItems.speed ||
-        		stack.getItem() == ModItems.processing;
-        	
-    }
-	 
-	 public int getItemStackLimit(ItemStack stack){
-	        return 1;
-	    }
-	 
+
+	@Override
+	public boolean isItemValid(ItemStack stack) {
+		return super.isItemValid(stack) && stack.getItem() instanceof ItemUpgrade;
+
+	}
+
+	@Override
+	public int getItemStackLimit(ItemStack stack) {
+		return 1;
+	}
+
 }

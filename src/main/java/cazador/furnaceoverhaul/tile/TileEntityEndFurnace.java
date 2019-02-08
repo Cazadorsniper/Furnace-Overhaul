@@ -1,20 +1,20 @@
 package cazador.furnaceoverhaul.tile;
 
-public class TileEntityDiamondFurnace extends TileEntityIronFurnace {
+public class TileEntityEndFurnace extends TileEntityIronFurnace {
 
 	@Override
 	protected int getEnergyUse() {
-		return 400;
+		return 200;
 	}
 
 	@Override
 	protected int getDefaultCookTime() {
-		return 100;
+		return 30;
 	}
 
 	@Override
 	protected int getSpeedyCookTime() {
-		return 70;
+		return 10;
 	}
 
 }

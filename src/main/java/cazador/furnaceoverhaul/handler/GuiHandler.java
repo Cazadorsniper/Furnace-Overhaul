@@ -12,6 +12,7 @@ public class GuiHandler implements IGuiHandler{
 	
 	public static final int GUI_FURNACE = 0;
 	
+	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world,	int x, int y, int z) {
 		
 		TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
@@ -27,6 +28,7 @@ public class GuiHandler implements IGuiHandler{
 	    
 	}
 
+	@Override
 	public Object getClientGuiElement(int id, EntityPlayer player, World world,	int x, int y, int z) {
 		  
 		TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
