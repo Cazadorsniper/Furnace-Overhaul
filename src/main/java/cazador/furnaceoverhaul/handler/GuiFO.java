@@ -25,7 +25,6 @@ public class GuiFO extends GuiContainer {
 		this.drawDefaultBackground();
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		this.renderHoveredToolTip(mouseX, mouseY);
-
 	}
 
 	@Override
@@ -43,9 +42,8 @@ public class GuiFO extends GuiContainer {
 		int l = this.getCookProgressScaled(24);
 		this.drawTexturedModalRect(i + 79, j + 34, 176, 14, l + 1, 16);
 
-		int k = this.getEnergyStoredScaled(75);
-		this.drawTexturedModalRect(this.guiLeft + 151, this.guiTop + 13, 177, 32, 16, 76 - k);
-
+		int k = this.getEnergyStoredScaled(58);
+		this.drawTexturedModalRect(this.guiLeft + 151, this.guiTop + 13, 177, 32, 16, 58 - k);
 	}
 
 	@Override
@@ -57,29 +55,28 @@ public class GuiFO extends GuiContainer {
 	}
 
 	private int getEnergyStoredScaled(int pixels) {
-		int i = this.te.getEnergy();
-		int j = TileEntityIronFurnace.MAX_ENERGY_STORED;
-		return i != 0 && j != 0 ? i * pixels / j : 0;
+		int cur = te.getEnergy();
+		int max = TileEntityIronFurnace.MAX_ENERGY_STORED;
+		return getPixels(cur, max, pixels);
 	}
 
 	private int getCookProgressScaled(int pixels) {
-		int i = this.te.getCurrentCookTime();
-		int j = this.te.getCookTime();
-		return j != 0 && i != 0 ? i * pixels / j : 0;
+		int cur = te.getCurrentCookTime();
+		int max = te.getCookTime();
+		return getPixels(cur, max, pixels);
 	}
 
 	private int getBurnLeftScaled(int pixels) {
-		int i = this.te.getFuelLength();
-
-		if (i == 0) {
-			i = 200;
-		}
-
-		return this.te.getBurnTime() * pixels / i;
+		if (te.isElectric() && te.getEnergy() >= te.getEnergyUse()) return pixels;
+		return getPixels(te.getBurnTime(), Math.max(1, te.getFuelLength()), pixels);
 	}
 
 	public TileEntityIronFurnace getTE() {
 		return te;
+	}
+
+	static int getPixels(float a, float b, int pixels) {
+		return (int) Math.floor(a / b * pixels);
 	}
 
 }

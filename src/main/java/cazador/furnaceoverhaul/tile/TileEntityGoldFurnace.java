@@ -13,7 +13,7 @@ public class TileEntityGoldFurnace extends TileEntityIronFurnace {
 	}
 
 	@Override
-	protected int getEnergyUse() {
+	public int getEnergyUse() {
 		return 500;
 	}
 }

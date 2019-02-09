@@ -6,7 +6,7 @@ import cazador.furnaceoverhaul.blocks.BlockIronFurnace;
 import cazador.furnaceoverhaul.upgrade.Upgrade;
 import cazador.furnaceoverhaul.upgrade.Upgrades;
 import cazador.furnaceoverhaul.utils.MutableEnergyStorage;
-import cazador.furnaceoverhaul.utils.OreDoublingRegistry;
+import cazador.furnaceoverhaul.utils.OreProcessingRegistry;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
@@ -106,15 +106,12 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	 */
 	@Override
 	public final void update() {
-		if (world.isRemote && isBurning()) {
-			burnTime--;
-			return;
-		} else if (world.isRemote) return;
+		if (world.isRemote) return;
 
 		ItemStack fuel = ItemStack.EMPTY;
 		boolean canSmelt = canSmelt();
 
-		if (!this.isBurning() && (hasUpgrade(Upgrades.ELECTRIC_FUEL) || !(fuel = inv.getStackInSlot(SLOT_FUEL)).isEmpty())) {
+		if (!this.isBurning() && (isElectric() || !(fuel = inv.getStackInSlot(SLOT_FUEL)).isEmpty())) {
 			if (canSmelt) burnFuel(fuel, false);
 		}
 
@@ -126,7 +123,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 			else currentCookTime = 0;
 		}
 
-		if (!this.isBurning() && !(fuel = inv.getStackInSlot(SLOT_FUEL)).isEmpty()) {
+		if (!this.isBurning() && (isElectric() || !(fuel = inv.getStackInSlot(SLOT_FUEL)).isEmpty())) {
 			if (canSmelt()) burnFuel(fuel, wasBurning);
 		}
 
@@ -166,9 +163,9 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 				Item item = fuel.getItem();
 				fuel.shrink(1);
 				if (fuel.isEmpty()) inv.setStackInSlot(SLOT_FUEL, item.getContainerItem(fuel));
-				if (!burnedThisTick) world.setBlockState(pos, getLitState());
 			}
 		}
+		if (isBurning() && !burnedThisTick) world.setBlockState(pos, getLitState());
 		markDirty();
 	}
 
@@ -192,7 +189,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 				}
 			}
 			if (!matched) {
-				ItemStack stack = getResult(input);
+				ItemStack stack = getResult();
 				if (stack.isEmpty()) {
 					recipeKey = ItemStack.EMPTY;
 					recipeOutput = ItemStack.EMPTY;
@@ -221,7 +218,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	 */
 	public void smeltItem() {
 		ItemStack input = inv.getStackInSlot(SLOT_INPUT);
-		ItemStack recipeOutput = getResult(recipeKey).copy();
+		ItemStack recipeOutput = getResult().copy();
 		if (hasUpgrade(Upgrades.PROCESSING)) recipeOutput.grow(recipeOutput.getCount());
 		ItemStack output = inv.getStackInSlot(SLOT_OUTPUT);
 
@@ -266,7 +263,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	 */
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && capability == CapabilityEnergy.ENERGY) return true;
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityEnergy.ENERGY) return true;
 		return super.hasCapability(capability, facing);
 	}
 
@@ -304,7 +301,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	/**
 	 * @return If this TE has the electric upgrade.
 	 */
-	protected boolean isElectric() {
+	public boolean isElectric() {
 		return hasUpgrade(Upgrades.ELECTRIC_FUEL);
 	}
 
@@ -312,11 +309,11 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 		return inv;
 	}
 
-	private ItemStack getResult(ItemStack stack) {
-		if (hasUpgrade(Upgrades.ORE_PROCESSING)) return OreDoublingRegistry.getSmeltingResult(stack);
-		ItemStack s = FurnaceRecipes.instance().getSmeltingList().get(stack);
+	private ItemStack getResult() {
+		if (hasUpgrade(Upgrades.ORE_PROCESSING)) return OreProcessingRegistry.getSmeltingResult(inv.getStackInSlot(SLOT_INPUT));
+		ItemStack s = FurnaceRecipes.instance().getSmeltingList().get(recipeKey);
 		if (s != null) return s;
-		return FurnaceRecipes.instance().getSmeltingResult(stack);
+		return FurnaceRecipes.instance().getSmeltingResult(recipeKey);
 	}
 
 	/**
@@ -334,7 +331,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 		return 140;
 	}
 
-	protected int getEnergyUse() {
+	public int getEnergyUse() {
 		return 600;
 	}
 

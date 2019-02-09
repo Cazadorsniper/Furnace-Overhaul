@@ -9,7 +9,7 @@ import cazador.furnaceoverhaul.tile.TileEntityEndFurnace;
 import cazador.furnaceoverhaul.tile.TileEntityGoldFurnace;
 import cazador.furnaceoverhaul.tile.TileEntityIronFurnace;
 import cazador.furnaceoverhaul.tile.TileEntityZenithFurnace;
-import cazador.furnaceoverhaul.utils.OreDoublingRegistry;
+import cazador.furnaceoverhaul.utils.OreProcessingRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
@@ -53,7 +53,7 @@ public class FurnaceOverhaul {
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		OreDoublingRegistry.init();
+		OreProcessingRegistry.init();
 	}
 
 	public static final CreativeTabs FO_TAB = new CreativeTabs(MODID) {

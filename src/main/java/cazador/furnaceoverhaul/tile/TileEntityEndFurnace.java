@@ -3,7 +3,7 @@ package cazador.furnaceoverhaul.tile;
 public class TileEntityEndFurnace extends TileEntityIronFurnace {
 
 	@Override
-	protected int getEnergyUse() {
+	public int getEnergyUse() {
 		return 200;
 	}
 
