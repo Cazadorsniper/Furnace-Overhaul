@@ -12,7 +12,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerFO extends Container {
 
@@ -26,7 +25,7 @@ public class ContainerFO extends Container {
 
 	public ContainerFO(InventoryPlayer playerInv, TileEntityIronFurnace te) {
 		this.te = te;
-		this.addSlotToContainer(new SlotItemHandler(te.getInventory(), 0, 56, 17));
+		this.addSlotToContainer(new SlotFurnaceInput(te.getInventory(), 0, 56, 17));
 		this.addSlotToContainer(new SlotFurnaceFuel(te.getInventory(), 1, 56, 53));
 		this.addSlotToContainer(new SlotFurnaceOutput(playerInv.player, te.getInventory(), 2, 116, 35));
 		this.addSlotToContainer(new UpgradeSlot(te.getInventory(), 3, 12, 13));
