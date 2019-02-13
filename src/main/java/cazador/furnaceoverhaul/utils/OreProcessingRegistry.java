@@ -66,7 +66,6 @@ public class OreProcessingRegistry {
 		if (stack.isEmpty()) return ItemStack.EMPTY;
 		for (Pair<Ingredient, ItemStack> ent : recipes) {
 			if (ent.getLeft().apply(stack)) return ent.getRight();
-			System.out.printf("Provided: %s, Checked against %s\n", stack, ent.getKey().getMatchingStacks()[0]);
 		}
 		return FurnaceRecipes.instance().getSmeltingResult(stack);
 	}
