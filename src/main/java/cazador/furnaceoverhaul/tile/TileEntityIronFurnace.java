@@ -357,4 +357,10 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 		}
 	}
 
+	public NBTTagCompound writeHwylaData(NBTTagCompound tag) {
+		tag.setTag("inv", inv.serializeNBT());
+		tag.setInteger("current_cook_time", currentCookTime);
+		return tag;
+	}
+
 }
