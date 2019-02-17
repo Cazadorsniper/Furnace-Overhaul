@@ -8,7 +8,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreIngredient;
@@ -67,7 +66,7 @@ public class OreProcessingRegistry {
 		for (Pair<Ingredient, ItemStack> ent : recipes) {
 			if (ent.getLeft().apply(stack)) return ent.getRight();
 		}
-		return FurnaceRecipes.instance().getSmeltingResult(stack);
+		return ItemStack.EMPTY;
 	}
 
 	private static void registerDefaults() {

@@ -205,7 +205,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 		}
 
 		ItemStack check = recipeOutput;
-		if (hasUpgrade(Upgrades.PROCESSING)) {
+		if (!hasOreResult && hasUpgrade(Upgrades.PROCESSING)) {
 			check = check.copy();
 			check.grow(check.getCount());
 		}
@@ -219,7 +219,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	public void smeltItem() {
 		ItemStack input = inv.getStackInSlot(SLOT_INPUT);
 		ItemStack recipeOutput = getResult().copy();
-		if (hasUpgrade(Upgrades.PROCESSING)) recipeOutput.grow(recipeOutput.getCount());
+		if (!hasOreResult && hasUpgrade(Upgrades.PROCESSING)) recipeOutput.grow(recipeOutput.getCount());
 		ItemStack output = inv.getStackInSlot(SLOT_OUTPUT);
 
 		if (output.isEmpty()) inv.setStackInSlot(SLOT_OUTPUT, recipeOutput);
@@ -309,8 +309,17 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 		return inv;
 	}
 
+	private boolean hasOreResult = false;
+
 	private ItemStack getResult() {
-		if (hasUpgrade(Upgrades.ORE_PROCESSING)) return OreProcessingRegistry.getSmeltingResult(inv.getStackInSlot(SLOT_INPUT));
+		if (hasUpgrade(Upgrades.ORE_PROCESSING)) {
+			ItemStack out = OreProcessingRegistry.getSmeltingResult(inv.getStackInSlot(SLOT_INPUT));
+			if (!out.isEmpty()) {
+				hasOreResult = true;
+				return out;
+			}
+		}
+		hasOreResult = false;
 		ItemStack s = FurnaceRecipes.instance().getSmeltingList().get(recipeKey);
 		if (s != null) return s;
 		return FurnaceRecipes.instance().getSmeltingResult(recipeKey);
