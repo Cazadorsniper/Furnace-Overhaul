@@ -3,6 +3,7 @@ package cazador.furnaceoverhaul.handler;
 import cazador.furnaceoverhaul.FurnaceOverhaul;
 import cazador.furnaceoverhaul.inventory.ContainerFO;
 import cazador.furnaceoverhaul.tile.TileEntityIronFurnace;
+import cazador.furnaceoverhaul.utils.FluidRenderUtil;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -42,21 +43,38 @@ public class GuiFO extends GuiContainer {
 		int l = this.getCookProgressScaled(24);
 		this.drawTexturedModalRect(i + 79, j + 34, 176, 14, l + 1, 16);
 
-		int k = this.getEnergyStoredScaled(58);
-		this.drawTexturedModalRect(this.guiLeft + 151, this.guiTop + 13, 177, 32, 16, 58 - k);
+		int k = this.getEnergyStoredScaled(16);
+		this.drawTexturedModalRect(this.guiLeft + 142, this.guiTop + 35, 176, 31, 3, 16 - k);
+
+		this.zLevel++;
+		this.drawTexturedModalRect(this.guiLeft + 151, this.guiTop + 14, 176, 47, 16, 64);
+		this.zLevel--;
+
+		int am = getFluidStoredScaled(63);
+		if (am > 0) {
+			GlStateManager.pushMatrix();
+			GlStateManager.translate(0, 63 - am, 0);
+			FluidRenderUtil.renderTiledFluid(this.guiLeft + 151, this.guiTop + 11, 16, am, 0, te.getTank().getFluid());
+			GlStateManager.popMatrix();
+		}
 	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		String s = this.te.getBlockType().getLocalizedName();
 		this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
-		this.fontRenderer.drawString(this.playerInventory.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2, 4210752);
-		this.fontRenderer.drawString(Integer.toString(this.te.getEnergy()), 142, 74, 4210752);
+		this.fontRenderer.drawString(this.playerInventory.getDisplayName().getUnformattedText(), 7, this.ySize - 92, 4210752);
 	}
 
 	private int getEnergyStoredScaled(int pixels) {
 		int cur = te.getEnergy();
 		int max = TileEntityIronFurnace.MAX_ENERGY_STORED;
+		return getPixels(cur, max, pixels);
+	}
+
+	private int getFluidStoredScaled(int pixels) {
+		int cur = te.getTank().getFluidAmount();
+		int max = 4000;
 		return getPixels(cur, max, pixels);
 	}
 

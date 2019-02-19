@@ -1,5 +1,6 @@
 package cazador.furnaceoverhaul.tile;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Map.Entry;
 
 import cazador.furnaceoverhaul.blocks.BlockIronFurnace;
@@ -23,6 +24,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry.ItemStackHolder;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -39,7 +43,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	public static final int SLOT_OUTPUT = 2;
 	public static final int[] SLOT_UPGRADE = { 3, 4, 5 };
 	public static final int MAX_FE_TRANSFER = 1200;
-	public static final int MAX_ENERGY_STORED = 50000;
+	public static final int MAX_ENERGY_STORED = 80000;
 
 	//Item Handling, RangedWrappers are for sided i/o
 	protected final ItemStackHandler inv = new ItemStackHandler(6);
@@ -49,6 +53,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 
 	//Main TE Fields.
 	protected MutableEnergyStorage energy = new MutableEnergyStorage(MAX_ENERGY_STORED, MAX_FE_TRANSFER, getEnergyUse());
+	protected FluidTank tank = new FluidTank(4000);
 	protected ItemStack recipeKey = ItemStack.EMPTY;
 	protected ItemStack recipeOutput = ItemStack.EMPTY;
 	protected ItemStack failedMatch = ItemStack.EMPTY;
@@ -67,6 +72,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 		burnTime = tag.getInteger("burn_time");
 		fuelLength = tag.getInteger("fuel_length");
 		currentCookTime = tag.getInteger("current_cook_time");
+		tank.readFromNBT(tag.getCompoundTag("tank"));
 	}
 
 	@Override
@@ -77,6 +83,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 		compound.setInteger("burn_time", burnTime);
 		compound.setInteger("fuel_length", fuelLength);
 		compound.setInteger("current_cook_time", currentCookTime);
+		compound.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
 		return compound;
 	}
 
@@ -84,11 +91,12 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	 * Receives data from the server and sets it to the client TE.
 	 * Should only be called on client.
 	 */
-	public void readContainerSync(int[] fromNet) {
+	public void readContainerSync(int[] fromNet, FluidStack fluid) {
 		energy.setEnergy(fromNet[0]);
 		burnTime = fromNet[1];
 		fuelLength = fromNet[2];
 		currentCookTime = fromNet[3];
+		tank.setFluid(fluid);
 	}
 
 	/**
@@ -99,6 +107,15 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 		buf.writeInt(burnTime);
 		buf.writeInt(fuelLength);
 		buf.writeInt(currentCookTime);
+		FluidStack fluid = tank.getFluid();
+		if (fluid == null) {
+			buf.writeInt(4);
+			buf.writeCharSequence("null", StandardCharsets.UTF_8);
+		} else {
+			buf.writeInt(fluid.getFluid().getName().length());
+			buf.writeCharSequence(fluid.getFluid().getName(), StandardCharsets.UTF_8);
+			buf.writeInt(fluid.amount);
+		}
 	}
 
 	/**
@@ -111,7 +128,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 		ItemStack fuel = ItemStack.EMPTY;
 		boolean canSmelt = canSmelt();
 
-		if (!this.isBurning() && (isElectric() || !(fuel = inv.getStackInSlot(SLOT_FUEL)).isEmpty())) {
+		if (!this.isBurning() && (isAltFuel() || !(fuel = inv.getStackInSlot(SLOT_FUEL)).isEmpty())) {
 			if (canSmelt) burnFuel(fuel, false);
 		}
 
@@ -123,7 +140,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 			else currentCookTime = 0;
 		}
 
-		if (!this.isBurning() && (isElectric() || !(fuel = inv.getStackInSlot(SLOT_FUEL)).isEmpty())) {
+		if (!this.isBurning() && (isAltFuel() || !(fuel = inv.getStackInSlot(SLOT_FUEL)).isEmpty())) {
 			if (canSmelt()) burnFuel(fuel, wasBurning);
 		}
 
@@ -157,6 +174,9 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 		if (isElectric()) {
 			fuelLength = (burnTime = energy.getEnergyStored() >= getEnergyUse() ? 1 : 0);
 			if (this.isBurning()) energy.extractEnergy(getEnergyUse(), false);
+		} else if (isFluid() && tank.getFluid() != null) {
+			fuelLength = burnTime = getFluidBurnTime(tank.getFluid());
+			if (this.isBurning()) tank.getFluid().amount--;
 		} else {
 			fuelLength = (burnTime = getItemBurnTime(fuel));
 			if (this.isBurning()) {
@@ -254,7 +274,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	 * @return The burn time for this fuel, or 0, if this is an electric furnace.
 	 */
 	public int getItemBurnTime(ItemStack stack) {
-		if (isElectric()) return 0;
+		if (isAltFuel()) return 0;
 		return TileEntityFurnace.getItemBurnTime(stack) * (hasUpgrade(Upgrades.EFFICIENCY) ? 2 : 1);
 	}
 
@@ -263,7 +283,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	 */
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityEnergy.ENERGY) return true;
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityEnergy.ENERGY || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) return true;
 		return super.hasCapability(capability, facing);
 	}
 
@@ -281,6 +301,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 			else h = SIDES;
 			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(h);
 		}
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank);
 		return super.getCapability(capability, facing);
 	}
 
@@ -303,6 +324,17 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	 */
 	public boolean isElectric() {
 		return hasUpgrade(Upgrades.ELECTRIC_FUEL);
+	}
+
+	/**
+	 * @return If this TE has the liquid fuel upgrade.
+	 */
+	public boolean isFluid() {
+		return hasUpgrade(Upgrades.LIQUID_FUEL);
+	}
+
+	public boolean isAltFuel() {
+		return isElectric() || isFluid();
 	}
 
 	public ItemStackHandler getInventory() {
@@ -370,6 +402,19 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 		tag.setTag("inv", inv.serializeNBT());
 		tag.setInteger("current_cook_time", currentCookTime);
 		return tag;
+	}
+
+	/**
+	 * Returns the burn time for a single mB of a given fluid.
+	 * TODO: Figure out how mods check for fluid fuels and remove lava hardcode.
+	 */
+	public int getFluidBurnTime(FluidStack stack) {
+		if (stack.getFluid().getName().equals("lava")) return 20;
+		return 0;
+	}
+
+	public FluidTank getTank() {
+		return tank;
 	}
 
 }

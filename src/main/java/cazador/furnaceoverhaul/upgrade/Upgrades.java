@@ -15,5 +15,6 @@ public class Upgrades {
 	public static final Upgrade SPEED = new Upgrade(Ingredient.fromItem(ModObjects.SPEED_UPGRADE));
 	public static final Upgrade PROCESSING = new Upgrade(Ingredient.fromItem(ModObjects.PROCESSING_UPGRADE));
 	public static final Upgrade ORE_PROCESSING = new Upgrade(Ingredient.fromItem(ModObjects.ORE_PROCESSING_UPGRADE));
+	public static final Upgrade LIQUID_FUEL = new Upgrade(Ingredient.fromItem(ModObjects.LIQUID_FUEL_UPGRADE));
 
 }

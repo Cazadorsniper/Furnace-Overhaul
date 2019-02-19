@@ -90,7 +90,7 @@ public class ModObjects {
 				new ItemUpgrade("blank_upgrade", null),
 				new ItemUpgrade("efficiency_upgrade", "info.furnaceoverhaul.efficiency"),
 				new ItemUpgrade("ore_processing_upgrade", "info.furnaceoverhaul.ores"),
-				new ItemUpgrade("liquid_fuel_upgrade", "info.furnaceoverhaul.wip"),
+				new ItemUpgrade("liquid_fuel_upgrade", "info.furnaceoverhaul.fluid"),
 				new ItemUpgrade("electric_fuel_upgrade", "info.furnaceoverhaul.electric"),
 				new ItemUpgrade("speed_upgrade", "info.furnaceoverhaul.speed"),
 				new ItemUpgrade("processing_upgrade", "info.furnaceoverhaul.processing"),
