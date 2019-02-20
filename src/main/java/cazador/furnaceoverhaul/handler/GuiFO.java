@@ -70,7 +70,7 @@ public class GuiFO extends GuiContainer {
 	@Override
 	protected void renderHoveredToolTip(int x, int y) {
 		super.renderHoveredToolTip(x, y);
-		if (this.isPointInRegion(151, 11 + (63 - getFluidStoredScaled(63)), 16, getFluidStoredScaled(63), x, y)) {
+		if (te.getTank().getFluid() != null && this.isPointInRegion(151, 11 + (63 - getFluidStoredScaled(63)), 16, getFluidStoredScaled(63), x, y)) {
 			this.drawHoveringText(I18n.format("gui.furnaceoverhaul.fluid", te.getTank().getFluidAmount(), te.getTank().getFluid().getLocalizedName()), x, y);
 		} else if (this.isPointInRegion(142, 35, 3, 16, x, y)) {
 			this.drawHoveringText(I18n.format("gui.furnaceoverhaul.energy", te.getEnergy()), x, y);
