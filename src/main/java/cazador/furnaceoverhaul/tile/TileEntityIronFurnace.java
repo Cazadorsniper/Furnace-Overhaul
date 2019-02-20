@@ -3,6 +3,7 @@ package cazador.furnaceoverhaul.tile;
 import java.nio.charset.StandardCharsets;
 import java.util.Map.Entry;
 
+import cazador.furnaceoverhaul.FurnaceOverhaul;
 import cazador.furnaceoverhaul.blocks.BlockIronFurnace;
 import cazador.furnaceoverhaul.upgrade.Upgrade;
 import cazador.furnaceoverhaul.upgrade.Upgrades;
@@ -53,7 +54,12 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 
 	//Main TE Fields.
 	protected MutableEnergyStorage energy = new MutableEnergyStorage(MAX_ENERGY_STORED, MAX_FE_TRANSFER, getEnergyUse());
-	protected FluidTank tank = new FluidTank(4000);
+	protected FluidTank tank = new FluidTank(4000) {
+		@Override
+		public boolean canFillFluidType(FluidStack fluid) {
+			return super.canFillFluidType(fluid) && getFluidBurnTime(fluid) > 0;
+		}
+	};
 	protected ItemStack recipeKey = ItemStack.EMPTY;
 	protected ItemStack recipeOutput = ItemStack.EMPTY;
 	protected ItemStack failedMatch = ItemStack.EMPTY;
@@ -171,7 +177,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	 * @param burnedThisTick If we have burned this tick, used to determine if we need to change blockstate.
 	 */
 	protected void burnFuel(ItemStack fuel, boolean burnedThisTick) {
-		if (isElectric()) {
+		if (isElectric() && energy.getEnergyStored() >= getEnergyUse()) {
 			fuelLength = (burnTime = energy.getEnergyStored() >= getEnergyUse() ? 1 : 0);
 			if (this.isBurning()) energy.extractEnergy(getEnergyUse(), false);
 		} else if (isFluid() && tank.getFluid() != null) {
@@ -401,16 +407,15 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	public NBTTagCompound writeHwylaData(NBTTagCompound tag) {
 		tag.setTag("inv", inv.serializeNBT());
 		tag.setInteger("current_cook_time", currentCookTime);
+		if (isFluid() && tank.getFluidAmount() > 0) tag.setTag("fluid", tank.getFluid().writeToNBT(new NBTTagCompound()));
 		return tag;
 	}
 
 	/**
 	 * Returns the burn time for a single mB of a given fluid.
-	 * TODO: Figure out how mods check for fluid fuels and remove lava hardcode.
 	 */
 	public int getFluidBurnTime(FluidStack stack) {
-		if (stack.getFluid().getName().equals("lava")) return 20;
-		return 0;
+		return stack == null ? 0 : FurnaceOverhaul.FLUID_FUELS.getInt(stack.getFluid().getName());
 	}
 
 	public FluidTank getTank() {

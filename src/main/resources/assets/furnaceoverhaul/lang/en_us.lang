@@ -32,3 +32,6 @@ info.furnaceoverhaul.ores=Enables the processing of ores.
 info.furnaceoverhaul.processing=Doubles output.
 info.furnaceoverhaul.kit=Upgrades %s into %s
 info.furnaceoverhaul.fluid=Uses liquid fuel instead of solid fuel.
+
+gui.furnaceoverhaul.fluid=%s / 4000 %s
+gui.furnaceoverhaul.energy=%s / 80000 FE

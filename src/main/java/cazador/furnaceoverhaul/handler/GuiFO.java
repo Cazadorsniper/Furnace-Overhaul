@@ -6,6 +6,7 @@ import cazador.furnaceoverhaul.tile.TileEntityIronFurnace;
 import cazador.furnaceoverhaul.utils.FluidRenderUtil;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
@@ -64,6 +65,16 @@ public class GuiFO extends GuiContainer {
 		String s = this.te.getBlockType().getLocalizedName();
 		this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
 		this.fontRenderer.drawString(this.playerInventory.getDisplayName().getUnformattedText(), 7, this.ySize - 92, 4210752);
+	}
+
+	@Override
+	protected void renderHoveredToolTip(int x, int y) {
+		super.renderHoveredToolTip(x, y);
+		if (this.isPointInRegion(151, 11 + (63 - getFluidStoredScaled(63)), 16, getFluidStoredScaled(63), x, y)) {
+			this.drawHoveringText(I18n.format("gui.furnaceoverhaul.fluid", te.getTank().getFluidAmount(), te.getTank().getFluid().getLocalizedName()), x, y);
+		} else if (this.isPointInRegion(142, 35, 3, 16, x, y)) {
+			this.drawHoveringText(I18n.format("gui.furnaceoverhaul.energy", te.getEnergy()), x, y);
+		}
 	}
 
 	private int getEnergyStoredScaled(int pixels) {
