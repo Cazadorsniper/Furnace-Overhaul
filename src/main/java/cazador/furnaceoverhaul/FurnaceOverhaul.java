@@ -22,7 +22,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -34,7 +34,7 @@ public class FurnaceOverhaul {
 
 	public static final String MODID = "furnaceoverhaul";
 	public static final String MODNAME = "Furnace Overhaul";
-	public static final String VERSION = "2.1.0";
+	public static final String VERSION = "2.1.1";
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
 
 	public static Object2IntMap<String> FLUID_FUELS = new Object2IntOpenHashMap<>();
@@ -77,8 +77,8 @@ public class FurnaceOverhaul {
 	}
 
 	@EventHandler
-	public void postInit(FMLPostInitializationEvent event) {
-		OreProcessingRegistry.init();
+	public void postInit(FMLLoadCompleteEvent event) {
+		OreProcessingRegistry.registerDefaults();
 	}
 
 	public static final CreativeTabs FO_TAB = new CreativeTabs(MODID) {

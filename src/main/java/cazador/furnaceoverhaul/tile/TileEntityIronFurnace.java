@@ -214,8 +214,8 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 					break;
 				}
 			}
-			if (!matched) {
-				ItemStack stack = getResult();
+			if (!matched && hasUpgrade(Upgrades.ORE_PROCESSING)) {
+				ItemStack stack = OreProcessingRegistry.getSmeltingResult(input);
 				if (stack.isEmpty()) {
 					recipeKey = ItemStack.EMPTY;
 					recipeOutput = ItemStack.EMPTY;
@@ -244,12 +244,12 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	 */
 	public void smeltItem() {
 		ItemStack input = inv.getStackInSlot(SLOT_INPUT);
-		ItemStack recipeOutput = getResult().copy();
+		ItemStack recipeOutput = getResult();
 		if (!hasOreResult && hasUpgrade(Upgrades.PROCESSING)) recipeOutput.grow(recipeOutput.getCount());
-		ItemStack output = inv.getStackInSlot(SLOT_OUTPUT);
+		ItemStack curOutput = inv.getStackInSlot(SLOT_OUTPUT);
 
-		if (output.isEmpty()) inv.setStackInSlot(SLOT_OUTPUT, recipeOutput);
-		else if (ItemHandlerHelper.canItemStacksStack(output, recipeOutput)) output.grow(recipeOutput.getCount());
+		if (curOutput.isEmpty()) inv.setStackInSlot(SLOT_OUTPUT, recipeOutput);
+		else if (ItemHandlerHelper.canItemStacksStack(curOutput, recipeOutput)) curOutput.grow(recipeOutput.getCount());
 
 		if (input.isItemEqual(WET_SPONGE) && inv.getStackInSlot(SLOT_FUEL).getItem() == Items.BUCKET) inv.setStackInSlot(SLOT_FUEL, new ItemStack(Items.WATER_BUCKET));
 
@@ -351,16 +351,27 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 
 	private ItemStack getResult() {
 		if (hasUpgrade(Upgrades.ORE_PROCESSING)) {
-			ItemStack out = OreProcessingRegistry.getSmeltingResult(inv.getStackInSlot(SLOT_INPUT));
+			ItemStack out = OreProcessingRegistry.getSmeltingResult(inv.getStackInSlot(SLOT_INPUT)).copy();
+			if (out.isEmpty() && isOre(recipeKey)) {
+				out = FurnaceRecipes.instance().getSmeltingList().get(recipeKey).copy();
+				out.grow(out.getCount());
+			}
 			if (!out.isEmpty()) {
 				hasOreResult = true;
 				return out;
 			}
 		}
 		hasOreResult = false;
-		ItemStack s = FurnaceRecipes.instance().getSmeltingList().get(recipeKey);
-		if (s != null) return s;
-		return FurnaceRecipes.instance().getSmeltingResult(recipeKey);
+		return FurnaceRecipes.instance().getSmeltingList().get(recipeKey).copy();
+	}
+
+	private static boolean isOre(ItemStack stack) {
+		if (!stack.getHasSubtypes() && !stack.isItemStackDamageable()) stack.setItemDamage(0);
+		int[] ids = OreDictionary.getOreIDs(stack);
+		for (int i : ids) {
+			if (OreDictionary.getOreName(i).contains("ore")) return true;
+		}
+		return false;
 	}
 
 	/**
