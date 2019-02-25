@@ -5,6 +5,9 @@ import java.util.Map.Entry;
 
 import cazador.furnaceoverhaul.FurnaceOverhaul;
 import cazador.furnaceoverhaul.blocks.BlockIronFurnace;
+import cazador.furnaceoverhaul.inventory.SlotFurnaceFuel;
+import cazador.furnaceoverhaul.inventory.SlotFurnaceInput;
+import cazador.furnaceoverhaul.inventory.SlotUpgrade;
 import cazador.furnaceoverhaul.upgrade.Upgrade;
 import cazador.furnaceoverhaul.upgrade.Upgrades;
 import cazador.furnaceoverhaul.utils.MutableEnergyStorage;
@@ -47,7 +50,18 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	public static final int MAX_ENERGY_STORED = 80000;
 
 	//Item Handling, RangedWrappers are for sided i/o
-	protected final ItemStackHandler inv = new ItemStackHandler(6);
+	protected final ItemStackHandler inv = new ItemStackHandler(6) {
+		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+			if (!isItemValid(slot, stack)) return stack;
+			return super.insertItem(slot, stack, simulate);
+		};
+
+		public boolean isItemValid(int slot, ItemStack stack) {
+			if (slot == SLOT_INPUT) return SlotFurnaceInput.isStackValid(stack);
+			if (slot == SLOT_FUEL) return SlotFurnaceFuel.isStackValid(stack);
+			return slot > 2 ? SlotUpgrade.isStackValid(stack) : true;
+		};
+	};
 	private final RangedWrapper TOP = new RangedWrapper(inv, SLOT_INPUT, SLOT_INPUT + 1);
 	private final RangedWrapper SIDES = new RangedWrapper(inv, SLOT_FUEL, SLOT_FUEL + 1);
 	private final RangedWrapper BOTTOM = new RangedWrapper(inv, SLOT_OUTPUT, SLOT_OUTPUT + 1);

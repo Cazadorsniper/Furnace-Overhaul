@@ -13,15 +13,19 @@ public class SlotFurnaceFuel extends SlotItemHandler {
 
 	@Override
 	public boolean isItemValid(ItemStack stack) {
-		return TileEntityFurnace.isItemFuel(stack) || isBucket(stack);
+		return isStackValid(stack);
 	}
 
 	@Override
 	public int getItemStackLimit(ItemStack stack) {
-		return isBucket(stack) ? 1 : super.getItemStackLimit(stack);
+		return isEmptyBucket(stack) ? 1 : super.getItemStackLimit(stack);
 	}
 
-	public static boolean isBucket(ItemStack stack) {
+	public static boolean isStackValid(ItemStack stack) {
+		return TileEntityFurnace.isItemFuel(stack) || isEmptyBucket(stack);
+	}
+
+	public static boolean isEmptyBucket(ItemStack stack) {
 		return stack.getItem() == Items.BUCKET;
 	}
 }

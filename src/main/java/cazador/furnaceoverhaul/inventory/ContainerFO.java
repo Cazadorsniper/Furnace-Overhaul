@@ -28,9 +28,9 @@ public class ContainerFO extends Container {
 		this.addSlotToContainer(new SlotFurnaceInput(te.getInventory(), 0, 56, 17));
 		this.addSlotToContainer(new SlotFurnaceFuel(te.getInventory(), 1, 56, 53));
 		this.addSlotToContainer(new SlotFurnaceOutput(playerInv.player, te.getInventory(), 2, 116, 35));
-		this.addSlotToContainer(new UpgradeSlot(te.getInventory(), 3, 12, 13));
-		this.addSlotToContainer(new UpgradeSlot(te.getInventory(), 4, 12, 34));
-		this.addSlotToContainer(new UpgradeSlot(te.getInventory(), 5, 12, 55));
+		this.addSlotToContainer(new SlotUpgrade(te.getInventory(), 3, 12, 13));
+		this.addSlotToContainer(new SlotUpgrade(te.getInventory(), 4, 12, 34));
+		this.addSlotToContainer(new SlotUpgrade(te.getInventory(), 5, 12, 55));
 
 		for (int i = 0; i < 3; ++i) {
 			for (int j = 0; j < 9; ++j) {

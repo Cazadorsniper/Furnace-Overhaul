@@ -5,16 +5,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class UpgradeSlot extends SlotItemHandler {
+public class SlotUpgrade extends SlotItemHandler {
 
-	public UpgradeSlot(IItemHandler inventory, int index, int x, int y) {
+	public SlotUpgrade(IItemHandler inventory, int index, int x, int y) {
 		super(inventory, index, x, y);
 	}
 
 	@Override
 	public boolean isItemValid(ItemStack stack) {
-		return super.isItemValid(stack) && stack.getItem() instanceof ItemUpgrade;
+		return isStackValid(stack);
+	}
 
+	public static boolean isStackValid(ItemStack stack) {
+		return stack.getItem() instanceof ItemUpgrade;
 	}
 
 	@Override

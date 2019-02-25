@@ -34,7 +34,7 @@ public class FurnaceOverhaul {
 
 	public static final String MODID = "furnaceoverhaul";
 	public static final String MODNAME = "Furnace Overhaul";
-	public static final String VERSION = "2.1.1";
+	public static final String VERSION = "2.1.2";
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
 
 	public static Object2IntMap<String> FLUID_FUELS = new Object2IntOpenHashMap<>();

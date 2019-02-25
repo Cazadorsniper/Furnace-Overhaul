@@ -14,6 +14,10 @@ public class SlotFurnaceInput extends SlotItemHandler {
 
 	@Override
 	public boolean isItemValid(ItemStack stack) {
+		return isStackValid(stack);
+	}
+
+	public static boolean isStackValid(ItemStack stack) {
 		return !OreProcessingRegistry.getSmeltingResult(stack).isEmpty() || !FurnaceRecipes.instance().getSmeltingResult(stack).isEmpty();
 	}
 }
