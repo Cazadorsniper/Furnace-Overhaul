@@ -303,7 +303,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	 */
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityEnergy.ENERGY || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) return true;
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityEnergy.ENERGY && isElectric() || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && isFluid()) return true;
 		return super.hasCapability(capability, facing);
 	}
 
@@ -312,7 +312,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	 */
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-		if (capability == CapabilityEnergy.ENERGY) return CapabilityEnergy.ENERGY.cast(this.energy);
+		if (capability == CapabilityEnergy.ENERGY && isElectric()) return CapabilityEnergy.ENERGY.cast(this.energy);
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			IItemHandler h;
 			if (facing == null) h = inv;
@@ -321,7 +321,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 			else h = SIDES;
 			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(h);
 		}
-		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank);
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && isFluid()) return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank);
 		return super.getCapability(capability, facing);
 	}
 
@@ -439,7 +439,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	/**
 	 * Returns the burn time for a single mB of a given fluid.
 	 */
-	public int getFluidBurnTime(FluidStack stack) {
+	public static int getFluidBurnTime(FluidStack stack) {
 		return stack == null ? 0 : FurnaceOverhaul.FLUID_FUELS.getInt(stack.getFluid().getName());
 	}
 

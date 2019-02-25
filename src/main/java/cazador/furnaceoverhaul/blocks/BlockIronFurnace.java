@@ -33,6 +33,9 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidActionResult;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
@@ -147,6 +150,19 @@ public class BlockIronFurnace extends Block {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+		TileEntity te = world.getTileEntity(pos);
+		if (!world.isRemote && te instanceof TileEntityIronFurnace && ((TileEntityIronFurnace) te).isFluid()) {
+			ItemStack stack = player.getHeldItem(hand);
+			FluidStack fs = FluidUtil.getFluidContained(stack);
+			if (fs != null && TileEntityIronFurnace.getFluidBurnTime(fs) > 0) {
+				FluidActionResult res = FluidUtil.tryEmptyContainer(stack, FluidUtil.getFluidHandler(world, pos, null), 1000, player, true);
+				if (res.isSuccess()) {
+					if (!player.capabilities.isCreativeMode) player.setHeldItem(hand, res.result);
+					return true;
+				}
+			}
+		}
+
 		if (!player.isSneaking() && !world.isRemote) {
 			player.openGui(FurnaceOverhaul.INSTANCE, GuiHandler.GUI_FURNACE, world, pos.getX(), pos.getY(), pos.getZ());
 		}
