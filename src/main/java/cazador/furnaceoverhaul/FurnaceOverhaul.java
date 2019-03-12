@@ -34,7 +34,7 @@ public class FurnaceOverhaul {
 
 	public static final String MODID = "furnaceoverhaul";
 	public static final String MODNAME = "Furnace Overhaul";
-	public static final String VERSION = "2.1.2";
+	public static final String VERSION = "2.2.0";
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
 
 	public static Object2IntMap<String> FLUID_FUELS = new Object2IntOpenHashMap<>();
@@ -49,7 +49,7 @@ public class FurnaceOverhaul {
 		NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, new GuiHandler());
 		NETWORK.registerMessage(MessageSyncTE.Handler.class, MessageSyncTE.class, 0, Side.CLIENT);
 		Configuration cfg = new Configuration(event.getSuggestedConfigurationFile());
-		String[] fuels = cfg.getStringList("Fluid Fuels", "general", new String[] { "lava@20" }, "A list a fluid fuels, in the format name@time, where time is burn ticks per millibucket.");
+		String[] fuels = cfg.getStringList("Fluid Fuels", "general", new String[] { "lava@20" }, "A list of fluid fuels, in the format name@time, where time is burn ticks per millibucket.");
 		for (String s : fuels) {
 			String[] split = s.split("@");
 			if (split.length != 2) {
