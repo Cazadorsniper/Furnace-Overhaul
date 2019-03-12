@@ -1,0 +1,22 @@
+{
+   "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PGP",
+    "GBG",
+	"PGP"
+  ],
+  "key": {
+    "P": {
+		"item": "minecraft:blaze_powder"
+    },
+	"G": {
+		"item": "minecraft:repeater"
+    },
+	"B": {
+		"item": "furnaceoverhaul:blank_upgrade"
+	}
+  },
+  "result": {
+    "item": "furnaceoverhaul:electric_fuel_upgrade"
+  }
+}

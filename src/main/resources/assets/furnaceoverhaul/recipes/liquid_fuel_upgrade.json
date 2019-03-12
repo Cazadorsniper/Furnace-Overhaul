@@ -1,0 +1,22 @@
+{
+   "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "IGI",
+    "GBG",
+	"IGI"
+  ],
+  "key": {
+    "I": {
+		"item": "minecraft:lava_bucket"
+    },
+	"G": {
+		"item": "minecraft:gold_ingot"
+    },
+	"B": {
+		"item": "furnaceoverhaul:blank_upgrade"
+	}
+  },
+  "result": {
+    "item": "furnaceoverhaul:liquid_fuel_upgrade"
+  }
+}
