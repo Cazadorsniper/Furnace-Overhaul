@@ -3,7 +3,7 @@ tile.furnaceoverhaul.gold_furnace.name=Золотая печь
 tile.furnaceoverhaul.diamond_furnace.name=Алмазная печь
 tile.furnaceoverhaul.emerald_furnace.name=Изумрудная печь
 tile.furnaceoverhaul.end_furnace.name=Печь Края
-tile.furnaceoverhaul.zenith_furnace.name=Печь Ада
+tile.furnaceoverhaul.zenith_furnace.name=Зенитная печь
 
 item.furnaceoverhaul.ore_processing_upgrade.name=Улучшение переработки руды
 item.furnaceoverhaul.liquid_fuel_upgrade.name=Улучшение жидкого топлива
@@ -18,7 +18,7 @@ item.furnaceoverhaul.gold_kit.name=Золотой комплект
 item.furnaceoverhaul.diamond_kit.name=Алмазный комплект
 item.furnaceoverhaul.emerald_kit.name=Изумрудный комплект
 item.furnaceoverhaul.end_kit.name=Комплект Края
-item.furnaceoverhaul.zenith_kit.name=Комплект Ада
+item.furnaceoverhaul.zenith_kit.name=Зенитный комплект
 item.furnaceoverhaul.blank_kit.name=Пустой комплект
 
 itemGroup.furnaceoverhaul=Капитальный ремонт печи
