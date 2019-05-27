@@ -1,0 +1,37 @@
+tile.furnaceoverhaul.iron_furnace.name=Железная печь
+tile.furnaceoverhaul.gold_furnace.name=Золотая печь
+tile.furnaceoverhaul.diamond_furnace.name=Алмазная печь
+tile.furnaceoverhaul.emerald_furnace.name=Изумрудная печь
+tile.furnaceoverhaul.end_furnace.name=Endest печь
+tile.furnaceoverhaul.zenith_furnace.name=Зенитная печь
+
+item.furnaceoverhaul.ore_processing_upgrade.name=Улучшение: Переработка руды
+item.furnaceoverhaul.liquid_fuel_upgrade.name=Улучшение: Жидкое топливо
+item.furnaceoverhaul.efficiency_upgrade.name=Улучшение: Эффективность
+item.furnaceoverhaul.electric_fuel_upgrade.name=Улучшение: Электрическое топливо
+item.furnaceoverhaul.blank_upgrade.name=Пустое улучшение
+item.furnaceoverhaul.speed_upgrade.name=Улучшение: Скорость
+item.furnaceoverhaul.processing_upgrade.name=Улучшение: Переработка
+
+item.furnaceoverhaul.iron_kit.name=Железный набор
+item.furnaceoverhaul.gold_kit.name=Золотой набор
+item.furnaceoverhaul.diamond_kit.name=Алмазный набор
+item.furnaceoverhaul.emerald_kit.name=Изумруный набор
+item.furnaceoverhaul.end_kit.name=Endest набор
+item.furnaceoverhaul.zenith_kit.name=Зенитный набор
+item.furnaceoverhaul.blank_kit.name=Пустой набор
+
+itemGroup.furnaceoverhaul=Furnace Overhaul
+
+info.furnaceoverhaul.cooktime=Время приготовления: %s
+info.furnaceoverhaul.efficiency=Двойная топливная эффективность.
+info.furnaceoverhaul.wip=Работа в процессе.
+info.furnaceoverhaul.electric=Использует FE вместо твёрдого топлива.
+info.furnaceoverhaul.speed=Увеличивает скорость приготовления.
+info.furnaceoverhaul.ores=Позволяет обрабатывать руды.
+info.furnaceoverhaul.processing=Удваивает выход.
+info.furnaceoverhaul.kit=Улучшение %s в %s
+info.furnaceoverhaul.fluid=Использует жидкое топливо вместо твёрдого топлива.
+
+gui.furnaceoverhaul.fluid=%s / 4000 %s
+gui.furnaceoverhaul.energy=%s / 80000 FE
