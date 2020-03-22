@@ -241,6 +241,11 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 					matched = true;
 					failedMatch = ItemStack.EMPTY;
 				}
+			} else if(!matched) {
+				recipeKey = ItemStack.EMPTY;
+				recipeOutput = ItemStack.EMPTY;
+				failedMatch = input;
+				return false;
 			}
 		}
 
