@@ -53,12 +53,12 @@ public class ContainerFO extends Container {
 		super.detectAndSendChanges();
 		if (player != null) FurnaceOverhaul.NETWORK.sendTo(new MessageSyncTE(te), player);
 	}
-
+	
 	@Override
-	public boolean canInteractWith(EntityPlayer player) {
-		return player.getDistanceSq(te.getPos()) < 64;
+	public boolean canInteractWith(EntityPlayer playerIn) {
+		return this.te.isUsableByPlayer(player);
 	}
-
+	
 	@Override
 	@Nullable
 	public ItemStack transferStackInSlot(EntityPlayer player, int index) {

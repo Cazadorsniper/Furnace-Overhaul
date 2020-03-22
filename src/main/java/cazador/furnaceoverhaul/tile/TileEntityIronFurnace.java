@@ -14,6 +14,7 @@ import cazador.furnaceoverhaul.utils.MutableEnergyStorage;
 import cazador.furnaceoverhaul.utils.OreProcessingRegistry;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
@@ -241,6 +242,11 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 					matched = true;
 					failedMatch = ItemStack.EMPTY;
 				}
+			} else if(!matched) {
+				recipeKey = ItemStack.EMPTY;
+				recipeOutput = ItemStack.EMPTY;
+				failedMatch = input;
+				return false;
 			}
 		}
 
@@ -446,5 +452,13 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	public FluidTank getTank() {
 		return tank;
 	}
+	
+    public boolean isUsableByPlayer(EntityPlayer player) {
+        if (this.world.getTileEntity(this.pos) != this) {
+            return false;
+        } else {
+            return player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
+        }
+    }
 
 }
