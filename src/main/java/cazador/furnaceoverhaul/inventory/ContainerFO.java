@@ -17,6 +17,7 @@ public class ContainerFO extends Container {
 
 	public static final int SLOTS_TE = 0;
 	public static final int SLOTS_TE_SIZE = 6;
+	public static final int SLOTS_TE_INPUT_SIZE = 5;
 	public static final int SLOTS_INVENTORY = SLOTS_TE_SIZE;
 	public static final int SLOTS_HOTBAR = SLOTS_INVENTORY + 3 * 9;
 
@@ -27,10 +28,10 @@ public class ContainerFO extends Container {
 		this.te = te;
 		this.addSlotToContainer(new SlotFurnaceInput(te.getInventory(), 0, 56, 17));
 		this.addSlotToContainer(new SlotFurnaceFuel(te.getInventory(), 1, 56, 53));
-		this.addSlotToContainer(new SlotFurnaceOutput(playerInv.player, te.getInventory(), 2, 116, 35));
-		this.addSlotToContainer(new SlotUpgrade(te.getInventory(), 3, 12, 13));
-		this.addSlotToContainer(new SlotUpgrade(te.getInventory(), 4, 12, 34));
-		this.addSlotToContainer(new SlotUpgrade(te.getInventory(), 5, 12, 55));
+		this.addSlotToContainer(new SlotUpgrade(te.getInventory(), 2, 12, 13));
+		this.addSlotToContainer(new SlotUpgrade(te.getInventory(), 3, 12, 34));
+		this.addSlotToContainer(new SlotUpgrade(te.getInventory(), 4, 12, 55));
+		this.addSlotToContainer(new SlotFurnaceOutput(playerInv.player, te.getInventory(), 5, 116, 35));
 
 		for (int i = 0; i < 3; ++i) {
 			for (int j = 0; j < 9; ++j) {
@@ -74,9 +75,9 @@ public class ContainerFO extends Container {
 					int s = TileEntityIronFurnace.SLOT_FUEL;
 					if (!mergeItemStack(stack, s, s + 1, false)) { return ItemStack.EMPTY; }
 				}
-				if (!mergeItemStack(stack, SLOTS_TE, SLOTS_TE + SLOTS_TE_SIZE, false)) { return ItemStack.EMPTY; }
+				if (!mergeItemStack(stack, SLOTS_TE, SLOTS_TE + SLOTS_TE_INPUT_SIZE, false)) { return ItemStack.EMPTY; }
 			} else if (index >= SLOTS_HOTBAR && index < SLOTS_HOTBAR + 9) {
-				if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_INVENTORY + 3 * 9, false)) { return ItemStack.EMPTY; }
+				if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR, false)) { return ItemStack.EMPTY; }
 			} else if (!mergeItemStack(stack, SLOTS_INVENTORY, SLOTS_HOTBAR + 9, true)) { return ItemStack.EMPTY; }
 
 			slot.onSlotChanged();

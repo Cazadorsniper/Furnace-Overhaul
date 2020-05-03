@@ -45,8 +45,8 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 	//Constants
 	public static final int SLOT_INPUT = 0;
 	public static final int SLOT_FUEL = 1;
-	public static final int SLOT_OUTPUT = 2;
-	public static final int[] SLOT_UPGRADE = { 3, 4, 5 };
+	public static final int[] SLOT_UPGRADE = { 2, 3, 4 };
+	public static final int SLOT_OUTPUT = 5;
 	public static final int MAX_FE_TRANSFER = 1200;
 	public static final int MAX_ENERGY_STORED = 80000;
 
@@ -60,7 +60,7 @@ public class TileEntityIronFurnace extends TileEntity implements ITickable {
 		public boolean isItemValid(int slot, ItemStack stack) {
 			if (slot == SLOT_INPUT) return SlotFurnaceInput.isStackValid(stack);
 			if (slot == SLOT_FUEL) return SlotFurnaceFuel.isStackValid(stack);
-			return slot > 2 ? SlotUpgrade.isStackValid(stack) : true;
+			return slot < SLOT_OUTPUT ? SlotUpgrade.isStackValid(stack) : true;
 		};
 	};
 	private final RangedWrapper TOP = new RangedWrapper(inv, SLOT_INPUT, SLOT_INPUT + 1);
