@@ -1,0 +1,38 @@
+tile.furnaceoverhaul.iron_furnace.name=铁熔炉
+tile.furnaceoverhaul.gold_furnace.name=金熔炉
+tile.furnaceoverhaul.diamond_furnace.name=钻石熔炉
+tile.furnaceoverhaul.emerald_furnace.name=绿宝石熔炉
+tile.furnaceoverhaul.end_furnace.name=末影熔炉
+tile.furnaceoverhaul.zenith_furnace.name=巅峰熔炉
+
+
+item.furnaceoverhaul.ore_processing_upgrade.name=矿物处理升级模块
+item.furnaceoverhaul.liquid_fuel_upgrade.name=液体燃料升级模块
+item.furnaceoverhaul.efficiency_upgrade.name=效率升级模块
+item.furnaceoverhaul.electric_fuel_upgrade.name=电能升级模块
+item.furnaceoverhaul.blank_upgrade.name=空白升级模块
+item.furnaceoverhaul.speed_upgrade.name=速度升级模块
+item.furnaceoverhaul.processing_upgrade.name=处理升级模块
+
+item.furnaceoverhaul.iron_kit.name=铁熔炉升级模块
+item.furnaceoverhaul.gold_kit.name=金熔炉升级模块
+item.furnaceoverhaul.diamond_kit.name=钻石熔炉升级模块
+item.furnaceoverhaul.emerald_kit.name=绿宝石熔炉升级模块
+item.furnaceoverhaul.end_kit.name=末影熔炉升级模块
+item.furnaceoverhaul.zenith_kit.name=巅峰熔炉升级模块
+item.furnaceoverhaul.blank_kit.name=空白等级升级模块
+
+itemGroup.furnaceoverhaul=熔炉改革
+
+info.furnaceoverhaul.cooktime=熔炼消耗时间: %s
+info.furnaceoverhaul.efficiency=燃料效率加倍
+info.furnaceoverhaul.wip=进行中
+info.furnaceoverhaul.electric=使用FE代替固体燃料
+info.furnaceoverhaul.speed=提升熔炼速度
+info.furnaceoverhaul.ores=双倍矿物输出
+info.furnaceoverhaul.processing=双倍输出
+info.furnaceoverhaul.kit=升级 %s 为 %s
+info.furnaceoverhaul.fluid=使用液体燃料而不是固体燃料
+
+gui.furnaceoverhaul.fluid=%s / 4000 %s
+gui.furnaceoverhaul.energy=%s / 80000 FE
